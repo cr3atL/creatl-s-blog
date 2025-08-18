@@ -4,6 +4,8 @@ import { GithubOutlined } from "@ant-design/icons"
 import QQIcon from '../icons/QQIcon.png';
 
 
+
+
 const avatarImage = 'https://github.com/cr3atL.png';
 
 const { Title, Paragraph } = Typography;
@@ -58,11 +60,10 @@ const About = () => {
           </Paragraph>
           <Paragraph>
             <GithubOutlined />
-
             <strong>GitHub：</strong> <a href='https://github.com/cr3atL' target='_blank' rel='noreferrer'>cr3atL</a>
           </Paragraph>
           <Paragraph>
-            <strong>个人网站：</strong> 我没有
+            <strong>个人网站：</strong> 目前就是这个吧
           </Paragraph>
         </Card>
       </div>
