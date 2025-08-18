@@ -1,11 +1,14 @@
 import React from 'react';
 import { Typography, Row, Col, Card, Avatar } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 const avatarImage = 'https://github.com/cr3atL.png';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   return (
     <Layout>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -26,7 +29,7 @@ const Home = () => {
             <Card 
               title="暂无" 
               hoverable
-              onClick={() => window.location.href = '/article'}
+              onClick={() => navigate('/article')}
               style={{
                 boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -40,7 +43,7 @@ const Home = () => {
             <Card 
               title="暂无" 
               hoverable
-              onClick={() => window.location.href = '/article'}
+              onClick={() => navigate('/article')}
               style={{
                 boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -54,7 +57,7 @@ const Home = () => {
             <Card 
               title="暂无" 
               hoverable
-              onClick={() => window.location.href = '/article'}
+              onClick={() => navigate('/article')}
               style={{
                 boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
