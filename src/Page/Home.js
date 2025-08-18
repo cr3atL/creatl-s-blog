@@ -1,12 +1,20 @@
 import React from "react";
 import { Typography, Avatar, Card } from "antd";
+import {GithubOutlined, YoutubeOutlined } from '@ant-design/icons'
 import Layout from "../components/Layout";
 import Item from "antd/es/list/Item";
+import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
+import BiliBiliIcon from "../icons/bilibiliIcon.ico";
+
 const avatarImage = "https://github.com/cr3atL.png";
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
+  const handleIconClick = (url) => {
+    window.open(url, '_blank');
+  };
+
   return (
     <Layout>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -39,9 +47,43 @@ const Home = () => {
               <Paragraph></Paragraph>
             </Card>
 
-            <Card>
+ <Card>
               <Title level={3}>这是我的一些主页</Title>
-              <></>
+              <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+                <GithubOutlined 
+                  style={{ fontSize: '24px', cursor: 'pointer', color: '#000' }}
+                  onClick={() => handleIconClick('https://github.com/cr3atL')}
+                  title="GitHub"
+                />
+                <img
+                  src={BiliBiliIcon} 
+                  alt="bilibili"
+                  style={{ 
+                    width: '24px', 
+                    height: '24px', 
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s'
+                  }}
+                  onClick={() => handleIconClick('https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/')}
+                  title="bilibili主页"
+                  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                />
+                <img 
+                  src={OSUIcon} 
+                  alt="OSU!" 
+                  style={{ 
+                    width: '24px', 
+                    height: '24px', 
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s'
+                  }}
+                  onClick={() => handleIconClick('https://osu.ppy.sh/users/24792120')}
+                  title="OSU!主页"
+                  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                />
+              </div>
             </Card>
         <div style={{ marginTop: "32px", 
                       fontSize:'24px',

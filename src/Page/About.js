@@ -1,6 +1,9 @@
-import React from 'react';
 import { Typography, Card, Avatar, Space, Tag } from 'antd';
 import Layout from '../components/Layout';
+import { GithubOutlined } from "@ant-design/icons"
+import QQIcon from '../icons/QQIcon.png';
+
+
 const avatarImage = 'https://github.com/cr3atL.png';
 
 const { Title, Paragraph } = Typography;
@@ -50,10 +53,13 @@ const About = () => {
         
         <Card title="联系方式">
           <Paragraph>
-            <strong>邮箱：</strong> 1439676150@qq.com
+            <img src={QQIcon} alt="QQ" style={{ width: '24px', height: '24px', marginRight: '8px', verticalAlign: 'middle' }} />
+            <strong></strong> <a href='https://qm.qq.com/q/MFdHgohGqm'>点击添加我的QQ</a>
           </Paragraph>
           <Paragraph>
-            <strong>GitHub：</strong> https://github.com/cr3atL
+            <GithubOutlined />
+
+            <strong>GitHub：</strong> <a href='https://github.com/cr3atL' target='_blank'>cr3atL</a>
           </Paragraph>
           <Paragraph>
             <strong>个人网站：</strong> 我没有
