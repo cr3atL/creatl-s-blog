@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Avatar, Card } from "antd";
 import Layout from "../components/Layout";
-import getFontSizes from "antd/es/theme/themes/shared/genFontSizes";
 import Item from "antd/es/list/Item";
 const avatarImage = "https://github.com/cr3atL.png";
 
