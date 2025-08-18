@@ -1,6 +1,8 @@
 import React from "react";
-import { Typography, Avatar } from "antd";
+import { Typography, Avatar, Card } from "antd";
 import Layout from "../components/Layout";
+import getFontSizes from "antd/es/theme/themes/shared/genFontSizes";
+import Item from "antd/es/list/Item";
 const avatarImage = "https://github.com/cr3atL.png";
 
 const { Title, Paragraph } = Typography;
@@ -30,11 +32,23 @@ const Home = () => {
         </div>
 
         <Paragraph>这是我乱写的博客</Paragraph>
+             <Card style={{marginBottom:'24px'}}>
+              <Title level={3}>关于我</Title>
+              <Item style={{fontSize:'16px'}}>我是桔子酱！/creatL。我正在学习react的前端开发,是一名初学者!</Item>
+              <Item style={{fontSize:'16px'}}>我喜欢玩osu!mania,无聊就爱玩定轨</Item>
+              <Item style={{fontSize:'16px'}}>我喜欢听trance,有好听的trance一定要联系我求你了求你了求你了。</Item>
+              <Paragraph></Paragraph>
+            </Card>
 
-
-        <div style={{ marginTop: "32px" }}>
+            <Card>
+              <Title level={3}>这是我的一些主页</Title>
+              <></>
+            </Card>
+        <div style={{ marginTop: "32px", 
+                      fontSize:'24px',
+                    }}>
           <Title level={3}>最新动态</Title>
-          <Paragraph>博客正在开发中，敬请期待更多精彩内容...</Paragraph>
+          <Paragraph style={{fontSize: '16px'}}>博客正在开发中，敬请期待更多精彩内容...</Paragraph>
         </div>
       </div>
     </Layout>

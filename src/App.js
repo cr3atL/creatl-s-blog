@@ -1,10 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './Page/Home';
 import Article from './Page/Article';
 import About from './Page/About';
 import Randomssiba from './Page/Randomssiba';
-
 
 function App() {
   return (
