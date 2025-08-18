@@ -6,9 +6,11 @@
 
 - **现代化UI设计**: 使用Ant Design组件库，配合毛玻璃效果和粒子动画背景
 - **响应式布局**: 适配不同屏幕尺寸的设备
-- **多页面支持**: 包含首页、文章列表、关于页面
+- **多页面支持**: 包含首页、文章列表、关于页面、随机兔子图片页面
 - **GitHub Pages部署**: 通过GitHub Actions自动化部署
 - **React Router**: 实现客户端路由导航
+- **动态内容**: 随机兔子图片展示功能
+- **社交链接**: 集成GitHub、Bilibili、OSU等社交平台链接
 
 ## 🛠️ 技术栈
 
@@ -31,10 +33,16 @@ src/
 ├── Page/              # 页面组件
 │   ├── Home.js        # 首页
 │   ├── Article.js     # 文章列表页
-│   └── About.js       # 关于页面
+│   ├── About.js       # 关于页面
+│   └── Randomssiba.js # 随机兔子图片页面
 ├── assets/            # 静态资源
+├── icons/             # 图标资源
+│   ├── OSUIcon.png    # OSU图标
+│   ├── QQIcon.png     # QQ图标
+│   └── bilibiliIcon.ico # Bilibili图标
 ├── images/            # 图片资源
 │   └── Background.jpg # 背景图片
+├── ssiba/             # 兔子图片资源目录
 ├── styles/            # 样式文件
 └── utils/             # 工具函数
 ```
@@ -58,6 +66,13 @@ src/
 - 技能标签云
 - 联系方式
 - 社交媒体链接
+- QQ、GitHub、Bilibili、OSU等平台链接
+
+### 随机兔子页面
+- 随机展示兔子图片
+- 动态加载效果
+- 一键切换图片功能
+- 支持多种图片格式（PNG、JPG、GIF）
 
 ## 🚀 快速开始
 
@@ -112,11 +127,16 @@ npm run deploy
 - **渐变文字**: 标题使用CSS渐变和动画效果
 - **阴影效果**: 多层阴影营造立体感
 - **响应式设计**: 适配移动端和桌面端
+- **交互动画**: 图标悬停效果和图片加载动画
+- **个性化图标**: 自定义OSU、QQ、Bilibili等平台图标
 
 ## 📧 联系方式
 
 - **邮箱**: 1439676150@qq.com
 - **GitHub**: [https://github.com/cr3atL](https://github.com/cr3atL)
+- **QQ**: [https://qm.qq.com/q/MFdHgohGqm](https://qm.qq.com/q/MFdHgohGqm)
+- **Bilibili**: [https://space.bilibili.com/401366615](https://space.bilibili.com/401366615)
+- **OSU**: [https://osu.ppy.sh/users/24792120](https://osu.ppy.sh/users/24792120)
 
 ## 📄 许可证
 
@@ -125,3 +145,17 @@ MIT License
 ## 🤝 贡献
 
 欢迎提交Issue和Pull Request来改进这个项目！
+
+## 📝 更新日志
+
+### v1.1.0 (2025-06-17)
+- 新增随机兔子图片页面功能
+- 修复图片组件使用问题
+- 完善项目文档
+- 优化UI交互效果
+
+### v1.0.0 (2025-06-17)
+- 项目初始化
+- 完成基础页面架构
+- 实现响应式布局
+- 集成GitHub Actions部署

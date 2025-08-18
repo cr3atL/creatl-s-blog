@@ -59,7 +59,7 @@ const About = () => {
           <Paragraph>
             <GithubOutlined />
 
-            <strong>GitHub：</strong> <a href='https://github.com/cr3atL' target='_blank'>cr3atL</a>
+            <strong>GitHub：</strong> <a href='https://github.com/cr3atL' target='_blank' rel='noreferrer'>cr3atL</a>
           </Paragraph>
           <Paragraph>
             <strong>个人网站：</strong> 我没有
