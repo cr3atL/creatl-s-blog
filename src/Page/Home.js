@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Avatar, Card } from "antd";
+import { Typography, Avatar } from "antd";
 import Layout from "../components/Layout";
 const avatarImage = "https://github.com/cr3atL.png";
 
