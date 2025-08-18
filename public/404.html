@@ -6,8 +6,12 @@
     <script type="text/javascript">
       // 获取当前路径
       var path = window.location.pathname;
-      // 重定向到应用的根路径，并带上原始路径作为参数
-      window.location.href = '/creatl-s-blog/#' + path;
+      // 移除开头的斜杠以避免双斜杠
+      if (path.startsWith('/')) {
+        path = path.substring(1);
+      }
+      // 重定向到应用的404页面
+      window.location.href = '/creatl-s-blog/#/404?path=' + encodeURIComponent(path);
     </script>
   </head>
   <body>
