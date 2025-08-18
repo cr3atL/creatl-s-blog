@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, List, Tag, Space, Button } from 'antd';
+import { Typography, Card, List, Tag, Space, Button, message } from 'antd';
 import Layout from '../components/Layout';
 
 const { Title, Paragraph } = Typography;
@@ -34,7 +34,6 @@ const Article = () => {
               <Card 
                 hoverable
                 style={{ marginBottom: '16px' }}
-                onClick={() => window.location.href = `/article/${item.id}`}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
@@ -54,7 +53,14 @@ const Article = () => {
                       </Space>
                     </div>
                   </div>
-                  <Button type="primary" style={{ marginLeft: '16px' }}>
+                  <Button 
+                    type="primary" 
+                    style={{ marginLeft: '16px' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      message.success('完成');
+                    }}
+                  >
                     阅读全文
                   </Button>
                 </div>
