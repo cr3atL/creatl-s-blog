@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout as AntLayout, Menu } from 'antd';
 import { HomeOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -11,6 +11,23 @@ const { Header, Content, Footer } = AntLayout;
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleString());
+    };
+
+    // 初始化时间
+    updateTime();
+    
+    // 每秒更新一次时间
+    const timer = setInterval(updateTime, 1000);
+    
+    // 组件卸载时清除定时器
+    return () => clearInterval(timer);
+  }, []);
   
   const menuItems = [
     {
@@ -100,6 +117,18 @@ const Layout = ({ children }) => {
             onClick={handleMenuClick}
             style={{ flex: 1, minWidth: 0 }}
           />
+                    <div style={{ 
+            fontSize: '16px', 
+            color: 'rgba(255, 255, 255, 0.9)',
+            fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+            fontWeight: '500',
+            marginLeft: 'auto',
+            marginRight: '0',
+            textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+            letterSpacing: '0.5px'
+          }}>
+            {currentTime}
+          </div>
         </Header>
         <Content style={{ 
           padding: '24px', 
