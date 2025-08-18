@@ -96,7 +96,7 @@ npm run deploy
 
 ## 🌐 在线预览
 
-项目已部署到GitHub Pages：[https://cr3atl.github.io/myblog](https://cr3atl.github.io/myblog)
+项目已部署到GitHub Pages：[https://cr3atl.github.io/creatl-s-blog](https://cr3atl.github.io/creatl-s-blog)
 
 ## 🔄 自动化部署
 
