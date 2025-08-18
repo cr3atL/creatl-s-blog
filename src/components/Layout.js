@@ -28,6 +28,12 @@ const Layout = ({ children }) => {
       icon: <UserOutlined />,
       label: '关于',
     },
+    {
+      key: '/randomssiba',
+      icon: <UserOutlined />,
+      label: '随机兔子',
+    },
+
   ];
 
   const handleMenuClick = ({ key }) => {
@@ -97,7 +103,7 @@ const Layout = ({ children }) => {
         </Header>
         <Content style={{ 
           padding: '24px', 
-          background: 'rgba(255, 255, 255, 0.2)',
+          background: 'rgba(255, 255, 255, 0.6)',
           backdropFilter: 'blur(5px)',
           margin: '24px',
           borderRadius: '8px',
@@ -106,6 +112,7 @@ const Layout = ({ children }) => {
           {children}
         </Content>
         <Footer style={{ 
+          padding: '10px 0',
           textAlign: 'center',
           background: 'rgba(0, 0, 0, 0.8)',
           color: 'white',
