@@ -2,7 +2,7 @@
   "name": "myblog",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cr3atl.github.io/myblog",
+  "homepage": "https://cr3atl.github.io/creatl-s-blog",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.7.0",
