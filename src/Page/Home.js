@@ -1,13 +1,12 @@
 import React from 'react';
-import { Typography, Row, Col, Card, Avatar } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Typography, Avatar } from 'antd';
 import Layout from '../components/Layout';
 const avatarImage = 'https://github.com/cr3atL.png';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
-  const navigate = useNavigate();
+  
   
   return (
     <Layout>
