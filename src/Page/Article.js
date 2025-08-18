@@ -3,8 +3,12 @@ import { Typography, Card, List, Tag, Space, Button, message } from 'antd';
 import Layout from '../components/Layout';
 
 const Article = () => {
-  const [messageApi, contextHolder] = message.useMessage();
+    const [messageApi, contextHolder] = message.useMessage();
   const { Title, Paragraph } = Typography;
+  
+  const info = () => {
+    messageApi.info('我还没有做完！(>_<)');
+  };
   const articles = [
     {
       id: 1,
@@ -58,10 +62,7 @@ const Article = () => {
                     <Button 
                       type="primary" 
                       style={{ marginLeft: '16px' }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        messageApi.success('该功能暂未完成(>_<)');
-                      }}
+                      onClick={info}
                     >
                       阅读全文
                     </Button>
