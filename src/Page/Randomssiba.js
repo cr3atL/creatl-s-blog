@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Layout from "../components/Layout";
 import React from "react";
 import {Button, Typography, Spin,} from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined, DownloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -37,6 +37,23 @@ const Randomssiba = () => {
       setLoading(false);
     }, 300);
   }, []);
+
+  const downloadImage = () => {
+    if (!currentImage) return;
+    
+    // 创建一个临时的a标签来触发下载
+    const link = document.createElement('a');
+    link.href = currentImage;
+    
+    // 从图片路径中提取文件名
+    const fileName = currentImage.split('/').pop() || 'rabbit-image';
+    link.download = fileName;
+    
+    // 触发下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     loadNewImage();
@@ -103,10 +120,26 @@ const Randomssiba = () => {
               border: "none",
               borderRadius: "20px",
               padding: "0 20px",
-              height: "40px"
+              height: "40px",
+              marginRight: "10px"
             }}
           >
             换一张
+          </Button>
+          
+          <Button
+            type="default"
+            icon={<DownloadOutlined />}
+            onClick={downloadImage}
+            disabled={!currentImage || loading}
+            size="large"
+            style={{
+              borderRadius: "20px",
+              padding: "0 20px",
+              height: "40px"
+            }}
+          >
+            下载图片
           </Button>
         </div>
       </div>
