@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Layout from "../components/Layout";
 import React from "react";
 import {Button, Typography, Spin,} from 'antd';
@@ -30,17 +30,17 @@ const Randomssiba = () => {
     return images[randomIndex];
   };
 
-   const loadNewImage = () => {
+   const loadNewImage = useCallback(() => {
     setLoading(true)
     setTimeout(() => {
       setCurrentImage(getRandomImage());
       setLoading(false);
     }, 300);
-  };
+  }, []);
 
   useEffect(() => {
     loadNewImage();
-  }, []);
+  }, [loadNewImage]);
 
   return (
     <Layout>
