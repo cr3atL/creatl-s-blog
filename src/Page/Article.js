@@ -58,7 +58,7 @@ const Article = () => {
                     style={{ marginLeft: '16px' }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      message.success('完成');
+                      message.success('该功能暂未完成(>_<)');
                     }}
                   >
                     阅读全文
