@@ -6,7 +6,7 @@ import About from './Page/About';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/creatl-s-blog">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
