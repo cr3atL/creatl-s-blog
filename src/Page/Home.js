@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Avatar, Card } from "antd";
-import {GithubOutlined, YoutubeOutlined } from '@ant-design/icons'
+import {GithubOutlined, } from '@ant-design/icons'
 import Layout from "../components/Layout";
 import Item from "antd/es/list/Item";
 import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
