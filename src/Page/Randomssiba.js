@@ -68,8 +68,8 @@ const Randomssiba = () => {
                 src={currentImage}
                 alt="随机兔子"
                 style={{
-                  width: "500px",
-                  height: "500px",
+                  maxWidth: "250px",
+                  maxHeight: "250px",
                   objectFit: "contain",
                   borderRadius: "8px",
                   boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
