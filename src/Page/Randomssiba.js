@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import Layout from "../components/Layout";
+import ResponsiveLayout from "../components/ResponsiveLayout";
 import React from "react";
 import {Button, Typography, Spin,} from 'antd';
 import { ReloadOutlined, DownloadOutlined } from '@ant-design/icons';
@@ -60,7 +60,7 @@ const Randomssiba = () => {
   }, [loadNewImage]);
 
   return (
-    <Layout>
+    <ResponsiveLayout>
       <div style={{ 
         maxWidth: "1200px", 
         margin: "0 auto",
@@ -143,7 +143,7 @@ const Randomssiba = () => {
           </Button>
         </div>
       </div>
-    </Layout>
+    </ResponsiveLayout>
   );
 };
 

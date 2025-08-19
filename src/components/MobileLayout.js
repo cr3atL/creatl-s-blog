@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout as AntLayout, Menu } from 'antd';
-import { HomeOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout as AntLayout, Menu, Drawer, Button } from 'antd';
+import { HomeOutlined, FileTextOutlined, UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import backgroundImage from '../images/Background.jpg';
 import ParticleCanvas from './ParticleCanvas';
 
-
 const { Header, Content, Footer } = AntLayout;
 
-const Layout = ({ children }) => {
+const MobileLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [currentTime, setCurrentTime] = useState('');
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -19,16 +19,11 @@ const Layout = ({ children }) => {
       setCurrentTime(now.toLocaleString());
     };
 
-    // 初始化时间
     updateTime();
-    
-    // 每秒更新一次时间
     const timer = setInterval(updateTime, 1000);
-    
-    // 组件卸载时清除定时器
     return () => clearInterval(timer);
   }, []);
-  
+
   const menuItems = [
     {
       key: '/',
@@ -50,11 +45,11 @@ const Layout = ({ children }) => {
       icon: <UserOutlined />,
       label: '随机兔子',
     },
-
   ];
 
   const handleMenuClick = ({ key }) => {
     navigate(key);
+    setDrawerVisible(false);
   };
 
   return (
@@ -85,98 +80,100 @@ const Layout = ({ children }) => {
         position: 'relative',
         zIndex: 1
       }}>
-        
-        {/* 粒子动画层 - 放在毛玻璃上面 */}
+
         <ParticleCanvas />
-        <Header className="header-container" style={{ 
+
+        <Header style={{ 
           display: 'flex', 
           alignItems: 'center',
+          justifyContent: 'space-between',
           background: 'rgba(0, 0, 0, 0.8)',
           backdropFilter: 'blur(10px)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+          padding: '8px 16px',
+          height: 'auto'
         }}>
-          <div className="blog-title" style={{ 
-            fontSize: '18px', 
-            fontWeight: 'bold', 
-            marginRight: '40px',
+          <div style={{ 
+            fontSize: '16px', 
+            fontWeight: 'bold',
             background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff)',
             backgroundSize: '400% 400%',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             animation: 'gradientShift 9s ease infinite',
-            textShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4), 2px 2px 4px rgba(0, 0, 0, 0.3)'
+            textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
           }}>
             creatL's Blog
           </div>
-          <div className="menu-container" style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            flex: 1,
-            minWidth: 0
-          }}>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              selectedKeys={[location.pathname]}
-              items={menuItems}
-              onClick={handleMenuClick}
-              style={{ flex: 1, minWidth: 0 }}
-            />
-            <div className="desktop-time" style={{ 
-              fontSize: '16px', 
-              color: 'rgba(255, 255, 255, 0.9)',
-              fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
-              fontWeight: '500',
-              marginLeft: '16px',
-              whiteSpace: 'nowrap',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
-              letterSpacing: '0.5px'
-            }}>
-              {currentTime}
-            </div>
-          </div>
-          <div className="mobile-time" style={{ 
+          <div style={{ 
             fontSize: '12px', 
             color: 'rgba(255, 255, 255, 0.9)',
             fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
             fontWeight: '500',
-            width: '100%',
-            textAlign: 'center',
-            marginTop: '8px',
-            textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
-            letterSpacing: '0.5px',
-            display: 'none'
+            textShadow: '0 0 5px rgba(255, 255, 255, 0.5)'
           }}>
             {currentTime}
           </div>
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            onClick={() => setDrawerVisible(true)}
+            style={{ color: 'white', fontSize: '18px' }}
+          />
         </Header>
+
+        <Drawer
+          title="导航菜单"
+          placement="right"
+          onClose={() => setDrawerVisible(false)}
+          open={drawerVisible}
+          style={{ background: 'rgba(0, 0, 0, 0.9)' }}
+          width={200}
+          extra={
+            <Button
+              type="text"
+              onClick={() => setDrawerVisible(false)}
+              style={{ color: 'white', fontSize: '16px' }}
+            >
+              ✕
+            </Button>
+          }
+        >
+          <Menu
+            theme="dark"
+            mode="vertical"
+            selectedKeys={[location.pathname]}
+            items={menuItems}
+            onClick={handleMenuClick}
+            style={{ border: 'none', background: 'transparent' }}
+          />
+        </Drawer>
+
         <Content style={{ 
-          padding: '24px', 
-          background: 'rgba(255, 255, 255, 0.6)',
+          padding: '16px', 
+          background: 'rgba(255, 255, 255, 0.7)',
           backdropFilter: 'blur(5px)',
-          margin: '24px',
-          borderRadius: '8px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+          margin: '12px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
         }}>
           {children}
         </Content>
+        
         <Footer style={{ 
-          padding: '10px 0',
+          padding: '8px 0',
           textAlign: 'center',
           background: 'rgba(0, 0, 0, 0.8)',
           color: 'white',
           backdropFilter: 'blur(10px)',
-          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.3), 0 -2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          fontSize: '12px'
         }}>
-          ©2025 creatL . All rights reserved. </Footer>
-
-        
-        {/* 下落效果层 - 放在毛玻璃上面 */}
-
+          ©2025 creatL . All rights reserved.
+        </Footer>
       </AntLayout>
     </div>
   );
 };
 
-export default Layout;
+export default MobileLayout;

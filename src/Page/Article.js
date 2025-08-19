@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Card, List, Tag, Space, Button, message } from 'antd';
-import Layout from '../components/Layout';
+import ResponsiveLayout from '../components/ResponsiveLayout';
 
 const Article = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -24,7 +24,7 @@ const Article = () => {
   return (
     <>
       {contextHolder}
-      <Layout>
+      <ResponsiveLayout>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <Title>文章列表</Title>
           <Paragraph style={{ marginBottom: '32px' }}>
@@ -72,7 +72,7 @@ const Article = () => {
             )}
           />
         </div>
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 };

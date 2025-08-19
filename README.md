@@ -130,14 +130,6 @@ npm run deploy
 - **交互动画**: 图标悬停效果和图片加载动画
 - **个性化图标**: 自定义OSU、QQ、Bilibili等平台图标
 
-## 📧 联系方式
-
-- **邮箱**: 1439676150@qq.com
-- **GitHub**: [https://github.com/cr3atL](https://github.com/cr3atL)
-- **QQ**: [https://qm.qq.com/q/MFdHgohGqm](https://qm.qq.com/q/MFdHgohGqm)
-- **Bilibili**: [https://space.bilibili.com/401366615](https://space.bilibili.com/401366615)
-- **OSU**: [https://osu.ppy.sh/users/24792120](https://osu.ppy.sh/users/24792120)
-
 ## 📄 许可证
 
 MIT License
@@ -147,6 +139,12 @@ MIT License
 欢迎提交Issue和Pull Request来改进这个项目！
 
 ## 📝 更新日志
+
+### v1.2.0 (2025-8-19)
+- 为手机端添加了专门适配的Layout
+- 添加了一个时钟组件
+
+
 ### v1.1.1 (2025-8-18)
  - 随机兔子页面新增了下载按钮
 

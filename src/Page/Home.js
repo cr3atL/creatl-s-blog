@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Avatar, Card } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
-import Layout from "../components/Layout";
+import ResponsiveLayout from "../components/ResponsiveLayout";
 import Item from "antd/es/list/Item";
 import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
 import BiliBiliIcon from "../icons/bilibiliIcon.ico";
@@ -17,7 +17,7 @@ const Home = () => {
   };
 
   return (
-    <Layout>
+    <ResponsiveLayout>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div
           style={{
@@ -123,7 +123,7 @@ const Home = () => {
           </Paragraph>
         </div>
       </div>
-    </Layout>
+    </ResponsiveLayout>
   );
 };
 

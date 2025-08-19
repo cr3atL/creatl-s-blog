@@ -1,0 +1,39 @@
+/* 响应式布局样式 */
+
+@media (max-width: 768px) {
+  .desktop-time {
+    display: none !important;
+  }
+  
+  .mobile-time {
+    display: block !important;
+  }
+  
+  .header-container {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    padding: 8px 16px !important;
+  }
+  
+  .blog-title {
+    margin-right: 20px !important;
+    white-space: nowrap !important;
+  }
+  
+  .menu-container {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .desktop-time {
+    display: block !important;
+  }
+  
+  .mobile-time {
+    display: none !important;
+  }
+}

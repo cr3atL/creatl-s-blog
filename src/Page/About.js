@@ -1,5 +1,5 @@
 import { Typography, Card, Avatar, Space, Tag, message } from 'antd';
-import Layout from '../components/Layout';
+import ResponsiveLayout from '../components/ResponsiveLayout';
 import { GithubOutlined } from "@ant-design/icons"
 import QQIcon from '../icons/QQIcon.png';
 import { useState } from 'react';
@@ -35,7 +35,7 @@ const About = () => {
   return (
     <>
       {contextHolder}
-      <Layout>
+      <ResponsiveLayout>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
        
         
@@ -113,7 +113,7 @@ const About = () => {
           </Paragraph>
         </Card>
       </div>
-    </Layout>
+    </ResponsiveLayout>
     </>
   );
 };

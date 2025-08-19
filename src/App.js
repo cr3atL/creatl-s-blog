@@ -1,3 +1,4 @@
+import './styles/responsive.css';
 import { BrowserRouter as Router, Routes, Route,  } from 'react-router-dom';
 import Home from './Page/Home';
 import Article from './Page/Article';
