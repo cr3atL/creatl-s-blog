@@ -121,6 +121,9 @@ const Home = () => {
           <Paragraph style={{ fontSize: "16px" }}>
             博客正在开发中，敬请期待更多精彩内容...
           </Paragraph>
+          <Paragraph style={{fontSize:"16px"}}>当然如果你有什么好玩的想法或者发现了什么bug需要我去修复的也可以直接联系我</Paragraph>
+          <Paragraph style={{fontSize:"16px"}}>我的联系方式在about页面中有！</Paragraph>
+          <Paragraph style={{fontSize:"16px"}}>当然你直接bilibili私信我也可以</Paragraph>
         </div>
       </div>
     </ResponsiveLayout>
