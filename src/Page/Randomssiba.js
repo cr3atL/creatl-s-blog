@@ -30,6 +30,10 @@ const Randomssiba = () => {
     return images[randomIndex];
   };
 
+  const isVideoFile = (filePath) => {
+    return filePath.toLowerCase().endsWith('.mp4');
+  };
+
    const loadNewImage = useCallback(() => {
     setLoading(true)
     setTimeout(() => {
@@ -81,25 +85,50 @@ const Randomssiba = () => {
             <Spin size="large" tip="加载中..." />
           ) : currentImage ? (
             <div style={{ position: "relative", display: "inline-block" }}>
-              <img
-                src={currentImage}
-                alt="随机兔子"
-                style={{
-                  maxWidth: "250px",
-                  maxHeight: "250px",
-                  objectFit: "contain",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                  transition: "all 0.3s ease"
-                }}
-                onLoad={(e) => {
-                  // 图片加载完成后的处理
-                  e.target.style.opacity = "0";
-                  setTimeout(() => {
-                    e.target.style.opacity = "1";
-                  }, 50);
-                }}
-              />
+              {isVideoFile(currentImage) ? (
+                <video
+                  src={currentImage}
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  style={{
+                    maxWidth: "250px",
+                    maxHeight: "250px",
+                    objectFit: "contain",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+                    transition: "all 0.3s ease"
+                  }}
+                  onLoadedData={(e) => {
+                    // 视频加载完成后的处理
+                    e.target.style.opacity = "0";
+                    setTimeout(() => {
+                      e.target.style.opacity = "1";
+                    }, 50);
+                  }}
+                />
+              ) : (
+                <img
+                  src={currentImage}
+                  alt="随机兔子"
+                  style={{
+                    maxWidth: "250px",
+                    maxHeight: "250px",
+                    objectFit: "contain",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+                    transition: "all 0.3s ease"
+                  }}
+                  onLoad={(e) => {
+                    // 图片加载完成后的处理
+                    e.target.style.opacity = "0";
+                    setTimeout(() => {
+                      e.target.style.opacity = "1";
+                    }, 50);
+                  }}
+                />
+              )}
             </div>
           ) : (
             <div style={{ color: "#999", fontSize: "16px" }}>
@@ -139,7 +168,7 @@ const Randomssiba = () => {
               height: "40px"
             }}
           >
-            下载图片
+            {isVideoFile(currentImage) ? '下载视频' : '下载图片'}
           </Button>
         </div>
       </div>
