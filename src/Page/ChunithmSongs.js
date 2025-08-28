@@ -98,7 +98,8 @@ const ChunithmSongs = () => {
       const maxLevel = levelRange[1];
       result = result.filter(song => 
         song.sheets.some(sheet => {
-          const level = parseFloat(sheet.level);
+          // 使用levelValue或internalLevelValue进行数值比较，而不是解析level字符串
+          const level = sheet.internalLevelValue || sheet.levelValue || parseFloat(sheet.level);
           return !isNaN(level) && level >= minLevel && level <= maxLevel;
         })
       );
