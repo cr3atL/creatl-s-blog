@@ -4,6 +4,7 @@ import Home from './Page/Home';
 import Article from './Page/Article';
 import About from './Page/About';
 import Randomssiba from './Page/Randomssiba';
+import ChunithmSongs from './Page/ChunithmSongs';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/article' element={<Article/>} />
-        <Route path='/randomssiba' element={<Randomssiba/>} />
+        <Route path="/randomssiba" element={<Randomssiba/>} />
+        <Route path="/chunithm-songs" element={<ChunithmSongs/>} />
       </Routes>
     </Router>
   );

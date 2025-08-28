@@ -1,6 +1,5 @@
-import React from "react";
-import { Typography, Avatar, Card } from "antd";
-import { GithubOutlined } from "@ant-design/icons";
+import { Typography, Avatar, Card, Button } from "antd";
+import { GithubOutlined, LinuxOutlined } from "@ant-design/icons";
 import ResponsiveLayout from "../components/ResponsiveLayout";
 import Item from "antd/es/list/Item";
 import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
@@ -14,6 +13,10 @@ const { Title, Paragraph } = Typography;
 const Home = () => {
   const handleIconClick = (url) => {
     window.open(url, "_blank");
+  };
+
+  const navigateToChunithm = () => {
+    window.location.href = '/chunithm-songs';
   };
 
   return (
@@ -124,6 +127,21 @@ const Home = () => {
           <Paragraph style={{fontSize:"16px"}}>当然如果你有什么好玩的想法或者发现了什么bug需要我去修复的也可以直接联系我</Paragraph>
           <Paragraph style={{fontSize:"16px"}}>我的联系方式在about页面中有！</Paragraph>
           <Paragraph style={{fontSize:"16px"}}>当然你直接bilibili私信我也可以</Paragraph>
+          
+          <Card style={{ marginTop: "20px" }}>
+            <Title level={4}>🎵 新功能：CHUNITHM 曲库查询</Title>
+            <Paragraph style={{ fontSize: "16px" }}>
+              我添加了 CHUNITHM 曲库查询功能！你可以查看所有 CHUNITHM 歌曲的详细信息，包括难度、版本、类型等。
+            </Paragraph>
+            <Button 
+              type="primary" 
+              icon={<LinuxOutlined />}
+              onClick={navigateToChunithm}
+              style={{ marginTop: "10px" }}
+            >
+              查看 CHUNITHM 曲库
+            </Button>
+          </Card>
         </div>
       </div>
     </ResponsiveLayout>

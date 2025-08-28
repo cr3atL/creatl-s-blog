@@ -50,6 +50,11 @@ const Layout = ({ children }) => {
       icon: <UserOutlined />,
       label: '随机兔子',
     },
+    {
+      key: '/chunithm-songs',
+      icon: <UserOutlined />,
+      label: 'CHUNITHM相关',
+    },
 
   ];
 
