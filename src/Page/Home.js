@@ -16,7 +16,7 @@ const Home = () => {
   };
 
   const navigateToChunithm = () => {
-    window.location.href = '/chunithm-songs';
+    window.location.href = '/creatl-s-blog/chunithm-songs';
   };
 
   return (
