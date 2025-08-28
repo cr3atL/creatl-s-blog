@@ -325,7 +325,7 @@ const ChunithmSongs = () => {
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '20px' }}>
         <Title level={2}>CHUNITHM大调查</Title>
         <Paragraph>
-          这里展示了求你字母的曲库数据，包括歌曲的难度、版本和类型信息。
+          我做了个求你字母的曲库数据，包括歌曲的难度、版本和类型信息。
         </Paragraph>
 
         {error && (
