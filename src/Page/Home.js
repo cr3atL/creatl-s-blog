@@ -1,5 +1,5 @@
 import { Typography, Avatar, Card, Button } from "antd";
-import { GithubOutlined, LinuxOutlined } from "@ant-design/icons";
+import { GithubOutlined, } from "@ant-design/icons";
 import ResponsiveLayout from "../components/ResponsiveLayout";
 import Item from "antd/es/list/Item";
 import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
