@@ -5,6 +5,7 @@ import Article from './Page/Article';
 import About from './Page/About';
 import Randomssiba from './Page/Randomssiba';
 import ChunithmSongs from './Page/ChunithmSongs';
+import SdvxSongs from './Page/SdvxSongs';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/article' element={<Article/>} />
         <Route path="/randomssiba" element={<Randomssiba/>} />
         <Route path="/chunithm-songs" element={<ChunithmSongs/>} />
+        <Route path="/sdvx-songs" element={<SdvxSongs/>} />
       </Routes>
     </Router>
   );

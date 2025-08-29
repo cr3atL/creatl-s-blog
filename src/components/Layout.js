@@ -55,7 +55,11 @@ const Layout = ({ children }) => {
       icon: <UserOutlined />,
       label: 'CHUNITHM相关',
     },
-
+    {
+      key: '/sdvx-songs',
+      icon: <UserOutlined />,
+      label: 'SDVX相关',
+    },
   ];
 
   const handleMenuClick = ({ key }) => {

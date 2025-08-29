@@ -22,7 +22,7 @@ import ResponsiveLayout from '../components/ResponsiveLayout';
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
 
-const ChunithmSongs = () => {
+const SdvxSongs = () => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,14 +32,14 @@ const ChunithmSongs = () => {
   const [difficultyFilter, setDifficultyFilter] = useState([]);
   const [versionFilter, setVersionFilter] = useState([]);
   const [typeFilter, setTypeFilter] = useState([]);
-  const [levelRange, setLevelRange] = useState([1, 15.7]);
+  const [levelRange, setLevelRange] = useState([1, 20]);
   
   // 临时筛选状态（用于弹窗内的预览）
   const [tempSearchText, setTempSearchText] = useState('');
   const [tempDifficultyFilter, setTempDifficultyFilter] = useState([]);
   const [tempVersionFilter, setTempVersionFilter] = useState([]);
   const [tempTypeFilter, setTempTypeFilter] = useState([]);
-  const [tempLevelRange, setTempLevelRange] = useState([1, 15.7]);
+  const [tempLevelRange, setTempLevelRange] = useState([1, 20]);
   
   // 添加弹窗状态
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -75,30 +75,24 @@ const ChunithmSongs = () => {
       );
     }
     
-    // 按版本过滤
-    if (versionFilter.length > 0) {
-      result = result.filter(song => versionFilter.includes(song.version));
-    }
-    
-    // 按类型过滤
-    if (typeFilter.length > 0) {
-      result = result.filter(song => typeFilter.includes(song.type));
-    }
-    
     // 处理难度和等级范围过滤
     result = result.map(song => {
+      // 过滤sheets
       let filteredSheets = song.sheets;
       
-      // 按难度过滤 - 如果选择了难度，只显示选中的难度
+      // 按难度过滤
       if (difficultyFilter.length > 0) {
-        filteredSheets = filteredSheets.filter(sheet => difficultyFilter.includes(sheet.difficulty));
+        filteredSheets = filteredSheets.filter(sheet => 
+          difficultyFilter.includes(sheet.difficulty)
+        );
       }
       
       // 按等级范围过滤
-      if (levelRange[0] > 1 || levelRange[1] < 15.7) {
+      if (levelRange[0] > 1 || levelRange[1] < 20) {
         const minLevel = levelRange[0];
         const maxLevel = levelRange[1];
         filteredSheets = filteredSheets.filter(sheet => {
+          // 使用levelValue或internalLevelValue进行数值比较，而不是解析level字符串
           const level = sheet.internalLevelValue || sheet.levelValue || parseFloat(sheet.level);
           return !isNaN(level) && level >= minLevel && level <= maxLevel;
         });
@@ -108,7 +102,20 @@ const ChunithmSongs = () => {
         ...song,
         sheets: filteredSheets
       };
-    }).filter(song => song.sheets.length > 0); // 过滤掉没有符合条件的sheets的歌曲
+    });
+    
+    // 过滤掉没有符合条件sheets的歌曲
+    result = result.filter(song => song.sheets.length > 0);
+    
+    // 按版本过滤
+    if (versionFilter.length > 0) {
+      result = result.filter(song => versionFilter.includes(song.version));
+    }
+    
+    // 按类型过滤
+    if (typeFilter.length > 0) {
+      result = result.filter(song => typeFilter.includes(song.type));
+    }
     
     return result;
   }, [songs, searchText, difficultyFilter, versionFilter, typeFilter, levelRange]);
@@ -139,7 +146,7 @@ const ChunithmSongs = () => {
     setTempDifficultyFilter([]);
     setTempVersionFilter([]);
     setTempTypeFilter([]);
-    setTempLevelRange([1, 15.7]);
+    setTempLevelRange([1, 20]);
   }, []);
   
   // 处理歌曲点击，显示详情弹窗
@@ -148,26 +155,32 @@ const ChunithmSongs = () => {
     setSongDetailModalVisible(true);
   }, []);
   
-  // 数据源URL
-  const dataSourceUrl = 'https://dp4p6x0xfi5o9.cloudfront.net/chunithm';
+  // 数据源URL - 使用arcade-songs项目的真实SDVX数据源
+  const dataSourceUrl = 'https://dp4p6x0xfi5o9.cloudfront.net/sdvx';
 
   useEffect(() => {
     const fetchSongs = async () => {
       try {
         setLoading(true);
+        // 使用真实的arcade-songs API调用
         const response = await fetch(`${dataSourceUrl}/data.json`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
         
-        // 处理数据，添加图片URL
+        // 处理数据，添加图片URL并适配数据结构
         const processedSongs = data.songs.map(song => ({
           ...song,
           imageUrl: song.imageName ? `${dataSourceUrl}/img/cover/${song.imageName}` : null,
           type: song.category || "未知类型",
-          sheets: song.sheets.map(sheet => ({
+          sheets: (song.sheets || []).map(sheet => ({
             ...sheet,
+            // 确保难度字段使用正确的格式
+            difficulty: sheet.difficulty || sheet.difficultyAbbr || 'UNKNOWN',
+            // 处理等级数据
+            levelValue: sheet.levelValue || parseFloat(sheet.level) || 0,
+            internalLevelValue: sheet.internalLevelValue || sheet.levelValue || parseFloat(sheet.level) || 0,
             imageUrl: sheet.imageName ? `${dataSourceUrl}/img/cover/${sheet.imageName}` : null
           }))
         }));
@@ -175,8 +188,8 @@ const ChunithmSongs = () => {
         setSongs(processedSongs);
         setError(null);
       } catch (err) {
-        setError('获取 CHUNITHM 曲库数据失败: ' + err.message);
-        console.error('Error fetching CHUNITHM data:', err);
+        setError('获取 SDVX 曲库数据失败: ' + err.message);
+        console.error('Error fetching SDVX data:', err);
       } finally {
         setLoading(false);
       }
@@ -185,51 +198,70 @@ const ChunithmSongs = () => {
     fetchSongs();
   }, []);
 
-
-
   // 使用useMemo缓存颜色映射对象，避免重复创建
   const difficultyColors = useMemo(() => ({
-    'basic': 'green',
-    'advanced': 'orange',
-    'expert': 'red',
-    'master': 'purple',
-    'ultima': 'black',
-    'WORLD\'S END': 'rainbow',
+    'novice': 'green',
+    'advanced': 'orange', 
+    'exhaust': 'red',
+    'maximum': 'purple',
+    'infinite': 'black',
+    'gravity': 'blue',
+    'heavenly': 'pink',
+    'vivid': 'volcano',
+    'exceed': 'gold',
+    'ultimate': 'geekblue',
+    // 兼容缩写格式
+    'NOV': 'green',
+    'ADV': 'orange',
+    'EXH': 'red',
+    'MXM': 'purple',
+    'INF': 'black',
+    'GRV': 'blue',
+    'HVN': 'pink',
+    'VVD': 'volcano',
+    'XCD': 'gold',
+    'ULT': 'geekblue',
   }), []);
   
   const versionColors = useMemo(() => ({
-    'CHUNITHM': 'yellow',
-    'CHUNITHM PLUS': 'orange',
-    'AIR': 'blue',
-    'AIR PLUS': 'skyblue',
-    'STAR': '#FFD700',
-    'STAR PLUS': '#FFA500',
-    'AMAZON': '#FF4500',
-    'AMAZON PLUS': 'geekblue',
-    'CRYSTAL': 'orange',
-    'CRYSTAL PLUS': 'red',
-    'PARADISE': 'volcano',
-    'PARADISE LOST': '#8706DDFF',
-    'CHUNITHM NEW': '#FF9900FF',
-    'CHUNITHM NEW PLUS': '#FF6600FF',
-    'SUN': '#FFD700',
-    'SUN PLUS': '#FFA500',
-    'LUMINOUS': 'pink',
-    'LUMINOUS PLUS': '#FF00C8FF',
-    'VERSE': 'lime',
-    'X-VERSE': '#00FFDDFF',
+    'BOOTH': 'cyan',
+    'INFINITE INFECTION': 'orange',
+    'GRAVITY WARS': 'red',
+    'HEAVENLY HAVEN': 'purple',
+    'VIVID WAVE': 'green',
+    'EXCEED GEAR': 'geekblue',
+    // 兼容其他格式
+    'SDVX I': 'cyan',
+    'SDVX II': 'orange',
+    'SDVX III': 'red',
+    'SDVX IV': 'purple',
+    'SDVX V': 'green',
+    'SDVX VI': 'geekblue',
+    'HEAVENLY': 'purple',
+    'VIVID': 'green',
+    'EXCEED': 'geekblue',
   }), []);
   
   const typeColors = useMemo(() => ({
-    'ORIGINAL': 'red',
+    'POPS&アニメ': 'pink',
+    '東方アレンジ': 'purple',
+    'ボーカロイド': 'blue',
+    'BEMANI': 'green',
+    'ひなビタ♪/バンめし♪': 'orange',
+    'FLOOR': 'red',
+    'SDVXオリジナル': 'geekblue',
+    'その他': 'default',
+    // 兼容其他格式
+    'ORIGINAL': 'geekblue',
     'VARIETY': 'orange',
     'ANIME': 'pink',
     'GAME': 'green',
-    'NICONICO': 'purple',
-    'TOUHOU': 'cyan',
     'VOCALOID': 'blue',
-    'GEKIDAN': 'gold',
-    'CHUNITHM ORIGINAL': 'magenta',
+    'TOUHOU': 'purple',
+    'CLASSIC': 'gold',
+    'R&B': 'volcano',
+    'ROCK': 'geekblue',
+    'ELECTRONIC': 'cyan',
   }), []);
   
   // 使用useCallback缓存颜色获取函数
@@ -244,8 +276,6 @@ const ChunithmSongs = () => {
   const getTypeColor = useCallback((type) => {
     return typeColors[type] || 'default';
   }, [typeColors]);
-
-
 
   // 表格列定义
   const columns = [
@@ -329,9 +359,9 @@ const ChunithmSongs = () => {
   return (
     <ResponsiveLayout>
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '20px' }}>
-        <Title level={2}>CHUNITHM大调查</Title>
+        <Title level={2}>SDVX大调查</Title>
         <Paragraph>
-          我做了个求你字母的曲库数据，包括歌曲的难度、版本和类型信息。
+          SOUND VOLTEX 曲库数据，包括歌曲的难度、版本和类型信息。
         </Paragraph>
 
         {error && (
@@ -347,7 +377,7 @@ const ChunithmSongs = () => {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '50px' }}>
             <Spin size="large" />
-            <div style={{ marginTop: '20px' }}>正在加载 CHUNITHM 曲库数据...</div>
+            <div style={{ marginTop: '20px' }}>正在加载 SDVX 曲库数据...</div>
           </div>
         ) : (
           <>
@@ -453,7 +483,7 @@ const ChunithmSongs = () => {
                   <Slider
                     range
                     min={1}
-                    max={15.7}
+                    max={20}
                     step={0.1}
                     value={tempLevelRange}
                     onChange={handleLevelRangeChange}
@@ -488,7 +518,7 @@ const ChunithmSongs = () => {
                       类型: {tempTypeFilter.join(', ')}
                     </Tag>
                   )}
-                  <Tag color="purple" closable={() => setTempLevelRange([1, 15.7])}>
+                  <Tag color="purple" closable={() => setTempLevelRange([1, 20])}>
                     等级: {tempLevelRange[0]} - {tempLevelRange[1]}
                   </Tag>
                 </div>
@@ -527,8 +557,8 @@ const ChunithmSongs = () => {
                     类型: {typeFilter.join(', ')}
                   </Tag>
                 )}
-                {(levelRange[0] !== 1 || levelRange[1] !== 15.7) && (
-                  <Tag color="purple" closable onClose={() => setLevelRange([1, 15.7])}>
+                {(levelRange[0] !== 1 || levelRange[1] !== 20) && (
+                  <Tag color="purple" closable onClose={() => setLevelRange([1, 20])}>
                     等级: {levelRange[0]} - {levelRange[1]}
                   </Tag>
                 )}
@@ -690,4 +720,4 @@ const ChunithmSongs = () => {
   );
 };
 
-export default ChunithmSongs;
+export default SdvxSongs;
