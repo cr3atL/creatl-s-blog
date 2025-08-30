@@ -5,21 +5,23 @@ const VisitorCounter = () => {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
 
   useEffect(() => {
-    // 检查是否是首次访问
-    const hasVisited = localStorage.getItem('hasVisited');
+    // 生成或获取用户唯一标识符
+    let visitorId = localStorage.getItem('visitorId');
     
-    if (!hasVisited) {
-      // 首次访问，增加计数器
+    if (!visitorId) {
+      // 新用户，生成唯一ID
+      visitorId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('visitorId', visitorId);
+      
+      // 增加访客计数
       const currentCount = parseInt(localStorage.getItem('visitorCount') || '0');
       const newCount = currentCount + 1;
       
       localStorage.setItem('visitorCount', newCount.toString());
-      localStorage.setItem('hasVisited', 'true');
-      
       setVisitorCount(newCount);
       setIsFirstVisit(true);
     } else {
-      // 非首次访问，只显示当前计数
+      // 已存在的用户，只显示当前计数
       const currentCount = parseInt(localStorage.getItem('visitorCount') || '0');
       setVisitorCount(currentCount);
       setIsFirstVisit(false);

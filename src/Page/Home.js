@@ -5,21 +5,28 @@ import Item from "antd/es/list/Item";
 import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
 import BiliBiliIcon from "../icons/bilibiliIcon.ico";
 import CloudmusicIcon from "../icons/CloudmusicIcon.ico";
+import { trackEvent } from "../utils/analytics";
 
 const avatarImage = "https://github.com/cr3atL.png";
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
-  const handleIconClick = (url) => {
+  const handleIconClick = (url, platform) => {
+    // 追踪社交媒体点击事件
+    trackEvent('Social_Media', 'Click', platform);
     window.open(url, "_blank");
   };
 
   const navigateToChunithm = () => {
+    // 追踪导航到CHUNITHM页面的事件
+    trackEvent('Navigation', 'Click', 'Chunithm_Songs');
     window.location.href = '/creatl-s-blog/chunithm-songs';
   };
 
   const navigateToSdvx = () => {
+    // 追踪导航到SDVX页面的事件
+    trackEvent('Navigation', 'Click', 'SDVX_Songs');
     window.location.href = '/creatl-s-blog/sdvx-songs';
   };
 
@@ -66,7 +73,7 @@ const Home = () => {
           <div style={{ display: "flex", gap: "16px", marginTop: "16px" }}>
             <GithubOutlined
               style={{ fontSize: "24px", cursor: "pointer", color: "#000" }}
-              onClick={() => handleIconClick("https://github.com/cr3atL")}
+              onClick={() => handleIconClick("https://github.com/cr3atL", "GitHub")}
               title="GitHub"
             />
             <img
@@ -80,7 +87,8 @@ const Home = () => {
               }}
               onClick={() =>
                 handleIconClick(
-                  "https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/"
+                  "https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/",
+                  "Bilibili"
                 )
               }
               title="bilibili主页"
@@ -97,7 +105,7 @@ const Home = () => {
                 transition: "transform 0.2s",
               }}
               onClick={() =>
-                handleIconClick("https://osu.ppy.sh/users/24792120")
+                handleIconClick("https://osu.ppy.sh/users/24792120", "OSU")
               }
               title="OSU!主页"
               onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
@@ -114,7 +122,8 @@ const Home = () => {
               }}
               onClick={() =>
                 handleIconClick(
-                  "https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4="
+                  "https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4=",
+                  "Netease_Music"
                 )
               }
               title="网易云歌单"

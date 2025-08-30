@@ -10,7 +10,7 @@ import SdvxSongs from './Page/SdvxSongs';
 import { initGA, trackPageView } from './utils/analytics';
 
 // Google Analytics 跟踪 ID - 请替换为您的实际跟踪 ID
-const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID || 'G-XXXXXXXXXX';
+const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACK_ID || 'G-XXXXXXXXXX';
 
 // 页面追踪组件
 function PageTracker() {
