@@ -846,16 +846,7 @@ const SdvxSongs = () => {
               }}
             >
               <div style={{ textAlign: 'center', padding: '40px 0', color: '#333' }}>
-                <div style={{ 
-                  fontSize: '64px', 
-                  marginBottom: '30px',
-                  animation: 'spin 1s linear infinite',
-                  display: 'inline-block',
-                  filter: 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
-                }}>
-                  🎵
-                </div>
-                
+
                 <div style={{ 
                   fontSize: '24px', 
                   marginBottom: '30px',

@@ -17,7 +17,7 @@ import {
   Slider,
   message
 } from 'antd';
-import { SearchOutlined, FilterOutlined, BulbOutlined, CloseOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SearchOutlined, FilterOutlined, BulbOutlined, CloseOutlined } from '@ant-design/icons';
 import ResponsiveLayout from '../components/ResponsiveLayout';
 import { pickItem } from '../utils/random';
 
@@ -591,56 +591,58 @@ const ChunithmSongs = () => {
                   icon={<CloseOutlined />}
                   onClick={clearRandomSongs}
                   size="large"
+                  style={{ marginLeft: '10px' }}
                 >
                   清空随机
                 </Button>
               )}
               
-              {/* 随机选曲列表 */}
-              {selectedRandomSongs.length > 0 && (
-                <div style={{ marginTop: '30px' }}>
-                  <h3 style={{ marginBottom: '20px', color: '#333', fontSize: '20px' }}>
-                    随机选曲列表 ({selectedRandomSongs.length})
-                  </h3>
-                  <div style={{
+
+                  
+                  <div style={{ 
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                    gap: '20px',
+                    gap: '16px',
                     maxHeight: '400px',
                     overflowY: 'auto',
-                    padding: '10px',
-                    background: 'rgba(0, 0, 0, 0.02)',
-                    borderRadius: '10px',
+                    padding: '8px'
                   }}>
-                    {selectedRandomSongs.map((song, index) => (
-                      <div
-                        key={`${song.songId}-${index}`}
+                    {selectedRandomSongs.map(song => (
+                      <Card
+                        key={song.songId}
+                        size="small"
+                        style={{
+                          borderRadius: '12px',
+                          border: '2px solid #ffd700',
+                          background: 'linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%)',
+                          boxShadow: '0 4px 12px rgba(255, 215, 0, 0.2)',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer'
+                        }}
+                        hoverable
                         onClick={() => {
                           setSelectedSong(song);
                           setSongDetailModalVisible(true);
                         }}
-                        style={{
-                          background: 'linear-gradient(135deg, #fff 0%, #f8f9fa 100%)',
-                          borderRadius: '15px',
-                          padding: '20px',
-                          border: '2px solid #ffd700',
-                          boxShadow: '0 8px 25px rgba(255, 215, 0, 0.15)',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease',
-                          position: 'relative',
-                          overflow: 'hidden',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-5px)';
-                          e.currentTarget.style.boxShadow = '0 12px 35px rgba(255, 215, 0, 0.25)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 215, 0, 0.15)';
-                        }}
+                        actions={[
+                          <Button
+                            key="remove"
+                            type="text"
+                            size="small"
+                            icon={<CloseOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedRandomSongs(prev => 
+                                prev.filter(s => s.songId !== song.songId)
+                              );
+                              message.success(`已移除: ${song.title}`);
+                            }}
+                            style={{ color: '#ff4d4f' }}
+                          />
+                        ]}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
-                          {song.imageUrl && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          {song.imageUrl ? (
                             <Image
                               src={song.imageUrl}
                               alt={song.title}
@@ -649,86 +651,72 @@ const ChunithmSongs = () => {
                                 height: '60px',
                                 borderRadius: '8px',
                                 objectFit: 'cover',
-                                border: '2px solid #ffd700',
-                                marginRight: '15px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                border: '2px solid #ffd700'
                               }}
-                              preview={false}
+                              fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrKL1AoO8WgLl0AAAAASUVORK5CYII="
                             />
-                          )}
-                          <div style={{ flex: 1 }}>
-                            <h4 style={{ 
-                              margin: 0, 
-                              color: '#333', 
-                              fontSize: '16px', 
-                              fontWeight: 'bold',
-                              lineHeight: '1.2'
-                            }}>
-                              {song.title}
-                            </h4>
-                            <p style={{ 
-                              margin: '5px 0 0 0', 
-                              color: '#666', 
-                              fontSize: '14px' 
-                            }}>
-                              {song.artist}
-                            </p>
-                          </div>
-                          <Button
-                            type="text"
-                            size="small"
-                            danger
-                            icon={<DeleteOutlined />}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedRandomSongs(prev => 
-                                prev.filter(s => s.songId !== song.songId)
-                              );
-                              message.success(`已移除: ${song.title}`);
-                            }}
-                            style={{
-                              border: 'none',
-                              background: 'rgba(255, 77, 79, 0.1)',
-                              borderRadius: '50%',
-                              width: '32px',
-                              height: '32px',
+                          ) : (
+                            <div style={{
+                              width: '60px',
+                              height: '60px',
+                              borderRadius: '8px',
+                              background: '#f0f0f0',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                            }}
-                          />
+                              fontSize: '24px',
+                              color: '#999'
+                            }}>
+                              🎵
+                            </div>
+                          )}
+                          
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{
+                              fontWeight: 'bold',
+                              fontSize: '14px',
+                              color: '#333',
+                              marginBottom: '4px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {song.title}
+                            </div>
+                            <div style={{
+                              fontSize: '12px',
+                              color: '#666',
+                              marginBottom: '8px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {song.artist}
+                            </div>
+                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                              {song.version && (
+                                <Tag color="blue" size="small" style={{ fontSize: '10px' }}>
+                                  {song.version}
+                                </Tag>
+                              )}
+                              {song.type && (
+                                <Tag color="green" size="small" style={{ fontSize: '10px' }}>
+                                  {song.type}
+                                </Tag>
+                              )}
+                              {song.sheets && song.sheets.length > 0 && (
+                                <Tag color="orange" size="small" style={{ fontSize: '10px' }}>
+                                  {song.sheets.length} 谱面
+                                </Tag>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {song.difficulty && (
-                            <Tag 
-                              color={difficultyColors[song.difficulty] || 'default'}
-                              style={{ fontSize: '12px', padding: '2px 6px' }}
-                            >
-                              {song.difficulty}
-                            </Tag>
-                          )}
-                          {song.version && (
-                            <Tag 
-                              color={versionColors[song.version] || 'default'}
-                              style={{ fontSize: '12px', padding: '2px 6px' }}
-                            >
-                              {song.version}
-                            </Tag>
-                          )}
-                          {song.type && (
-                            <Tag 
-                              color={typeColors[song.type] || 'default'}
-                              style={{ fontSize: '12px', padding: '2px 6px' }}
-                            >
-                              {song.type}
-                            </Tag>
-                          )}
-                        </div>
-                      </div>
+                      </Card>
                     ))}
                   </div>
-                </div>
-              )}
+
+
               
               {/* 显示当前筛选条件的标签 */}
               <div style={{ marginTop: '16px' }}>
@@ -802,17 +790,7 @@ const ChunithmSongs = () => {
           }
         }}
       >
-        <div style={{ textAlign: 'center', padding: '40px 0', color: '#333' }}>
-          <div style={{ 
-            fontSize: '64px', 
-            marginBottom: '30px',
-            animation: 'spin 1s linear infinite',
-            display: 'inline-block',
-            filter: 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
-          }}>
-            🎵
-          </div>
-          
+        <div style={{ textAlign: 'center', padding: '40px 0', color: '#333' }}>  
           <div style={{ 
             fontSize: '24px', 
             marginBottom: '30px',
