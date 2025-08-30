@@ -14,10 +14,45 @@ import {
   Button,
   Modal,
   Divider,
-  Slider
+  Slider,
+  message
 } from 'antd';
-import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { SearchOutlined, FilterOutlined, BulbOutlined, CloseOutlined } from '@ant-design/icons';
 import ResponsiveLayout from '../components/ResponsiveLayout';
+import { pickItem } from '../utils/random';
+
+// 添加CSS动画样式
+const animationStyles = `
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0.3; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.3; transform: scale(0.95); }
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
+    100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+  }
+`;
+
+// 创建样式元素并添加到文档中
+if (typeof document !== 'undefined') {
+  const styleElement = document.createElement('style');
+  styleElement.textContent = animationStyles;
+  document.head.appendChild(styleElement);
+}
 
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
@@ -48,6 +83,12 @@ const SdvxSongs = () => {
   const [selectedSong, setSelectedSong] = useState(null);
   const [songDetailModalVisible, setSongDetailModalVisible] = useState(false);
   
+  // 随机选曲相关状态
+  const [selectedRandomSongs, setSelectedRandomSongs] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [currentDrawnSong, setCurrentDrawnSong] = useState(null);
+  const [drawAnimationVisible, setDrawAnimationVisible] = useState(false);
+  
   // 处理等级范围变化（滑块释放时才触发筛选）
   const handleLevelRangeChange = useCallback((value) => {
     setTempLevelRange(value);
@@ -75,37 +116,12 @@ const SdvxSongs = () => {
       );
     }
     
-    // 处理难度和等级范围过滤
-    result = result.map(song => {
-      // 过滤sheets
-      let filteredSheets = song.sheets;
-      
-      // 按难度过滤
-      if (difficultyFilter.length > 0) {
-        filteredSheets = filteredSheets.filter(sheet => 
-          difficultyFilter.includes(sheet.difficulty)
-        );
-      }
-      
-      // 按等级范围过滤
-      if (levelRange[0] > 1 || levelRange[1] < 20) {
-        const minLevel = levelRange[0];
-        const maxLevel = levelRange[1];
-        filteredSheets = filteredSheets.filter(sheet => {
-          // 使用levelValue或internalLevelValue进行数值比较，而不是解析level字符串
-          const level = sheet.internalLevelValue || sheet.levelValue || parseFloat(sheet.level);
-          return !isNaN(level) && level >= minLevel && level <= maxLevel;
-        });
-      }
-      
-      return {
-        ...song,
-        sheets: filteredSheets
-      };
-    });
-    
-    // 过滤掉没有符合条件sheets的歌曲
-    result = result.filter(song => song.sheets.length > 0);
+    // 按难度过滤
+    if (difficultyFilter.length > 0) {
+      result = result.filter(song => 
+        song.sheets.some(sheet => difficultyFilter.includes(sheet.difficulty))
+      );
+    }
     
     // 按版本过滤
     if (versionFilter.length > 0) {
@@ -115,6 +131,19 @@ const SdvxSongs = () => {
     // 按类型过滤
     if (typeFilter.length > 0) {
       result = result.filter(song => typeFilter.includes(song.type));
+    }
+    
+    // 按等级范围过滤
+    if (levelRange[0] > 1 || levelRange[1] < 20) {
+      const minLevel = levelRange[0];
+      const maxLevel = levelRange[1];
+      result = result.filter(song => 
+        song.sheets.some(sheet => {
+          // 使用levelValue或internalLevelValue进行数值比较，而不是解析level字符串
+          const level = sheet.internalLevelValue || sheet.levelValue || parseFloat(sheet.level);
+          return !isNaN(level) && level >= minLevel && level <= maxLevel;
+        })
+      );
     }
     
     return result;
@@ -153,6 +182,70 @@ const SdvxSongs = () => {
   const handleSongClick = useCallback((record) => {
     setSelectedSong(record);
     setSongDetailModalVisible(true);
+  }, []);
+  
+  // 随机选曲函数
+  const pickRandomSong = useCallback(() => {
+    if (filteredSongs.length === 0) {
+      message.warning('没有符合条件的歌曲可以随机选择');
+      return;
+    }
+    
+    setIsDrawing(true);
+    setDrawAnimationVisible(true);
+    
+    // 模拟抽取动画效果
+    let animationCount = 0;
+    const maxAnimations = 20;
+    
+    const animationInterval = setInterval(() => {
+      const tempSong = pickItem(filteredSongs);
+      setCurrentDrawnSong(tempSong);
+      animationCount++;
+      
+      if (animationCount >= maxAnimations) {
+        clearInterval(animationInterval);
+        
+        // 最终选中的歌曲
+        const finalSong = pickItem(filteredSongs);
+        setCurrentDrawnSong(finalSong);
+        
+        // 检查是否已经选择过这首歌曲
+        if (selectedRandomSongs.some(song => song.songId === finalSong.songId)) {
+          setTimeout(() => {
+            message.warning('这首歌曲已经在随机选择列表中了');
+            setIsDrawing(false);
+            setDrawAnimationVisible(false);
+          }, 1000);
+          return;
+        }
+        
+        // 添加到随机选曲列表
+        setTimeout(() => {
+          setSelectedRandomSongs(prev => [...prev, finalSong]);
+          setIsDrawing(false);
+          setDrawAnimationVisible(false);
+          
+          // 显示歌曲详情
+          setSelectedSong(finalSong);
+          setSongDetailModalVisible(true);
+          
+          message.success(`已随机选择: ${finalSong.title}`);
+        }, 1000);
+      }
+    }, 100);
+  }, [filteredSongs, selectedRandomSongs]);
+  
+  // 清空随机选曲列表
+  const clearRandomSongs = useCallback(() => {
+    setSelectedRandomSongs([]);
+    message.info('已清空随机选曲列表');
+  }, []);
+  
+  // 移除单个随机选曲
+  const removeRandomSong = useCallback((songId) => {
+    setSelectedRandomSongs(prev => prev.filter(song => song.songId !== songId));
+    message.info('已移除随机选择的歌曲');
   }, []);
   
   // 数据源URL - 使用arcade-songs项目的真实SDVX数据源
@@ -243,16 +336,7 @@ const SdvxSongs = () => {
   }), []);
   
   const typeColors = useMemo(() => ({
-    'POPS&アニメ': 'pink',
-    '東方アレンジ': 'purple',
-    'ボーカロイド': 'blue',
-    'BEMANI': 'green',
-    'ひなビタ♪/バンめし♪': 'orange',
-    'FLOOR': 'red',
-    'SDVXオリジナル': 'geekblue',
-    'その他': 'default',
-    // 兼容其他格式
-    'ORIGINAL': 'geekblue',
+    'ORIGINAL': 'red',
     'VARIETY': 'orange',
     'ANIME': 'pink',
     'GAME': 'green',
@@ -359,7 +443,7 @@ const SdvxSongs = () => {
   return (
     <ResponsiveLayout>
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '20px' }}>
-        <Title level={2}>SDVX大调查</Title>
+        <Title level={2}>SDVX曲库</Title>
         <Paragraph>
           SOUND VOLTEX 曲库数据，包括歌曲的难度、版本和类型信息。
         </Paragraph>
@@ -531,9 +615,163 @@ const SdvxSongs = () => {
                 icon={<FilterOutlined />}
                 onClick={openFilterModal}
                 size="large"
+                style={{ marginRight: '10px' }}
               >
                 筛选条件
               </Button>
+              
+              <Button 
+                type="default" 
+                icon={<BulbOutlined />}
+                onClick={pickRandomSong}
+                size="large"
+                style={{ marginRight: '10px' }}
+                disabled={isDrawing}
+                loading={isDrawing}
+              >
+                {isDrawing ? '抽取中...' : '随机选曲'}
+              </Button>
+              
+              {selectedRandomSongs.length > 0 && (
+                <Button 
+                  type="default" 
+                  icon={<CloseOutlined />}
+                  onClick={clearRandomSongs}
+                  size="large"
+                >
+                  清空随机
+                </Button>
+              )}
+              
+              {/* 随机选曲列表 */}
+              {selectedRandomSongs.length > 0 && (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ 
+                    marginBottom: '16px', 
+                    fontWeight: 'bold', 
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <span>随机选曲列表 ({selectedRandomSongs.length})</span>
+                  </div>
+                  
+                  <div style={{ 
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '16px',
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    padding: '8px'
+                  }}>
+                    {selectedRandomSongs.map(song => (
+                      <Card
+                        key={song.songId}
+                        size="small"
+                        style={{
+                          borderRadius: '12px',
+                          border: '2px solid #ffd700',
+                          background: 'linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%)',
+                          boxShadow: '0 4px 12px rgba(255, 215, 0, 0.2)',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer'
+                        }}
+                        hoverable
+                        onClick={() => {
+                          setSelectedSong(song);
+                          setSongDetailModalVisible(true);
+                        }}
+                        actions={[
+                          <Button
+                            key="remove"
+                            type="text"
+                            size="small"
+                            icon={<CloseOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeRandomSong(song.songId);
+                            }}
+                            style={{ color: '#ff4d4f' }}
+                          />
+                        ]}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          {song.imageUrl ? (
+                            <Image
+                              src={song.imageUrl}
+                              alt={song.title}
+                              style={{
+                                width: '60px',
+                                height: '60px',
+                                borderRadius: '8px',
+                                objectFit: 'cover',
+                                border: '2px solid #ffd700'
+                              }}
+                              fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrKL1AoO8WgLl0AAAAASUVORK5CYII="
+                            />
+                          ) : (
+                            <div style={{
+                              width: '60px',
+                              height: '60px',
+                              borderRadius: '8px',
+                              background: '#f0f0f0',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '24px',
+                              color: '#999'
+                            }}>
+                              🎵
+                            </div>
+                          )}
+                          
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{
+                              fontWeight: 'bold',
+                              fontSize: '14px',
+                              color: '#333',
+                              marginBottom: '4px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {song.title}
+                            </div>
+                            <div style={{
+                              fontSize: '12px',
+                              color: '#666',
+                              marginBottom: '8px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {song.artist}
+                            </div>
+                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                              {song.version && (
+                                <Tag color="blue" size="small" style={{ fontSize: '10px' }}>
+                                  {song.version}
+                                </Tag>
+                              )}
+                              {song.type && (
+                                <Tag color="green" size="small" style={{ fontSize: '10px' }}>
+                                  {song.type}
+                                </Tag>
+                              )}
+                              {song.sheets && song.sheets.length > 0 && (
+                                <Tag color="orange" size="small" style={{ fontSize: '10px' }}>
+                                  {song.sheets.length} 谱面
+                                </Tag>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {/* 显示当前筛选条件的标签 */}
               <div style={{ marginTop: '16px' }}>
@@ -558,7 +796,7 @@ const SdvxSongs = () => {
                   </Tag>
                 )}
                 {(levelRange[0] !== 1 || levelRange[1] !== 20) && (
-                  <Tag color="purple" closable onClose={() => setLevelRange([1, 20])}>
+                  <Tag color="purple" closable={() => setLevelRange([1, 20])}>
                     等级: {levelRange[0]} - {levelRange[1]}
                   </Tag>
                 )}
@@ -590,6 +828,126 @@ const SdvxSongs = () => {
                 总计: {songs.length} 首歌曲 | 当前显示: {filteredSongs.length} 首歌曲
               </Paragraph>
             </div>
+            
+            {/* 抽取动画弹窗 */}
+            <Modal
+              title="随机抽取中..."
+              open={drawAnimationVisible}
+              closable={false}
+              footer={null}
+              width={700}
+              centered
+              maskClosable={false}
+              styles={{
+                body: {
+                  background: '#ffffff',
+                  borderRadius: '12px'
+                }
+              }}
+            >
+              <div style={{ textAlign: 'center', padding: '40px 0', color: '#333' }}>
+                <div style={{ 
+                  fontSize: '64px', 
+                  marginBottom: '30px',
+                  animation: 'spin 1s linear infinite',
+                  display: 'inline-block',
+                  filter: 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
+                }}>
+                  🎵
+                </div>
+                
+                <div style={{ 
+                  fontSize: '24px', 
+                  marginBottom: '30px',
+                  fontWeight: 'bold',
+                  color: '#333'
+                }}>
+                  歌曲抽取中...
+                </div>
+                
+                {currentDrawnSong && (
+                  <div style={{ 
+                    background: 'rgba(102, 126, 234, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '16px',
+                    padding: '30px',
+                    margin: '20px auto',
+                    maxWidth: '500px',
+                    border: '1px solid rgba(102, 126, 234, 0.2)',
+                    animation: 'pulse 2s ease-in-out infinite',
+                    transition: 'all 0.3s ease'
+                  }}>
+                    <Title level={2} style={{ 
+                      marginBottom: '16px', 
+                      color: '#333',
+                      textAlign: 'center'
+                    }}>
+                      {currentDrawnSong.title}
+                    </Title>
+                    <Paragraph style={{ 
+                      fontSize: '18px', 
+                      color: '#666',
+                      textAlign: 'center',
+                      marginBottom: '20px'
+                    }}>
+                      {currentDrawnSong.artist}
+                    </Paragraph>
+                    
+                    {!isDrawing && currentDrawnSong.imageUrl && (
+                      <div style={{ 
+                        marginTop: '20px',
+                        display: 'flex',
+                        justifyContent: 'center'
+                      }}>
+                        <div style={{
+                          position: 'relative',
+                          animation: 'glow 2s ease-in-out infinite'
+                        }}>
+                          <Image
+                            src={currentDrawnSong.imageUrl}
+                            alt={currentDrawnSong.title}
+                            style={{ 
+                              width: '250px',
+                              height: '250px',
+                              borderRadius: '12px',
+                              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                              objectFit: 'cover',
+                              border: '3px solid rgba(102, 126, 234, 0.3)'
+                            }}
+                            fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrKL1AoO8WgLl0AAAAASUVORK5CYII="
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div style={{ 
+                      marginTop: '20px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '10px'
+                    }}>
+                      {currentDrawnSong.version && (
+                        <Tag color="blue" style={{ fontSize: '14px' }}>
+                          {currentDrawnSong.version}
+                        </Tag>
+                      )}
+                      {currentDrawnSong.type && (
+                        <Tag color="green" style={{ fontSize: '14px' }}>
+                          {currentDrawnSong.type}
+                        </Tag>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                <div style={{ marginTop: '30px' }}>
+                  <Spin size="large" />
+                  <div style={{ marginTop: '10px', color: '#666' }}>
+                    正在为您抽取幸运歌曲...
+                  </div>
+                </div>
+              </div>
+            </Modal>
             
             {/* 歌曲详情弹窗 */}
             <Modal

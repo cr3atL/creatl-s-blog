@@ -14,10 +14,12 @@ import {
   Button,
   Modal,
   Divider,
-  Slider
+  Slider,
+  message
 } from 'antd';
-import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { SearchOutlined, FilterOutlined, BulbOutlined, CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import ResponsiveLayout from '../components/ResponsiveLayout';
+import { pickItem } from '../utils/random';
 
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
@@ -47,6 +49,12 @@ const ChunithmSongs = () => {
   // 添加歌曲详情弹窗状态
   const [selectedSong, setSelectedSong] = useState(null);
   const [songDetailModalVisible, setSongDetailModalVisible] = useState(false);
+  
+  // 随机选曲相关状态
+  const [selectedRandomSongs, setSelectedRandomSongs] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [currentDrawnSong, setCurrentDrawnSong] = useState(null);
+  const [drawAnimationVisible, setDrawAnimationVisible] = useState(false);
   
   // 处理等级范围变化（滑块释放时才触发筛选）
   const handleLevelRangeChange = useCallback((value) => {
@@ -146,6 +154,73 @@ const ChunithmSongs = () => {
   const handleSongClick = useCallback((record) => {
     setSelectedSong(record);
     setSongDetailModalVisible(true);
+  }, []);
+  
+  // 随机选曲函数
+  const pickRandomSong = useCallback(() => {
+    if (filteredSongs.length === 0) {
+      message.warning('没有符合条件的歌曲可以随机选择');
+      return;
+    }
+    
+    if (isDrawing) {
+      return; // 防止重复点击
+    }
+    
+    setIsDrawing(true);
+    setDrawAnimationVisible(true);
+    
+    // 快速切换歌曲的动画效果
+    let animationCount = 0;
+    const maxAnimations = 20; // 动画次数
+    const animationInterval = 100; // 每次切换的时间间隔
+    
+    const animationTimer = setInterval(() => {
+      const randomSong = pickItem(filteredSongs);
+      setCurrentDrawnSong(randomSong);
+      animationCount++;
+      
+      if (animationCount >= maxAnimations) {
+        clearInterval(animationTimer);
+        
+        // 最终选择一首歌曲
+        const finalSong = pickItem(filteredSongs);
+        setCurrentDrawnSong(finalSong);
+        
+        // 检查是否已经选择过这首歌曲
+        if (selectedRandomSongs.some(song => song.songId === finalSong.songId)) {
+          setTimeout(() => {
+            setIsDrawing(false);
+            setDrawAnimationVisible(false);
+            message.warning('这首歌曲已经在随机选择列表中了');
+          }, 1000);
+        } else {
+          // 添加到选曲列表
+          setTimeout(() => {
+            setSelectedRandomSongs(prev => [...prev, finalSong]);
+            setIsDrawing(false);
+            setDrawAnimationVisible(false);
+            message.success(`已随机选择: ${finalSong.title}`);
+            
+            // 自动显示歌曲详情弹窗
+            setSelectedSong(finalSong);
+            setSongDetailModalVisible(true);
+          }, 1000);
+        }
+      }
+    }, animationInterval);
+  }, [filteredSongs, selectedRandomSongs, isDrawing]);
+  
+  // 清空随机选曲列表
+  const clearRandomSongs = useCallback(() => {
+    setSelectedRandomSongs([]);
+    message.info('已清空随机选曲列表');
+  }, []);
+  
+  // 移除单个随机选曲
+  const removeRandomSong = useCallback((songId) => {
+    setSelectedRandomSongs(prev => prev.filter(song => song.songId !== songId));
+    message.info('已移除随机选择的歌曲');
   }, []);
   
   // 数据源URL
@@ -501,9 +576,165 @@ const ChunithmSongs = () => {
                 icon={<FilterOutlined />}
                 onClick={openFilterModal}
                 size="large"
+                style={{ marginRight: '10px' }}
               >
                 筛选条件
               </Button>
+              
+              <Button 
+                type="default" 
+                icon={<BulbOutlined />}
+                onClick={pickRandomSong}
+                size="large"
+                style={{ marginRight: '10px' }}
+              >
+                随机选曲
+              </Button>
+              
+              {selectedRandomSongs.length > 0 && (
+                <Button 
+                  type="default" 
+                  icon={<CloseOutlined />}
+                  onClick={clearRandomSongs}
+                  size="large"
+                >
+                  清空随机
+                </Button>
+              )}
+              
+              {/* 随机选曲列表 */}
+              {selectedRandomSongs.length > 0 && (
+                <div style={{ marginTop: '30px' }}>
+                  <h3 style={{ marginBottom: '20px', color: '#333', fontSize: '20px' }}>
+                    随机选曲列表 ({selectedRandomSongs.length})
+                  </h3>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '20px',
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    padding: '10px',
+                    background: 'rgba(0, 0, 0, 0.02)',
+                    borderRadius: '10px',
+                  }}>
+                    {selectedRandomSongs.map((song, index) => (
+                      <div
+                        key={`${song.songId}-${index}`}
+                        onClick={() => {
+                          setSelectedSong(song);
+                          setSongDetailModalVisible(true);
+                        }}
+                        style={{
+                          background: 'linear-gradient(135deg, #fff 0%, #f8f9fa 100%)',
+                          borderRadius: '15px',
+                          padding: '20px',
+                          border: '2px solid #ffd700',
+                          boxShadow: '0 8px 25px rgba(255, 215, 0, 0.15)',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          position: 'relative',
+                          overflow: 'hidden',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-5px)';
+                          e.currentTarget.style.boxShadow = '0 12px 35px rgba(255, 215, 0, 0.25)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 215, 0, 0.15)';
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
+                          {song.imageUrl && (
+                            <Image
+                              src={song.imageUrl}
+                              alt={song.title}
+                              style={{
+                                width: '60px',
+                                height: '60px',
+                                borderRadius: '8px',
+                                objectFit: 'cover',
+                                border: '2px solid #ffd700',
+                                marginRight: '15px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                              }}
+                              preview={false}
+                            />
+                          )}
+                          <div style={{ flex: 1 }}>
+                            <h4 style={{ 
+                              margin: 0, 
+                              color: '#333', 
+                              fontSize: '16px', 
+                              fontWeight: 'bold',
+                              lineHeight: '1.2'
+                            }}>
+                              {song.title}
+                            </h4>
+                            <p style={{ 
+                              margin: '5px 0 0 0', 
+                              color: '#666', 
+                              fontSize: '14px' 
+                            }}>
+                              {song.artist}
+                            </p>
+                          </div>
+                          <Button
+                            type="text"
+                            size="small"
+                            danger
+                            icon={<DeleteOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedRandomSongs(prev => 
+                                prev.filter(s => s.songId !== song.songId)
+                              );
+                              message.success(`已移除: ${song.title}`);
+                            }}
+                            style={{
+                              border: 'none',
+                              background: 'rgba(255, 77, 79, 0.1)',
+                              borderRadius: '50%',
+                              width: '32px',
+                              height: '32px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          />
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {song.difficulty && (
+                            <Tag 
+                              color={difficultyColors[song.difficulty] || 'default'}
+                              style={{ fontSize: '12px', padding: '2px 6px' }}
+                            >
+                              {song.difficulty}
+                            </Tag>
+                          )}
+                          {song.version && (
+                            <Tag 
+                              color={versionColors[song.version] || 'default'}
+                              style={{ fontSize: '12px', padding: '2px 6px' }}
+                            >
+                              {song.version}
+                            </Tag>
+                          )}
+                          {song.type && (
+                            <Tag 
+                              color={typeColors[song.type] || 'default'}
+                              style={{ fontSize: '12px', padding: '2px 6px' }}
+                            >
+                              {song.type}
+                            </Tag>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {/* 显示当前筛选条件的标签 */}
               <div style={{ marginTop: '16px' }}>
@@ -560,129 +791,262 @@ const ChunithmSongs = () => {
                 总计: {songs.length} 首歌曲 | 当前显示: {filteredSongs.length} 首歌曲
               </Paragraph>
             </div>
-            
-            {/* 歌曲详情弹窗 */}
-            <Modal
-              title="歌曲详情"
-              open={songDetailModalVisible}
-              onCancel={() => setSongDetailModalVisible(false)}
-              footer={[
-                <Button key="close" onClick={() => setSongDetailModalVisible(false)}>
-                  关闭
-                </Button>
-              ]}
-              width={800}
-              centered
-            >
-              {selectedSong && (
-                <div>
-                  <Row gutter={[16, 16]}>
-                    <Col span={8}>
-                      <div style={{ textAlign: 'center' }}>
-                        {selectedSong.imageUrl ? (
-                          <Image
-                            src={selectedSong.imageUrl}
-                            alt={selectedSong.title}
-                            style={{ 
-                              maxWidth: '100%', 
-                              borderRadius: '8px',
-                              boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-                            }}
-                            fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrKL1AoO8WgLl0AAAAASUVORK5CYII="
-                          />
-                        ) : (
-                          <div style={{ 
-                            width: '200px', 
-                            height: '200px', 
-                            backgroundColor: '#f0f0f0',
-                            borderRadius: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#999'
-                          }}>
-                            暂无封面
-                          </div>
-                        )}
-                      </div>
-                    </Col>
-                    <Col span={16}>
-                      <div style={{ padding: '16px' }}>
-                        <Title level={3} style={{ marginBottom: '16px' }}>
-                          {selectedSong.title}
-                        </Title>
-                        
-                        <Row gutter={[8, 8]}>
-                          <Col span={24}>
-                            <strong>曲师：</strong>
-                            <span style={{ marginLeft: '8px' }}>{selectedSong.artist || '未知'}</span>
-                          </Col>
-                          
-                          {selectedSong.bpm && (
-                            <Col span={24}>
-                              <strong>BPM：</strong>
-                              <span style={{ marginLeft: '8px' }}>{selectedSong.bpm}</span>
-                            </Col>
-                          )}
-                          
-                          <Col span={24}>
-                            <strong>版本：</strong>
-                            <span style={{ marginLeft: '8px' }}>
-                              <Tag color={getVersionColor(selectedSong.version)}>
-                                {selectedSong.version || '未知版本'}
-                              </Tag>
-                            </span>
-                          </Col>
-                          
-                          <Col span={24}>
-                            <strong>类型：</strong>
-                            <span style={{ marginLeft: '8px' }}>
-                              <Tag color={getTypeColor(selectedSong.type)}>
-                                {selectedSong.type || '未知类型'}
-                              </Tag>
-                            </span>
-                          </Col>
-                        </Row>
-                        
-                        <Divider />
-                        
-                        <div>
-                          <Title level={4}>谱面信息</Title>
-                          <Row gutter={[16, 16]}>
-                            {selectedSong.sheets.map((sheet, index) => (
-                              <Col span={12} key={index}>
-                                <Card size="small" style={{ marginBottom: '8px' }}>
-                                  <div style={{ marginBottom: '8px' }}>
-                                    <Tag color={getDifficultyColor(sheet.difficulty)}>
-                                      {sheet.difficulty}
-                                    </Tag>
-                                    <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>
-                                      Level {typeof sheet.internalLevelValue === 'number' ? sheet.internalLevelValue.toFixed(1) : sheet.level}
-                                    </span>
-                                  </div>
-                                  
-                                  {sheet.notes && (
-                                    <div style={{ fontSize: '12px', color: '#666' }}>
-                                      <div>总音符数: {sheet.notes}</div>
-                                    </div>
-                                  )}
-                                  
-                                  {sheet.charter && (
-                                    <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                                      <div>谱师: {sheet.charter}</div>
-                                    </div>
-                                  )}
-                                </Card>
-                              </Col>
-                            ))}
-                          </Row>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
+
+      {/* 抽取动画弹窗 */}
+      <Modal
+        title="随机抽取中..."
+        open={drawAnimationVisible}
+        closable={false}
+        footer={null}
+        width={700}
+        centered
+        maskClosable={false}
+        styles={{
+          body: {
+            background: '#ffffff',
+            borderRadius: '12px'
+          }
+        }}
+      >
+        <div style={{ textAlign: 'center', padding: '40px 0', color: '#333' }}>
+          <div style={{ 
+            fontSize: '64px', 
+            marginBottom: '30px',
+            animation: 'spin 1s linear infinite',
+            display: 'inline-block',
+            filter: 'drop-shadow(0 0 10px rgba(102, 126, 234, 0.5))'
+          }}>
+            🎵
+          </div>
+          
+          <div style={{ 
+            fontSize: '24px', 
+            marginBottom: '30px',
+            fontWeight: 'bold',
+            color: '#333'
+          }}>
+            歌曲抽取中...
+          </div>
+          
+          {currentDrawnSong && (
+            <div style={{ 
+              background: 'rgba(102, 126, 234, 0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '16px',
+              padding: '30px',
+              margin: '20px auto',
+              maxWidth: '500px',
+              border: '1px solid rgba(102, 126, 234, 0.2)',
+              animation: 'pulse 2s ease-in-out infinite',
+              transition: 'all 0.3s ease'
+            }}>
+              <h2 style={{ 
+                marginBottom: '16px', 
+                color: '#333',
+                textAlign: 'center',
+                fontSize: '24px'
+              }}>
+                {currentDrawnSong.title}
+              </h2>
+              <p style={{ 
+                fontSize: '18px', 
+                color: '#666',
+                textAlign: 'center',
+                marginBottom: '20px'
+              }}>
+                {currentDrawnSong.artist}
+              </p>
+              
+              {!isDrawing && currentDrawnSong.imageUrl && (
+                <div style={{ 
+                  marginTop: '20px',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}>
+                  <Image
+                    src={currentDrawnSong.imageUrl}
+                    alt={currentDrawnSong.title}
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                      borderRadius: '10px',
+                      objectFit: 'cover',
+                      border: '2px solid #667eea',
+                      boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+                    }}
+                    preview={false}
+                  />
                 </div>
               )}
-            </Modal>
+              
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '15px' }}>
+                {currentDrawnSong.difficulty && (
+                  <Tag color={difficultyColors[currentDrawnSong.difficulty] || 'default'}>
+                    {currentDrawnSong.difficulty}
+                  </Tag>
+                )}
+                {currentDrawnSong.version && (
+                  <Tag color={versionColors[currentDrawnSong.version] || 'default'}>
+                    {currentDrawnSong.version}
+                  </Tag>
+                )}
+                {currentDrawnSong.type && (
+                  <Tag color={typeColors[currentDrawnSong.type] || 'default'}>
+                    {currentDrawnSong.type}
+                  </Tag>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+        
+        <style>
+          {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+          @keyframes fadeInOut {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.3; transform: scale(0.95); }
+          }
+          @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+          }
+          `}
+        </style>
+      </Modal>
+      
+      {/* 歌曲详情弹窗 */}
+      <Modal
+        title="歌曲详情"
+        open={songDetailModalVisible}
+        onCancel={() => setSongDetailModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setSongDetailModalVisible(false)}>
+            关闭
+          </Button>
+        ]}
+        width={800}
+        centered
+      >
+        {selectedSong && (
+          <div>
+            <Row gutter={[16, 16]}>
+              <Col span={8}>
+                <div style={{ textAlign: 'center' }}>
+                  {selectedSong.imageUrl ? (
+                    <Image
+                      src={selectedSong.imageUrl}
+                      alt={selectedSong.title}
+                      style={{ 
+                        maxWidth: '100%', 
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                      }}
+                      fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrKL1AoO8WgLl0AAAAASUVORK5CYII="
+                    />
+                  ) : (
+                    <div style={{ 
+                      width: '200px', 
+                      height: '200px', 
+                      backgroundColor: '#f0f0f0',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#999'
+                    }}>
+                      暂无封面
+                    </div>
+                  )}
+                </div>
+              </Col>
+              <Col span={16}>
+                <div style={{ padding: '16px' }}>
+                  <Title level={3} style={{ marginBottom: '16px' }}>
+                    {selectedSong.title}
+                  </Title>
+                  
+                  <Row gutter={[8, 8]}>
+                    <Col span={24}>
+                      <strong>曲师：</strong>
+                      <span style={{ marginLeft: '8px' }}>{selectedSong.artist || '未知'}</span>
+                    </Col>
+                    
+                    {selectedSong.bpm && (
+                      <Col span={24}>
+                        <strong>BPM：</strong>
+                        <span style={{ marginLeft: '8px' }}>{selectedSong.bpm}</span>
+                      </Col>
+                    )}
+                    
+                    <Col span={24}>
+                      <strong>版本：</strong>
+                      <span style={{ marginLeft: '8px' }}>
+                        <Tag color={getVersionColor(selectedSong.version)}>
+                          {selectedSong.version || '未知版本'}
+                        </Tag>
+                      </span>
+                    </Col>
+                    
+                    <Col span={24}>
+                      <strong>类型：</strong>
+                      <span style={{ marginLeft: '8px' }}>
+                        <Tag color={getTypeColor(selectedSong.type)}>
+                          {selectedSong.type || '未知类型'}
+                        </Tag>
+                      </span>
+                    </Col>
+                  </Row>
+                  
+                  <Divider />
+                  
+                  <div>
+                    <Title level={4}>谱面信息</Title>
+                    <Row gutter={[16, 16]}>
+                      {selectedSong.sheets.map((sheet, index) => (
+                        <Col span={12} key={index}>
+                          <Card size="small" style={{ marginBottom: '8px' }}>
+                            <div style={{ marginBottom: '8px' }}>
+                              <Tag color={getDifficultyColor(sheet.difficulty)}>
+                                {sheet.difficulty}
+                              </Tag>
+                              <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>
+                                Level {typeof sheet.internalLevelValue === 'number' ? sheet.internalLevelValue.toFixed(1) : sheet.level}
+                              </span>
+                            </div>
+                            
+                            {sheet.notes && (
+                              <div style={{ fontSize: '12px', color: '#666' }}>
+                                <div>总音符数: {sheet.notes}</div>
+                              </div>
+                            )}
+                            
+                            {sheet.charter && (
+                              <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                                <div>谱师: {sheet.charter}</div>
+                              </div>
+                            )}
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        )}
+      </Modal>
           </>
         )}
       </div>
