@@ -4,7 +4,7 @@ import { HomeOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom';
 import backgroundImage from '../images/Background.jpg';
 import ParticleCanvas from './ParticleCanvas';
-import VisitorCounter from './VisitorCounter';
+
 
 
 const { Header, Content, Footer } = AntLayout;
