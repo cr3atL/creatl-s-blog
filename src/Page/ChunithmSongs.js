@@ -217,12 +217,6 @@ const ChunithmSongs = () => {
     message.info('已清空随机选曲列表');
   }, []);
   
-  // 移除单个随机选曲
-  const removeRandomSong = useCallback((songId) => {
-    setSelectedRandomSongs(prev => prev.filter(song => song.songId !== songId));
-    message.info('已移除随机选择的歌曲');
-  }, []);
-  
   // 数据源URL
   const dataSourceUrl = 'https://dp4p6x0xfi5o9.cloudfront.net/chunithm';
 
