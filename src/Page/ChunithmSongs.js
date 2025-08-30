@@ -363,7 +363,8 @@ const ChunithmSongs = () => {
           {sheets.map((sheet, index) => (
             <Tag 
               key={index} 
-              color={getDifficultyColor(sheet.difficulty)}
+              color={sheet.difficulty === 'WORLD\'S END' ? 'default' : getDifficultyColor(sheet.difficulty)}
+              className={sheet.difficulty === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
             >
               {sheet.difficulty} {sheet.level}
             </Tag>
@@ -390,7 +391,14 @@ const ChunithmSongs = () => {
         if (!type || type === 'null' || type === 'undefined') {
           return <Tag color="default">未知类型</Tag>;
         }
-        return <Tag color={getTypeColor(type)}>{type}</Tag>;
+        return (
+          <Tag 
+            color={type === 'WORLD\'S END' ? 'default' : getTypeColor(type)}
+            className={type === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+          >
+            {type}
+          </Tag>
+        );
       },
     },
   ];
@@ -402,6 +410,54 @@ const ChunithmSongs = () => {
         <Paragraph>
           我做了个求你字母的曲库数据，包括歌曲的难度、版本和类型信息。
         </Paragraph>
+        
+        <style>
+          {`
+          /* WORLD'S END 静态渐变彩色样式 */
+          .ant-tag.ant-tag-rainbow {
+            background: linear-gradient(45deg, 
+              #ff0000 0%, 
+              #ff7f00 14%, 
+              #ffff00 28%, 
+              #00ff00 42%, 
+              #0000ff 56%, 
+              #4b0082 70%, 
+              #9400d3 84%, 
+              #ff0000 100%) !important;
+            background-size: 400% 400% !important;
+            color: white !important;
+            border: none !important;
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+            padding: 0 7px !important;
+            font-size: 12px !important;
+            line-height: 20px !important;
+            border-radius: 2px !important;
+            opacity: 1 !important;
+          }
+          
+          .ant-tag.ant-tag-rainbow:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+          }
+          
+          /* 重置antd tag的默认样式 */
+          .ant-tag.ant-tag-rainbow.ant-tag-default {
+            background: linear-gradient(45deg, 
+              #ff0000 0%, 
+              #ff7f00 14%, 
+              #ffff00 28%, 
+              #00ff00 42%, 
+              #0000ff 56%, 
+              #4b0082 70%, 
+              #9400d3 84%, 
+              #ff0000 100%) !important;
+            border: none !important;
+            color: white !important;
+          }
+          `}
+        </style>
 
         {error && (
           <Alert
@@ -457,7 +513,8 @@ const ChunithmSongs = () => {
                     {difficulties.map(difficulty => (
                       <Tag
                         key={difficulty}
-                        color={getDifficultyColor(difficulty)}
+                        color={difficulty === 'WORLD\'S END' ? 'default' : getDifficultyColor(difficulty)}
+                        className={difficulty === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (tempDifficultyFilter.includes(difficulty)) {
@@ -501,7 +558,8 @@ const ChunithmSongs = () => {
                     {types.map(type => (
                       <Tag
                         key={type}
-                        color={getTypeColor(type)}
+                        color={type === 'WORLD\'S END' ? 'default' : getTypeColor(type)}
+                        className={type === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (tempTypeFilter.includes(type)) {
@@ -543,7 +601,11 @@ const ChunithmSongs = () => {
                     </Tag>
                   )}
                   {tempDifficultyFilter.length > 0 && (
-                    <Tag color={getDifficultyColor(tempDifficultyFilter[0])} closable={() => setTempDifficultyFilter([])}>
+                    <Tag 
+                      color={tempDifficultyFilter[0] === 'WORLD\'S END' ? 'default' : getDifficultyColor(tempDifficultyFilter[0])} 
+                      className={tempDifficultyFilter[0] === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                      closable={() => setTempDifficultyFilter([])}
+                    >
                       难度: {tempDifficultyFilter.join(', ')}
                     </Tag>
                   )}
@@ -553,7 +615,11 @@ const ChunithmSongs = () => {
                     </Tag>
                   )}
                   {tempTypeFilter.length > 0 && (
-                    <Tag color={getTypeColor(tempTypeFilter[0])} closable={() => setTempTypeFilter([])}>
+                    <Tag 
+                      color={tempTypeFilter[0] === 'WORLD\'S END' ? 'default' : getTypeColor(tempTypeFilter[0])} 
+                      className={tempTypeFilter[0] === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                      closable={() => setTempTypeFilter([])}
+                    >
                       类型: {tempTypeFilter.join(', ')}
                     </Tag>
                   )}
@@ -695,12 +761,17 @@ const ChunithmSongs = () => {
                             </div>
                             <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                               {song.version && (
-                                <Tag color="blue" size="small" style={{ fontSize: '10px' }}>
+                                <Tag color={getVersionColor(song.version)} size="small" style={{ fontSize: '10px' }}>
                                   {song.version}
                                 </Tag>
                               )}
                               {song.type && (
-                                <Tag color="green" size="small" style={{ fontSize: '10px' }}>
+                                <Tag 
+                                  color={song.type === 'WORLD\'S END' ? 'default' : getTypeColor(song.type)} 
+                                  size="small" 
+                                  style={{ fontSize: '10px' }}
+                                  className={song.type === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                                >
                                   {song.type}
                                 </Tag>
                               )}
@@ -736,7 +807,11 @@ const ChunithmSongs = () => {
                   </Tag>
                 )}
                 {typeFilter.length > 0 && (
-                  <Tag color={getTypeColor(typeFilter[0])} closable onClose={() => setTypeFilter([])}>
+                  <Tag 
+                    color={typeFilter[0] === 'WORLD\'S END' ? 'default' : getTypeColor(typeFilter[0])} 
+                    closable onClose={() => setTypeFilter([])}
+                    className={typeFilter[0] === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                  >
                     类型: {typeFilter.join(', ')}
                   </Tag>
                 )}
@@ -853,7 +928,10 @@ const ChunithmSongs = () => {
               
               <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '15px' }}>
                 {currentDrawnSong.difficulty && (
-                  <Tag color={difficultyColors[currentDrawnSong.difficulty] || 'default'}>
+                  <Tag 
+                    color={currentDrawnSong.difficulty === 'WORLD\'S END' ? 'default' : (difficultyColors[currentDrawnSong.difficulty] || 'default')}
+                    className={currentDrawnSong.difficulty === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                  >
                     {currentDrawnSong.difficulty}
                   </Tag>
                 )}
@@ -863,7 +941,10 @@ const ChunithmSongs = () => {
                   </Tag>
                 )}
                 {currentDrawnSong.type && (
-                  <Tag color={typeColors[currentDrawnSong.type] || 'default'}>
+                  <Tag 
+                    color={currentDrawnSong.type === 'WORLD\'S END' ? 'default' : typeColors[currentDrawnSong.type] || 'default'}
+                    className={currentDrawnSong.type === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                  >
                     {currentDrawnSong.type}
                   </Tag>
                 )}
@@ -973,7 +1054,10 @@ const ChunithmSongs = () => {
                     <Col span={24}>
                       <strong>类型：</strong>
                       <span style={{ marginLeft: '8px' }}>
-                        <Tag color={getTypeColor(selectedSong.type)}>
+                        <Tag 
+                          color={selectedSong.type === 'WORLD\'S END' ? 'default' : getTypeColor(selectedSong.type)}
+                          className={selectedSong.type === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                        >
                           {selectedSong.type || '未知类型'}
                         </Tag>
                       </span>
@@ -989,7 +1073,10 @@ const ChunithmSongs = () => {
                         <Col span={12} key={index}>
                           <Card size="small" style={{ marginBottom: '8px' }}>
                             <div style={{ marginBottom: '8px' }}>
-                              <Tag color={getDifficultyColor(sheet.difficulty)}>
+                              <Tag 
+                                color={sheet.difficulty === 'WORLD\'S END' ? 'default' : getDifficultyColor(sheet.difficulty)}
+                                className={sheet.difficulty === 'WORLD\'S END' ? 'ant-tag-rainbow' : ''}
+                              >
                                 {sheet.difficulty}
                               </Tag>
                               <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>
