@@ -993,7 +993,7 @@ const ChunithmSongs = () => {
                                 {sheet.difficulty}
                               </Tag>
                               <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>
-                                Level {typeof sheet.internalLevelValue === 'number' ? sheet.internalLevelValue.toFixed(1) : sheet.level}
+                                {['【狂】', '【蔵】', '【両】', '【避】', '【割】', '【覚】', '【招】', '【半】', '【弾】', '【止】', '【改】', '【戻】', '【速】', '【？】', '【歌】', '【時】', '【布】', '【舞】', '【！】', '【撃】', '【敷】', '【光】', '【跳】', '【分】', '【翔】', '【嘘】'].includes(sheet.difficulty) ? sheet.level : `Level ${typeof sheet.internalLevelValue === 'number' ? sheet.internalLevelValue.toFixed(1) : sheet.level}`}
                               </span>
                             </div>
                             
