@@ -4,6 +4,7 @@ import { HomeOutlined, FileTextOutlined, UserOutlined, MenuOutlined } from '@ant
 import { useNavigate, useLocation } from 'react-router-dom';
 import backgroundImage from '../images/Background.jpg';
 import ParticleCanvas from './ParticleCanvas';
+import VisitorCounter from './VisitorCounter';
 
 const { Header, Content, Footer } = AntLayout;
 
@@ -179,7 +180,8 @@ const MobileLayout = ({ children }) => {
           backdropFilter: 'blur(10px)',
           fontSize: '12px'
         }}>
-          ©2025 creatL . All rights reserved.
+          <div>©2025 creatL . All rights reserved.</div>
+          <VisitorCounter />
         </Footer>
       </AntLayout>
     </div>

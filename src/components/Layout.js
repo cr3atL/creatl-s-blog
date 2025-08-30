@@ -4,6 +4,7 @@ import { HomeOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom';
 import backgroundImage from '../images/Background.jpg';
 import ParticleCanvas from './ParticleCanvas';
+import VisitorCounter from './VisitorCounter';
 
 
 const { Header, Content, Footer } = AntLayout;
@@ -178,7 +179,9 @@ const Layout = ({ children }) => {
           backdropFilter: 'blur(10px)',
           boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.3), 0 -2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
         }}>
-          ©2025 creatL . All rights reserved. </Footer>
+          <div>©2025 creatL . All rights reserved.</div>
+          <VisitorCounter />
+        </Footer>
 
         
         {/* 下落效果层 - 放在毛玻璃上面 */}
