@@ -180,7 +180,6 @@ const Layout = ({ children }) => {
           boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.3), 0 -2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
         }}>
           <div>©2025 creatL . All rights reserved.</div>
-          <VisitorCounter />
         </Footer>
 
         

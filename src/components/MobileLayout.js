@@ -181,7 +181,6 @@ const MobileLayout = ({ children }) => {
           fontSize: '12px'
         }}>
           <div>©2025 creatL . All rights reserved.</div>
-          <VisitorCounter />
         </Footer>
       </AntLayout>
     </div>
