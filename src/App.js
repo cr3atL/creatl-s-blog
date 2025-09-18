@@ -7,6 +7,7 @@ import About from './Page/About';
 import Randomssiba from './Page/Randomssiba';
 import ChunithmSongs from './Page/ChunithmSongs';
 import SdvxSongs from './Page/SdvxSongs';
+import RaceSignon from './Page/RaceSignon';
 import { initGA, trackPageView } from './utils/analytics';
 
 // Google Analytics 跟踪 ID - 请替换为您的实际跟踪 ID
@@ -44,6 +45,7 @@ function App() {
         <Route path="/randomssiba" element={<Randomssiba/>} />
         <Route path="/chunithm-songs" element={<ChunithmSongs/>} />
         <Route path="/sdvx-songs" element={<SdvxSongs/>} />
+        <Route path="/race-signon" element={<RaceSignon/>} />
       </Routes>
     </Router>
   );

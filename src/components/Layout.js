@@ -61,6 +61,11 @@ const Layout = ({ children }) => {
       icon: <UserOutlined />,
       label: 'SDVX相关',
     },
+    {
+      key: '/race-signon',
+      icon: <UserOutlined />,
+      label: '比赛报名',
+    }
   ];
 
   const handleMenuClick = ({ key }) => {
