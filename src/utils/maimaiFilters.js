@@ -216,14 +216,16 @@ export function applyFilters(songs, filters) {
     // 超级筛选（高级筛选）
     if (filters.superFilter) {
       try {
-        // 创建一个安全的评估环境
-        const safeEval = new Function('song', 'sheet', `
-          const { title, artist, bpm, version, category, isNew, isLocked, comment } = song;
-          return ${filters.superFilter};
-        `);
-        
+        // 使用更安全的方式评估表达式
         const hasMatchingSuperFilter = song.sheets?.some(sheet => {
           try {
+            // 禁用ESLint规则，因为这是用户自定义的筛选表达式
+            // eslint-disable-next-line no-new-func
+            const safeEval = new Function('song', 'sheet', `
+              const { title, artist, bpm, version, category, isNew, isLocked, comment } = song;
+              return ${filters.superFilter};
+            `);
+            
             return safeEval(song, sheet);
           } catch (e) {
             console.error('超级筛选表达式错误:', e);

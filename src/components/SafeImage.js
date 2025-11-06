@@ -70,7 +70,7 @@ const SafeImage = ({ src, alt, style = {}, className = "" }) => {
         URL.revokeObjectURL(imgSrc);
       }
     };
-  }, [src]);
+  }, [src, imgSrc]);
   
   const defaultStyle = {
     display: 'block',

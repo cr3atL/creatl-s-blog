@@ -1,14 +1,7 @@
-import { useState } from 'react';
-import { Typography, Form, Input, Button, Select, Card } from 'antd';
+import { Typography, Form, Input, Button, Card } from 'antd';
 import ResponsiveLayout from '../components/ResponsiveLayout';
 
-const { Title } = Typography;
-const { Option } = Select;
-
-
 const RaceSignon = () => {
-  const [form] = Form.useForm();
-  const [songSelectorVisible, setSongSelectorVisible] = useState(false);
   return (
     <ResponsiveLayout>
       <Card>
