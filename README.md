@@ -5,8 +5,12 @@
 ## 🚀 项目特性
 
 - **现代化UI设计**: 使用Ant Design组件库，配合毛玻璃效果和粒子动画背景
-- **响应式布局**: 适配不同屏幕尺寸的设备
-- **多页面支持**: 包含首页、文章列表、关于页面、随机兔子图片页面
+- **响应式布局**: 适配不同屏幕尺寸的设备，包括专门的移动端布局
+- **多页面支持**: 包含首页、文章列表、关于页面、随机兔子图片页面、音乐游戏曲库页面
+- **音乐游戏曲库**: 集成maimai、中二节奏(CHUNITHM)和SDVX曲库数据
+- **高级筛选功能**: 支持按标题、艺术家、版本、类型、难度等多种条件筛选歌曲
+- **随机选曲功能**: 一键随机选择符合条件的歌曲
+- **谱面详情展示**: 显示歌曲的详细信息、难度等级和谱面设计师
 - **GitHub Pages部署**: 通过GitHub Actions自动化部署
 - **React Router**: 实现客户端路由导航
 - **动态内容**: 随机兔子图片展示功能
@@ -29,12 +33,21 @@ src/
 │   ├── Layout.js      # 布局组件（包含导航和背景）
 │   ├── ArticleCard.js # 文章卡片组件
 │   ├── Sidebar.js     # 侧边栏组件
-│   └── ParticleCanvas.js # 粒子动画组件
+│   ├── ParticleCanvas.js # 粒子动画组件
+│   ├── SafeImage.js   # 安全图片组件（支持错误处理和URL转换）
+│   ├── MaimaiFilter.js # maimai曲库筛选组件
+│   ├── ResponsiveLayout.js # 响应式布局组件
+│   ├── MobileLayout.js # 移动端布局组件
+│   └── NoteDetailModal.js # 谱面详情模态框组件
 ├── Page/              # 页面组件
 │   ├── Home.js        # 首页
 │   ├── Article.js     # 文章列表页
 │   ├── About.js       # 关于页面
-│   └── Randomssiba.js # 随机兔子图片页面
+│   ├── Randomssiba.js # 随机兔子图片页面
+│   ├── MaimaiSongs.js # maimai曲库页面
+│   ├── ChunithmSongs.js # 中二节奏曲库页面
+│   ├── SdvxSongs.js   # SDVX曲库页面
+│   └── RaceSignon.js  # 比赛报名页面
 ├── assets/            # 静态资源
 ├── icons/             # 图标资源
 │   ├── OSUIcon.png    # OSU图标
@@ -44,7 +57,15 @@ src/
 │   └── Background.jpg # 背景图片
 ├── ssiba/             # 兔子图片资源目录
 ├── styles/            # 样式文件
+│   └── responsive.css # 响应式样式
+├── types/             # TypeScript类型定义
+│   └── maimai.ts      # maimai数据类型定义
 └── utils/             # 工具函数
+    ├── analytics.js   # 分析工具
+    ├── deviceDetector.js # 设备检测工具
+    ├── maimaiData.js  # maimai数据处理工具
+    ├── maimaiFilters.js # maimai筛选工具
+    └── random.js      # 随机数生成工具
 ```
 
 ## 🎯 主要功能
@@ -73,6 +94,15 @@ src/
 - 动态加载效果
 - 一键切换图片功能
 - 支持多种图片格式（PNG、JPG、GIF）
+
+### 音乐游戏曲库页面
+- **maimai曲库**: 完整的maimai歌曲数据，包含基本信息、难度等级和谱面信息
+- **中二节奏曲库**: CHUNITHM歌曲数据，支持多种难度筛选
+- **SDVX曲库**: Sound Voltex歌曲数据，提供详细的谱面信息
+- **高级筛选**: 支持按标题、艺术家、版本、类型、难度、BPM等多种条件筛选
+- **随机选曲**: 一键随机选择符合条件的歌曲，带有动画效果
+- **谱面详情**: 点击歌曲可查看详细信息，包括各难度等级和谱面设计师
+- **响应式表格**: 适配不同屏幕尺寸的歌曲列表展示
 
 ## 🚀 快速开始
 
@@ -140,7 +170,13 @@ MIT License
 
 ## 📝 更新日志
 
-### v1.3.0 (2025-8-230)
+### v1.4.0 (2025-08-23)
+- 优化了maimai曲库筛选界面，隐藏了部分高级筛选功能
+- 保留了核心筛选功能，简化了用户操作流程
+- 修复了React Hook依赖项缺失问题
+- 移除了未使用的组件和变量导入
+
+### v1.3.0 (2025-08-23)
 
 - 完成了中二节奏与sdvx的曲库（数据来源于https://arcade-songs.zetaraku.dev/）
 - 添加了随机歌曲的功能
