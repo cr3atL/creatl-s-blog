@@ -290,7 +290,7 @@ const MaimaiSongs = () => {
                     setNoteDetailModalVisible(true);
                   }}
                 >
-                  查看音符
+                  查看总物量
                 </Button>
               ),
             },
@@ -455,7 +455,7 @@ const MaimaiSongs = () => {
                 onClick={drawRandomSong}
                 disabled={filteredSongs.length === 0}
               >
-                {isDrawing ? '停止抽奖' : '随机选曲'}
+                {isDrawing ? '停止抽取' : '随机选曲'}
               </Button>
             </Col>
           </Row>
