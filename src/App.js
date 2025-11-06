@@ -7,6 +7,7 @@ import About from './Page/About';
 import Randomssiba from './Page/Randomssiba';
 import ChunithmSongs from './Page/ChunithmSongs';
 import SdvxSongs from './Page/SdvxSongs';
+import MaimaiSongs from './Page/MaimaiSongs';
 import RaceSignon from './Page/RaceSignon';
 import { initGA, trackPageView } from './utils/analytics';
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/randomssiba" element={<Randomssiba/>} />
         <Route path="/chunithm-songs" element={<ChunithmSongs/>} />
         <Route path="/sdvx-songs" element={<SdvxSongs/>} />
+        <Route path="/maimai-songs" element={<MaimaiSongs/>} />
         <Route path="/race-signon" element={<RaceSignon/>} />
       </Routes>
     </Router>

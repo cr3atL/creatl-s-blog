@@ -49,13 +49,23 @@ const MobileLayout = ({ children }) => {
     {
       key: '/chunithm-songs',
       icon: <UserOutlined />,
-      label: 'CHUNITHM相关',
+      label: 'CHUNITHM（中二节奏）相关',
     },
     {
       key: '/sdvx-songs',
       icon: <UserOutlined />,
       label: 'SDVX相关',
     },
+    {
+      key: '/maimai-songs',
+      icon: <UserOutlined />,
+      label: '舞萌相关',
+    },
+    {
+      key: '/race-signon',
+      icon: <UserOutlined />,
+      label: '比赛报名',
+    }
   ];
 
   const handleMenuClick = ({ key }) => {

@@ -54,12 +54,17 @@ const Layout = ({ children }) => {
     {
       key: '/chunithm-songs',
       icon: <UserOutlined />,
-      label: 'CHUNITHM相关',
+      label: 'CHUNITHM（中二节奏）相关',
     },
     {
       key: '/sdvx-songs',
       icon: <UserOutlined />,
       label: 'SDVX相关',
+    },
+    {
+      key: '/maimai-songs',
+      icon: <UserOutlined />,
+      label: '舞萌相关',
     },
     {
       key: '/race-signon',

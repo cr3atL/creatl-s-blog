@@ -30,6 +30,12 @@ const Home = () => {
     window.location.href = '/creatl-s-blog/sdvx-songs';
   };
 
+  const navigateToMaimai = () => {
+    // 追踪导航到maimai页面的事件
+    trackEvent('Navigation', 'Click', 'Maimai_Songs');
+    window.location.href = '/creatl-s-blog/maimai-songs';
+  };
+
   return (
     <ResponsiveLayout>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -166,6 +172,20 @@ const Home = () => {
               style={{ marginTop: "10px" }}
             >
               查看 SDVX 曲库
+            </Button>
+          </Card>
+          
+          <Card style={{ marginTop: "20px" }}>
+            <Title level={4}>🎵 新功能：maimai 曲库查询</Title>
+            <Paragraph style={{ fontSize: "16px" }}>
+              我添加了 maimai 曲库查询功能！你可以查看所有 maimai 歌曲的详细信息，包括难度、版本、类型等。
+            </Paragraph>
+            <Button 
+              type="primary" 
+              onClick={navigateToMaimai}
+              style={{ marginTop: "10px" }}
+            >
+              查看 maimai 曲库
             </Button>
           </Card>
         </div>

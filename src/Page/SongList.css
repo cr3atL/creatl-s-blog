@@ -1,0 +1,180 @@
+/* 歌曲列表页面样式 */
+.song-list-container {
+  padding: 24px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 难度标签样式 */
+.ant-tag-rainbow {
+  background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+/* 歌曲卡片样式 */
+.song-card {
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.song-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 随机选曲动画 */
+.random-draw-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+/* 难度统计卡片 */
+.difficulty-stat-card {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* 歌曲详情弹窗样式 */
+.song-detail-modal .ant-modal-body {
+  padding: 24px;
+}
+
+/* 封面图片样式 */
+.song-cover {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* 筛选器样式 */
+.filter-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 表格样式优化 */
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5 !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .song-list-container {
+    padding: 12px;
+  }
+  
+  .filter-container {
+    padding: 12px;
+  }
+  
+  .ant-col {
+    margin-bottom: 8px;
+  }
+}
+
+/* 难度标签特殊样式 */
+.difficulty-basic {
+  background-color: #22bb5b;
+  color: white;
+}
+
+.difficulty-advanced {
+  background-color: #fb9c2d;
+  color: white;
+}
+
+.difficulty-expert {
+  background-color: #f64861;
+  color: white;
+}
+
+.difficulty-master {
+  background-color: #9e45e2;
+  color: white;
+}
+
+.difficulty-remaster {
+  background-color: #ba67f8;
+  color: white;
+}
+
+/* 难度标签悬停效果 */
+.difficulty-tag:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* 版本标签样式 */
+.version-tag {
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* 类型标签样式 */
+.type-tag {
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* 随机选曲结果卡片 */
+.random-result-card {
+  transition: all 0.3s ease;
+}
+
+.random-result-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 抽奖动画效果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.draw-animation {
+  animation: pulse 1s infinite;
+}
+
+/* 统计卡片样式 */
+.stat-card {
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 难度谱面卡片 */
+.difficulty-sheet-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.difficulty-sheet-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
