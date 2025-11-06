@@ -14,8 +14,7 @@ import {
   Statistic, 
   Empty, 
   Modal, 
-  Input, 
-  Select 
+  Input
 } from 'antd';
 import {  
   SearchOutlined, 
@@ -28,7 +27,7 @@ import ResponsiveLayout from '../components/ResponsiveLayout';
 import MaimaiFilter from '../components/MaimaiFilter';
 import SafeImage from '../components/SafeImage';
 import NoteDetailModal from '../components/NoteDetailModal';
-import { preprocessData, createIndexes } from '../utils/maimaiData.js';
+import { preprocessData } from '../utils/maimaiData.js';
 import { 
   createDefaultFilters, 
   parseFiltersFromURL, 
@@ -37,16 +36,14 @@ import {
   createFilterOptions, 
   countActiveFilters 
 } from '../utils/maimaiFilters.js';
-import './SongList.css';
 
-const { Title, Text, Paragraph } = Typography;
-const { Option } = Select;
+
+const { Title, Paragraph } = Typography;
 const { Search } = Input;
 
 const MaimaiSongs = () => {
   // 状态管理
   const [data, setData] = useState(null);
-  const [indexes, setIndexes] = useState(null);
   const [filterOptions, setFilterOptions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,7 +52,6 @@ const MaimaiSongs = () => {
   const [songDetailModalVisible, setSongDetailModalVisible] = useState(false);
   const [selectedRandomSongs, setSelectedRandomSongs] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [drawAnimationVisible, setDrawAnimationVisible] = useState(false);
   const [animationInterval, setAnimationInterval] = useState(null);
   const [selectedSheet, setSelectedSheet] = useState(null);
   const [noteDetailModalVisible, setNoteDetailModalVisible] = useState(false);
@@ -79,11 +75,9 @@ const MaimaiSongs = () => {
         
         // 预处理数据
         const processedData = preprocessData(rawData);
-        const dataIndexes = createIndexes(processedData);
         const options = createFilterOptions(processedData);
         
         setData(processedData);
-        setIndexes(dataIndexes);
         setFilterOptions(options);
         setError(null);
       } catch (err) {
@@ -144,50 +138,20 @@ const MaimaiSongs = () => {
   }, [typeColors]);
 
   // 根据谱面type字段判断难度类型
-const getDifficultyType = useCallback((sheet) => {
-  if (sheet.type === 'std') {
-    return '标准';
-  } else if (sheet.type === 'dx') {
-    return 'DX';
-  }
-  return '未知';
-}, []);
+  const getDifficultyType = useCallback((sheet) => {
+    if (sheet.type === 'std') {
+      return '标准';
+    } else if (sheet.type === 'dx') {
+      return 'DX';
+    }
+    return '未知';
+  }, []);
 
   // 筛选歌曲
   const filteredSongs = useMemo(() => {
     if (!data) return [];
     return applyFilters(data.songs, filters);
   }, [data, filters]);
-
-  // 获取所有可用的版本
-  const versions = useMemo(() => {
-    if (!data) return [];
-    return data.versions.map(v => v.version).sort();
-  }, [data]);
-
-  // 获取所有可用的类型
-  const types = useMemo(() => {
-    if (!data) return [];
-    return data.types.map(t => t.type).sort();
-  }, [data]);
-
-  // 获取所有可用的分类
-  const categories = useMemo(() => {
-    if (!data) return [];
-    return data.categories.map(c => c.category).sort();
-  }, [data]);
-
-  // 获取所有可用的难度
-  const difficulties = useMemo(() => {
-    if (!data) return [];
-    return data.difficulties.map(d => d.difficulty).sort();
-  }, [data]);
-
-  // 获取所有可用的地区
-  const regions = useMemo(() => {
-    if (!data) return [];
-    return data.regions.map(r => r.region).sort();
-  }, [data]);
 
   // 随机选曲
   const drawRandomSong = useCallback(() => {
@@ -207,7 +171,6 @@ const getDifficultyType = useCallback((sheet) => {
     }
     
     setIsDrawing(true);
-    setDrawAnimationVisible(true);
     
     // 创建动画效果
     const interval = setInterval(() => {
@@ -222,7 +185,6 @@ const getDifficultyType = useCallback((sheet) => {
       clearInterval(interval);
       setAnimationInterval(null);
       setIsDrawing(false);
-      setDrawAnimationVisible(false);
       
       // 最终随机选择
       const finalSong = filteredSongs[Math.floor(Math.random() * filteredSongs.length)];
@@ -336,7 +298,7 @@ const getDifficultyType = useCallback((sheet) => {
         />
       </div>
     );
-  }, [getDifficultyColor, getVersionColor, getTypeColor]);
+  }, [getDifficultyColor, getVersionColor, getTypeColor, getDifficultyType]);
 
   // 渲染歌曲列表
   const columns = [

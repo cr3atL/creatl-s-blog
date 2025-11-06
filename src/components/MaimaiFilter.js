@@ -4,17 +4,15 @@ import {
   Input, 
   Select, 
   Slider, 
-  Switch, 
   Button, 
   Tag, 
   Space, 
-  Divider, 
   Row, 
   Col,
   Checkbox,
   Collapse
 } from 'antd';
-import { FilterOutlined, ClearOutlined } from '@ant-design/icons';
+import { ClearOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { Panel } = Collapse;
