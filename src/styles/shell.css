@@ -1,0 +1,273 @@
+.shell-root {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.shell-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: var(--shell-background-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: saturate(0.84) brightness(1.08);
+  z-index: -1;
+}
+
+.shell-background::after {
+  position: absolute;
+  inset: 0;
+  background: rgba(244, 248, 248, 0.68);
+  content: "";
+}
+
+.shell-layout {
+  min-height: 100vh;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.shell-header {
+  background: var(--shell-header-bg);
+  border-bottom: 1px solid var(--shell-header-border);
+  backdrop-filter: blur(8px);
+}
+
+.shell-header-desktop {
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+}
+
+.shell-header-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  gap: 10px;
+  padding: 10px 14px;
+  box-shadow: none;
+}
+
+.blog-title {
+  color: var(--shell-header-text);
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+.shell-title-desktop {
+  margin-right: 32px;
+  font-size: 18px;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.shell-title-mobile {
+  font-size: 16px;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.shell-desktop-menu {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+}
+
+.shell-desktop-menu.ant-menu-dark {
+  background: transparent;
+}
+
+.shell-desktop-menu.ant-menu-horizontal {
+  border-bottom: 0;
+}
+
+.shell-desktop-menu.ant-menu-horizontal > .ant-menu-item::after,
+.shell-desktop-menu.ant-menu-horizontal > .ant-menu-submenu::after {
+  border-bottom: 0;
+}
+
+.shell-desktop-menu.ant-menu-dark .ant-menu-item,
+.shell-desktop-menu.ant-menu-dark .ant-menu-submenu-title {
+  border-radius: 6px;
+  margin-inline: 2px;
+}
+
+.shell-desktop-menu.ant-menu-dark .ant-menu-item-selected,
+.shell-desktop-menu.ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.shell-desktop-menu.ant-menu-dark .ant-menu-item:hover,
+.shell-desktop-menu.ant-menu-dark .ant-menu-submenu-title:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.shell-time {
+  color: var(--shell-header-muted);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  text-shadow: none;
+}
+
+.desktop-time {
+  margin-left: 16px;
+  font-size: 14px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.mobile-time {
+  display: none;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.shell-mobile-time-inline {
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.shell-mobile-menu-button {
+  color: var(--shell-header-text);
+  font-size: 18px;
+}
+
+.shell-mobile-menu-button:hover,
+.shell-mobile-menu-button:focus-visible {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.shell-drawer .ant-drawer-content,
+.shell-drawer .ant-drawer-header,
+.shell-drawer .ant-drawer-body {
+  background: var(--shell-drawer-bg);
+}
+
+.shell-drawer .ant-drawer-header {
+  border-bottom: 1px solid var(--shell-border);
+  padding: 18px 20px 14px;
+}
+
+.shell-drawer .ant-drawer-body {
+  padding: 16px;
+}
+
+.shell-drawer .ant-drawer-title,
+.shell-drawer .ant-drawer-close {
+  color: var(--shell-drawer-text);
+}
+
+.shell-drawer-close {
+  color: var(--shell-drawer-text);
+  font-size: 16px;
+}
+
+.shell-drawer-menu {
+  border: none;
+  background: transparent;
+}
+
+.shell-drawer-menu.ant-menu {
+  color: var(--shell-drawer-text);
+}
+
+.shell-drawer-menu.ant-menu .ant-menu-item {
+  border-radius: 6px;
+  height: 42px;
+  line-height: 42px;
+  margin: 4px 0;
+  padding-inline: 14px;
+}
+
+.shell-drawer-menu.ant-menu .ant-menu-item-selected {
+  background: var(--page-accent-soft);
+  color: var(--page-accent);
+  font-weight: 600;
+}
+
+.shell-drawer-menu.ant-menu .ant-menu-item:hover {
+  background: rgba(33, 53, 71, 0.06);
+  color: var(--shell-drawer-text);
+}
+
+.shell-content-desktop {
+  margin: 24px;
+  padding: 24px;
+  border: 1px solid var(--shell-border);
+  border-radius: var(--page-card-radius);
+  background: var(--shell-surface);
+  box-shadow: var(--shell-shadow);
+}
+
+.shell-content-mobile {
+  margin: 10px;
+  padding: 14px;
+  border: 1px solid var(--shell-border);
+  border-radius: var(--page-card-radius);
+  background: var(--shell-surface-strong);
+  box-shadow: 0 8px 22px rgba(31, 45, 61, 0.1);
+}
+
+.shell-footer {
+  text-align: center;
+  background: var(--shell-header-bg);
+  color: var(--shell-header-muted);
+  border-top: 1px solid var(--shell-header-border);
+  backdrop-filter: blur(8px);
+}
+
+.shell-footer-desktop {
+  padding: 10px 0;
+  box-shadow: none;
+}
+
+.shell-footer-mobile {
+  padding: 8px 0;
+  font-size: 12px;
+}
+
+.shell-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--shell-surface);
+  color: var(--page-text);
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .shell-header-mobile {
+    min-height: 56px;
+  }
+}
+
+@media (max-width: 420px) {
+  .shell-mobile-time-inline {
+    display: none;
+  }
+}

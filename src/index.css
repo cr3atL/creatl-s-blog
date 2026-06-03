@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+@import './styles/tokens.css';
+@import './styles/page.css';
 
 @keyframes pulse {
   0% {

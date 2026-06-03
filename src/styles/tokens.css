@@ -1,0 +1,42 @@
+:root {
+  --page-content-max-width: 1200px;
+  --page-content-narrow-max-width: 800px;
+  --page-content-medium-max-width: 1000px;
+  --page-inline-padding: 24px;
+  --page-section-gap: 32px;
+  --page-card-gap: 24px;
+  --page-card-compact-gap: 16px;
+  --page-card-radius: 8px;
+  --page-glass-bg: rgba(255, 255, 255, 0.9);
+  --page-glass-border: rgba(33, 53, 71, 0.12);
+  --page-shadow: 0 10px 28px rgba(31, 45, 61, 0.1);
+  --page-avatar-shadow: 0 6px 18px rgba(31, 45, 61, 0.14);
+  --page-text: #1f2933;
+  --page-text-muted: #52616f;
+  --page-text-subtle: #7b8794;
+  --page-accent: #277c78;
+  --page-accent-soft: rgba(39, 124, 120, 0.12);
+  --page-icon-size: 24px;
+  --page-body-font-size: 16px;
+  --page-meta-font-size: 14px;
+  --shell-surface: rgba(250, 252, 252, 0.94);
+  --shell-surface-strong: rgba(255, 255, 255, 0.97);
+  --shell-surface-muted: rgba(245, 248, 248, 0.96);
+  --shell-border: rgba(33, 53, 71, 0.12);
+  --shell-shadow: 0 12px 32px rgba(31, 45, 61, 0.12);
+  --shell-header-bg: rgba(23, 34, 43, 0.92);
+  --shell-header-border: rgba(255, 255, 255, 0.1);
+  --shell-header-text: rgba(255, 255, 255, 0.92);
+  --shell-header-muted: rgba(255, 255, 255, 0.66);
+  --shell-drawer-bg: #f8faf9;
+  --shell-drawer-text: #1f2933;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-inline-padding: 16px;
+    --page-section-gap: 20px;
+    --page-card-gap: 16px;
+    --page-card-compact-gap: 12px;
+  }
+}

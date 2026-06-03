@@ -1,194 +1,138 @@
-import { Typography, Avatar, Card, Button } from "antd";
-import { GithubOutlined, } from "@ant-design/icons";
-import ResponsiveLayout from "../components/ResponsiveLayout";
-import Item from "antd/es/list/Item";
-import OSUIcon from "../icons/OSUIcon.png"; // 保持这样导入
-import BiliBiliIcon from "../icons/bilibiliIcon.ico";
-import CloudmusicIcon from "../icons/CloudmusicIcon.ico";
-import { trackEvent } from "../utils/analytics";
+import { Typography, Avatar, Button } from 'antd';
+import { GithubOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import ResponsiveLayout from '../components/ResponsiveLayout';
+import OSUIcon from '../icons/OSUIcon.png';
+import BiliBiliIcon from '../icons/bilibiliIcon.ico';
+import CloudmusicIcon from '../icons/CloudmusicIcon.ico';
+import { trackEvent } from '../utils/analytics';
 
-const avatarImage = "https://github.com/cr3atL.png";
+const avatarImage = 'https://github.com/cr3atL.png';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const handleIconClick = (url, platform) => {
-    // 追踪社交媒体点击事件
     trackEvent('Social_Media', 'Click', platform);
-    window.open(url, "_blank");
+    window.open(url, '_blank');
   };
 
-  const navigateToChunithm = () => {
-    // 追踪导航到CHUNITHM页面的事件
-    trackEvent('Navigation', 'Click', 'Chunithm_Songs');
-    window.location.href = '/creatl-s-blog/chunithm-songs';
-  };
-
-  const navigateToSdvx = () => {
-    // 追踪导航到SDVX页面的事件
-    trackEvent('Navigation', 'Click', 'SDVX_Songs');
-    window.location.href = '/creatl-s-blog/sdvx-songs';
-  };
-
-  const navigateToMaimai = () => {
-    // 追踪导航到maimai页面的事件
-    trackEvent('Navigation', 'Click', 'Maimai_Songs');
-    window.location.href = '/creatl-s-blog/maimai-songs';
+  const handleToolClick = (path, label) => {
+    trackEvent('Navigation', 'Click', label);
+    navigate(path);
   };
 
   return (
     <ResponsiveLayout>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "24px",
-          }}
-        >
-          <Avatar
-            src={avatarImage}
-            size={64}
-            style={{
-              marginRight: "16px",
-              boxShadow:
-                "0 4px 16px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
-              border: "2px solid rgba(255, 255, 255, 0.2)",
-            }}
-          />
-          <Title level={2}>欢迎来到我的博客</Title>
-        </div>
-
-        <Paragraph>这是我乱写的博客</Paragraph>
-        <Card style={{ marginBottom: "24px" }}>
-          <Title level={3}>关于我</Title>
-          <Item style={{ fontSize: "16px" }}>
-            我是桔子酱！/creatL。我正在学习react的前端开发,是一名初学者!
-          </Item>
-          <Item style={{ fontSize: "16px" }}>
-            我喜欢玩osu!mania,无聊就爱玩定轨
-          </Item>
-          <Item style={{ fontSize: "16px" }}>
-            我喜欢听trance,有好听的trance一定要联系我求你了求你了求你了。
-          </Item>
-          <Paragraph></Paragraph>
-        </Card>
-
-        <Card>
-          <Title level={3}>这是我的一些主页</Title>
-          <div style={{ display: "flex", gap: "16px", marginTop: "16px" }}>
-            <GithubOutlined
-              style={{ fontSize: "24px", cursor: "pointer", color: "#000" }}
-              onClick={() => handleIconClick("https://github.com/cr3atL", "GitHub")}
-              title="GitHub"
-            />
-            <img
-              src={BiliBiliIcon}
-              alt="bilibili"
-              style={{
-                width: "24px",
-                height: "24px",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-              onClick={() =>
-                handleIconClick(
-                  "https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/",
-                  "Bilibili"
-                )
-              }
-              title="bilibili主页"
-              onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-            />
-            <img
-              src={OSUIcon}
-              alt="OSU!"
-              style={{
-                width: "24px",
-                height: "24px",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-              onClick={() =>
-                handleIconClick("https://osu.ppy.sh/users/24792120", "OSU")
-              }
-              title="OSU!主页"
-              onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-            />
-            <img
-              src={CloudmusicIcon}
-              alt="网易云歌单"
-              style={{
-                width: "24px",
-                height: "24px",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-              onClick={() =>
-                handleIconClick(
-                  "https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4=",
-                  "Netease_Music"
-                )
-              }
-              title="网易云歌单"
-              onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-            />
+      <div className="page-container">
+        <section className="page-hero">
+          <Avatar src={avatarImage} size={72} className="page-heading-avatar" />
+          <div className="page-hero-content">
+            <div className="page-eyebrow">个人主页 + 工具站</div>
+            <Title level={2}>creatL 的小站</Title>
+            <Paragraph className="page-intro">
+              这里会放一些个人内容、文章和随手做的小工具。旧曲库页面先从活动入口下线，之后会用更清晰的结构重做。
+            </Paragraph>
+            <div className="social-links">
+              <GithubOutlined
+                className="social-link-icon"
+                onClick={() => handleIconClick('https://github.com/cr3atL', 'GitHub')}
+                title="GitHub"
+              />
+              <img
+                src={BiliBiliIcon}
+                alt="bilibili"
+                className="social-link-icon"
+                onClick={() =>
+                  handleIconClick(
+                    'https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/',
+                    'Bilibili'
+                  )
+                }
+                title="bilibili 主页"
+              />
+              <img
+                src={OSUIcon}
+                alt="OSU!"
+                className="social-link-icon"
+                onClick={() =>
+                  handleIconClick('https://osu.ppy.sh/users/24792120', 'OSU')
+                }
+                title="OSU! 主页"
+              />
+              <img
+                src={CloudmusicIcon}
+                alt="网易云歌单"
+                className="social-link-icon"
+                onClick={() =>
+                  handleIconClick(
+                    'https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4=',
+                    'Netease_Music'
+                  )
+                }
+                title="网易云歌单"
+              />
+            </div>
           </div>
-        </Card>
-        <div style={{ marginTop: "32px", fontSize: "24px" }}>
+        </section>
+
+        <section className="page-section">
+          <div className="page-section-header">
+            <Title level={3}>关于我</Title>
+            <Paragraph className="page-body-text">
+              我是桔子酱！ / creatL，正在学习 React 前端开发。平时喜欢 osu!mania、定轨音游和 trance。
+            </Paragraph>
+          </div>
+        </section>
+
+        <section className="page-section">
+          <div className="page-section-header">
+            <Title level={3}>工具入口</Title>
+            <Paragraph className="page-body-text">
+              当前可用的小工具集中放在工具页，首页只保留最常用的入口。
+            </Paragraph>
+          </div>
+          <div className="page-grid page-grid--two">
+            <div className="tool-card">
+              <div className="tool-card-body">
+                <Title level={4}>随机兔子图片</Title>
+                <Paragraph className="page-body-text">
+                  从本地图片集中随机抽一张兔子图片。
+                </Paragraph>
+              </div>
+              <Button
+                type="primary"
+                onClick={() => handleToolClick('/randomssiba', 'Random_Image')}
+              >
+                打开
+              </Button>
+            </div>
+
+            <div className="tool-card">
+              <div className="tool-card-body">
+                <Title level={4}>比赛报名</Title>
+                <Paragraph className="page-body-text">
+                  一个保留中的轻量报名表单，之后可以继续完善流程。
+                </Paragraph>
+              </div>
+              <Button
+                type="primary"
+                onClick={() => handleToolClick('/race-signon', 'Race_Signon')}
+              >
+                打开
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section className="page-section">
           <Title level={3}>最新动态</Title>
-          <Paragraph style={{ fontSize: "16px" }}>
-            博客正在开发中，敬请期待更多精彩内容...
+          <Paragraph className="page-body-text">
+            小站正在整理中。文章、工具和个人信息会逐步补齐。如果你有好玩的想法，或者发现了需要修复的问题，可以在关于页面找到我的联系方式。
           </Paragraph>
-          <Paragraph style={{fontSize:"16px"}}>当然如果你有什么好玩的想法或者发现了什么bug需要我去修复的也可以直接联系我</Paragraph>
-          <Paragraph style={{fontSize:"16px"}}>我的联系方式在about页面中有！</Paragraph>
-          <Paragraph style={{fontSize:"16px"}}>当然你直接bilibili私信我也可以</Paragraph>
-          
-          <Card style={{ marginTop: "20px" }}>
-            <Title level={4}>🎵 新功能：CHUNITHM 曲库查询</Title>
-            <Paragraph style={{ fontSize: "16px" }}>
-              我添加了 CHUNITHM 曲库查询功能！你可以查看所有 CHUNITHM 歌曲的详细信息，包括难度、版本、类型等。
-            </Paragraph>
-            <Button 
-              type="primary" 
-              onClick={navigateToChunithm}
-              style={{ marginTop: "10px" }}
-            >
-              查看 CHUNITHM 曲库
-            </Button>
-          </Card>
-          
-          <Card style={{ marginTop: "20px" }}>
-            <Title level={4}>🎵 新功能：SDVX 曲库查询</Title>
-            <Paragraph style={{ fontSize: "16px" }}>
-              我添加了 SOUND VOLTEX 曲库查询功能！你可以查看所有 SDVX 歌曲的详细信息，包括难度、版本、类型等。
-            </Paragraph>
-            <Button 
-              type="primary" 
-              onClick={navigateToSdvx}
-              style={{ marginTop: "10px" }}
-            >
-              查看 SDVX 曲库
-            </Button>
-          </Card>
-          
-          <Card style={{ marginTop: "20px" }}>
-            <Title level={4}>🎵 新功能：maimai 曲库查询</Title>
-            <Paragraph style={{ fontSize: "16px" }}>
-              我添加了 maimai 曲库查询功能！你可以查看所有 maimai 歌曲的详细信息，包括难度、版本、类型等。
-            </Paragraph>
-            <Button 
-              type="primary" 
-              onClick={navigateToMaimai}
-              style={{ marginTop: "10px" }}
-            >
-              查看 maimai 曲库
-            </Button>
-          </Card>
-        </div>
+        </section>
       </div>
     </ResponsiveLayout>
   );

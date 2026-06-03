@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Table, Tag, Statistic, Row, Col } from 'antd';
+import '../styles/song-pages.css';
 
 const NoteDetailModal = ({ visible, onClose, sheet }) => {
   if (!sheet) return null;
@@ -87,32 +88,32 @@ const NoteDetailModal = ({ visible, onClose, sheet }) => {
   return (
     <Modal
       title={`音符详情 - ${sheet.difficulty} (${sheet.level})`}
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
-      width={600}
+      width="min(600px, calc(100vw - 32px))"
     >
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic title="谱面类型" value={sheet.type === 'std' ? '标准' : 'DX'} />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic title="难度" value={sheet.difficulty} />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic title="等级" value={sheet.level} />
         </Col>
       </Row>
       
       {sheet.internalLevel && (
         <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-          <Col span={8}>
+          <Col xs={24} sm={8}>
             <Statistic title="内部等级" value={sheet.internalLevel} />
           </Col>
-          <Col span={8}>
+          <Col xs={24} sm={8}>
             <Statistic title="谱面设计师" value={sheet.noteDesigner || '-'} />
           </Col>
-          <Col span={8}>
+          <Col xs={24} sm={8}>
             <Statistic title="总音符数" value={sheet.noteCounts?.total || 0} />
           </Col>
         </Row>
@@ -123,6 +124,8 @@ const NoteDetailModal = ({ visible, onClose, sheet }) => {
         columns={columns}
         pagination={false}
         size="small"
+        scroll={{ x: 'max-content' }}
+        className="song-page-note-table"
       />
     </Modal>
   );

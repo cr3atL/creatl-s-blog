@@ -2,75 +2,86 @@ import React from 'react';
 import { Typography, Card, List, Tag, Space, Button, message } from 'antd';
 import ResponsiveLayout from '../components/ResponsiveLayout';
 
-const Article = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-  const { Title, Paragraph } = Typography;
-  
-  const info = () => {
-    messageApi.info('我还没有做完！(>_<)');
-  };
-  const articles = [
-    {
-      id: 1,
-      title:"Osu!mania怎么玩",
-      summary:"乱玩,爱咋玩咋玩",
-      date:"2025-8-19",
-      readTime:"114514分钟",
-      tags:['Osu!mania','how2play'],
+const { Title, Paragraph } = Typography;
 
-    }
-  ];
+const articles = [
+  {
+    id: 1,
+    title: 'Osu!mania 怎么玩',
+    summary: '随手写一点入门体验和个人理解。',
+    date: '2025-08-19',
+    readTime: '114514 分钟',
+    tags: ['Osu!mania', 'how2play'],
+  },
+];
+
+const Article = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const info = () => {
+    messageApi.info('这篇还没写完 >_<');
+  };
 
   return (
     <>
       {contextHolder}
       <ResponsiveLayout>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <Title>文章列表</Title>
-          <Paragraph style={{ marginBottom: '32px' }}>
-            我乱写的，你们随便看看就行
-          </Paragraph>
-          
-          <List
-            itemLayout="vertical"
-            size="large"
-            dataSource={articles}
-            renderItem={item => (
-              <List.Item key={item.id}>
-                <Card 
-                  hoverable
-                  style={{ marginBottom: '16px' }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1 }}>
-                      <Title level={3} style={{ marginBottom: '8px' }}>{item.title}</Title>
-                      <Paragraph style={{ color: '#666', marginBottom: '16px' }}>
-                        {item.summary}
-                      </Paragraph>
-                      <Space>
-                        <span style={{ color: '#999', fontSize: '14px' }}>{item.date}</span>
-                        <span style={{ color: '#999', fontSize: '14px' }}>阅读时间: {item.readTime}</span>
-                      </Space>
-                      <div style={{ marginTop: '12px' }}>
+        <div className="page-container page-container--medium">
+          <section className="page-hero">
+            <div className="page-hero-content">
+              <div className="page-eyebrow">Articles</div>
+              <Title level={2}>文章列表</Title>
+              <Paragraph className="page-intro">
+                一些随手写的内容，先放在这里慢慢补。
+              </Paragraph>
+            </div>
+          </section>
+
+          <section className="page-section">
+            <List
+              itemLayout="vertical"
+              size="large"
+              dataSource={articles}
+              renderItem={(item) => (
+                <List.Item key={item.id}>
+                  <Card hoverable className="article-list-card">
+                    <div className="article-list-content">
+                      <div className="article-list-main">
+                        <Title level={3} className="article-list-title">
+                          {item.title}
+                        </Title>
+                        <Paragraph className="article-list-summary">
+                          {item.summary}
+                        </Paragraph>
                         <Space>
-                          {item.tags.map(tag => (
-                            <Tag key={tag} color="blue">{tag}</Tag>
-                          ))}
+                          <span className="article-list-meta">{item.date}</span>
+                          <span className="article-list-meta">
+                            阅读时间: {item.readTime}
+                          </span>
                         </Space>
+                        <div className="article-list-tags">
+                          <Space>
+                            {item.tags.map((tag) => (
+                              <Tag key={tag} color="blue">
+                                {tag}
+                              </Tag>
+                            ))}
+                          </Space>
+                        </div>
                       </div>
+                      <Button
+                        type="primary"
+                        className="article-list-action"
+                        onClick={info}
+                      >
+                        阅读全文
+                      </Button>
                     </div>
-                    <Button 
-                      type="primary" 
-                      style={{ marginLeft: '16px' }}
-                      onClick={info}
-                    >
-                      阅读全文
-                    </Button>
-                  </div>
-                </Card>
-              </List.Item>
-            )}
-          />
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </section>
         </div>
       </ResponsiveLayout>
     </>

@@ -13,6 +13,7 @@ import {
   Collapse
 } from 'antd';
 import { ClearOutlined } from '@ant-design/icons';
+import '../styles/song-pages.css';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -135,9 +136,9 @@ const MaimaiFilter = ({
   return (
     <Modal
       title="筛选条件"
-      visible={visible}
+      open={visible}
       onCancel={onClose}
-      width={800}
+      width="min(800px, calc(100vw - 32px))"
       footer={[
         <Button key="reset" icon={<ClearOutlined />} onClick={handleReset}>
           重置
@@ -150,7 +151,7 @@ const MaimaiFilter = ({
         </Button>,
       ]}
     >
-      <div style={{ marginBottom: 16 }}>
+      <div className="song-page-filter-tags">
         <Space wrap>
           {renderFilterTags()}
         </Space>
@@ -159,14 +160,14 @@ const MaimaiFilter = ({
       <Collapse defaultActiveKey={['basic', 'advanced']}>
         <Panel header="基本筛选" key="basic">
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>标题</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">标题</div>
               <Input
                 placeholder="输入标题"
                 value={tempFilters.title || ''}
                 onChange={e => updateFilter('title', e.target.value || null)}
               />
-              <div style={{ marginTop: 4 }}>
+              <div className="song-page-filter-checkbox">
                 <Checkbox
                   checked={tempFilters.matchExactTitle || false}
                   onChange={e => updateFilter('matchExactTitle', e.target.checked)}
@@ -176,14 +177,14 @@ const MaimaiFilter = ({
               </div>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>艺术家</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">艺术家</div>
               <Input
                 placeholder="输入艺术家"
                 value={tempFilters.artist || ''}
                 onChange={e => updateFilter('artist', e.target.value || null)}
               />
-              <div style={{ marginTop: 4 }}>
+              <div className="song-page-filter-checkbox">
                 <Checkbox
                   checked={tempFilters.matchExactArtist || false}
                   onChange={e => updateFilter('matchExactArtist', e.target.checked)}
@@ -193,8 +194,8 @@ const MaimaiFilter = ({
               </div>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>分类</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">分类</div>
               <Select
                 mode="multiple"
                 placeholder="选择分类"
@@ -210,8 +211,8 @@ const MaimaiFilter = ({
               </Select>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>版本</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">版本</div>
               <Select
                 mode="multiple"
                 placeholder="选择版本"
@@ -227,8 +228,8 @@ const MaimaiFilter = ({
               </Select>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>类型</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">类型</div>
               <Select
                 mode="multiple"
                 placeholder="选择类型"
@@ -244,8 +245,8 @@ const MaimaiFilter = ({
               </Select>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>难度</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">难度</div>
               <Select
                 mode="multiple"
                 placeholder="选择难度"
@@ -261,8 +262,8 @@ const MaimaiFilter = ({
               </Select>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>地区</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">地区</div>
               <Select
                 placeholder="选择地区"
                 style={{ width: '100%' }}
@@ -278,8 +279,8 @@ const MaimaiFilter = ({
               </Select>
             </Col>
             
-            <Col span={12}>
-              <div style={{ marginBottom: 8 }}>谱面设计师</div>
+            <Col xs={24} md={12}>
+              <div className="song-page-filter-field">谱面设计师</div>
               <Select
                 mode="multiple"
                 placeholder="选择谱面设计师"
@@ -300,29 +301,29 @@ const MaimaiFilter = ({
         <Panel header="高级筛选" key="advanced">
           <Row gutter={[16, 16]}>
             <Col span={24}>
-              <div style={{ marginBottom: 8 }}>BPM范围</div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className="song-page-filter-field">BPM范围</div>
+              <div className="song-page-filter-range">
                 <Input
                   type="number"
                   placeholder="最小BPM"
                   value={tempFilters.minBPM || ''}
                   onChange={e => updateFilter('minBPM', e.target.value ? parseFloat(e.target.value) : null)}
-                  style={{ width: '100px', marginRight: 8 }}
+                  className="song-page-filter-range-input"
                 />
-                <span style={{ margin: '0 8px' }}>-</span>
+                <span>-</span>
                 <Input
                   type="number"
                   placeholder="最大BPM"
                   value={tempFilters.maxBPM || ''}
                   onChange={e => updateFilter('maxBPM', e.target.value ? parseFloat(e.target.value) : null)}
-                  style={{ width: '100px', marginRight: 8 }}
+                  className="song-page-filter-range-input"
                 />
               </div>
             </Col>
             
             <Col span={24}>
-              <div style={{ marginBottom: 8 }}>等级范围</div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className="song-page-filter-field">等级范围</div>
+              <div className="song-page-filter-range">
                 <Slider
                   range
                   min={0}
@@ -336,9 +337,9 @@ const MaimaiFilter = ({
                     updateFilter('minLevelValue', value[0]);
                     updateFilter('maxLevelValue', value[1]);
                   }}
-                  style={{ flex: 1, marginRight: 16 }}
+                  className="song-page-filter-slider"
                 />
-                <div style={{ minWidth: '100px' }}>
+                <div className="song-page-filter-value">
                   {tempFilters.minLevelValue || 0} - {tempFilters.maxLevelValue || 15}
                 </div>
               </div>
