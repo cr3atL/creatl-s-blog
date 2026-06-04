@@ -33,7 +33,8 @@ const Home = () => {
             <div className="page-eyebrow">个人主页 + 工具站</div>
             <Title level={2}>creatL 的小站</Title>
             <Paragraph className="page-intro">
-              这里会放一些个人内容、文章和随手做的小工具。旧曲库页面先从活动入口下线，之后会用更清晰的结构重做。
+              这里会放一些个人内容、文章和随手做的小工具。旧曲库页面已经从活动入口下线，
+              之后会用更清晰的结构重新设计。
             </Paragraph>
             <div className="social-links">
               <GithubOutlined
@@ -82,7 +83,8 @@ const Home = () => {
           <div className="page-section-header">
             <Title level={3}>关于我</Title>
             <Paragraph className="page-body-text">
-              我是桔子酱！ / creatL，正在学习 React 前端开发。平时喜欢 osu!mania、定轨音游和 trance。
+              我是桔子酱 / creatL，正在学习 React 前端开发。平时喜欢 osu!mania、
+              定轨音游和 trance。
             </Paragraph>
           </div>
         </section>
@@ -130,7 +132,8 @@ const Home = () => {
         <section className="page-section">
           <Title level={3}>最新动态</Title>
           <Paragraph className="page-body-text">
-            小站正在整理中。文章、工具和个人信息会逐步补齐。如果你有好玩的想法，或者发现了需要修复的问题，可以在关于页面找到我的联系方式。
+            小站正在整理中。文章、工具和个人信息会逐步补齐。如果你有好玩的想法，
+            或者发现了需要修复的问题，可以在关于页面找到我的联系方式。
           </Paragraph>
         </section>
       </div>

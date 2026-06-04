@@ -36,7 +36,6 @@ import {
   createFilterOptions, 
   countActiveFilters 
 } from '../utils/maimaiFilters.js';
-import '../styles/song-pages.css';
 
 
 const { Title, Paragraph } = Typography;
@@ -217,14 +216,14 @@ const MaimaiSongs = () => {
     return (
       <div>
         <Row gutter={[16, 16]}>
-          <Col xs={24} md={8}>
+          <Col span={8}>
               <SafeImage
                 src={song.imageUrl}
                 alt={song.title}
                 style={{ width: '100%' }}
               />
             </Col>
-          <Col xs={24} md={16}>
+          <Col span={16}>
             <Title level={3}>{song.title}</Title>
             <Paragraph>{song.artist}</Paragraph>
             <div>
@@ -242,7 +241,6 @@ const MaimaiSongs = () => {
           pagination={false}
           size="small"
           rowKey="sheetExpr"
-          scroll={{ x: 'max-content' }}
           columns={[
             {
               title: '类型',
@@ -412,18 +410,18 @@ const MaimaiSongs = () => {
 
   return (
     <ResponsiveLayout>
-      <div className="song-page-shell song-page-shell--maimai">
+      <div style={{ padding: '0 16px' }}>
         <Title level={2}>maimai 曲库</Title>
         
         <div style={{ marginBottom: 16 }}>
-          <Row gutter={[16, 16]} align="middle" className="song-page-toolbar">
-            <Col xs={24} sm="auto">
+          <Row gutter={[16, 16]} align="middle">
+            <Col>
               <Search
                 placeholder="搜索歌曲标题或艺术家"
                 allowClear
                 enterButton={<SearchOutlined />}
                 size="large"
-                className="song-page-search"
+                style={{ width: 300 }}
                 onSearch={(value) => {
                   handleFilterChange({
                     ...filters,
@@ -432,7 +430,7 @@ const MaimaiSongs = () => {
                 }}
               />
             </Col>
-            <Col xs={24} sm="auto">
+            <Col>
               <Button
                 type="primary"
                 icon={<FilterOutlined />}
@@ -441,7 +439,7 @@ const MaimaiSongs = () => {
                 筛选 {activeFiltersCount > 0 && `(${activeFiltersCount})`}
               </Button>
             </Col>
-            <Col xs={24} sm="auto">
+            <Col>
               <Button
                 icon={<ClearOutlined />}
                 onClick={handleResetFilters}
@@ -450,7 +448,7 @@ const MaimaiSongs = () => {
                 重置
               </Button>
             </Col>
-            <Col xs={24} sm="auto">
+            <Col>
               <Button
                 type="primary"
                 icon={<SwapOutlined />}
@@ -493,26 +491,26 @@ const MaimaiSongs = () => {
         )}
         
         <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-          <Col xs={12} md={6}>
+          <Col span={6}>
             <Statistic
               title="总歌曲数"
               value={data?.songs?.length || 0}
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col span={6}>
             <Statistic
               title="筛选结果"
               value={filteredSongs.length}
               suffix={`/ ${data?.songs?.length || 0}`}
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col span={6}>
             <Statistic
               title="活跃筛选"
               value={activeFiltersCount}
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col span={6}>
             <Statistic
               title="更新时间"
               value={data?.updateTime || '未知'}
@@ -527,7 +525,6 @@ const MaimaiSongs = () => {
             columns={columns}
             dataSource={filteredSongs}
             rowKey="songId"
-            scroll={{ x: 'max-content' }}
             pagination={{
               pageSize: 20,
               showSizeChanger: true,
@@ -552,7 +549,7 @@ const MaimaiSongs = () => {
         visible={songDetailModalVisible}
         onCancel={() => setSongDetailModalVisible(false)}
         footer={null}
-        width="min(800px, calc(100vw - 32px))"
+        width={800}
       >
         {renderSongDetail(selectedSong)}
       </Modal>

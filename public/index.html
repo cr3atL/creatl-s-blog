@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="creatL's personal blog"
+      content="creatL's personal homepage and tool site"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -24,7 +24,30 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>creatL's Blog</title>
+    <script type="text/javascript">
+      (function (l) {
+        if (l.search[1] === 'p') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (part) {
+              return part.replace(/~and~/g, '&');
+            })
+            .join('?');
+
+          var params = new URLSearchParams(decoded);
+          var path = params.get('p') || '/';
+          var query = params.get('q');
+
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + path + (query ? '?' + query : '') + l.hash
+          );
+        }
+      })(window.location);
+    </script>
+    <title>creatL's Site</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -89,10 +89,10 @@ jest.mock('./Page/RaceSignon', () => ({
   default: () => null,
 }));
 
-test('renders the blog app shell', () => {
+test('renders the site app shell', () => {
   window.history.pushState({}, '', '/creatl-s-blog/');
 
   render(<App />);
 
-  expect(screen.getByText(/creatL's Blog/i)).toBeInTheDocument();
+  expect(screen.getByText(/creatL's Site/i)).toBeInTheDocument();
 });

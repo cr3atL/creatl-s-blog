@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import ResponsiveLayout from '../components/ResponsiveLayout';
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Typography, Spin } from 'antd';
 import { ReloadOutlined, DownloadOutlined } from '@ant-design/icons';
+import ResponsiveLayout from '../components/ResponsiveLayout';
 
 const { Title, Paragraph } = Typography;
 
@@ -13,7 +12,6 @@ const importAll = (r) => {
 const images = [];
 try {
   const requireContext = require.context('../ssiba', false, /\.(png|jpe?g|svg|gif)$/);
-
   images.push(...importAll(requireContext));
 } catch (error) {
   console.error('Error loading images:', error);
@@ -46,9 +44,7 @@ const Randomssiba = () => {
 
     const link = document.createElement('a');
     link.href = currentImage;
-
-    const fileName = currentImage.split('/').pop() || 'rabbit-image';
-    link.download = fileName;
+    link.download = currentImage.split('/').pop() || 'rabbit-image';
 
     document.body.appendChild(link);
     link.click();
@@ -75,7 +71,7 @@ const Randomssiba = () => {
         <section className="page-section">
           <div className="random-image-stage">
             {loading ? (
-              <Spin size="large" tip="加载中..." />
+              <Spin size="large" />
             ) : currentImage ? (
               <div className="random-image-preview">
                 {isVideoFile(currentImage) ? (

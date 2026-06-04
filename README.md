@@ -1,204 +1,120 @@
-# creatL's Blog
+# creatL's Site
 
-一个基于React和Ant Design构建的个人博客系统，具有现代化的UI设计和流畅的用户体验。
+creatL 的个人主页 + 工具站。这个项目用于展示个人信息、文章入口，以及一些轻量小工具。旧版音乐游戏曲库已经从活动页面下线，代码被归档为参考，之后会用更清晰的结构重新设计。
 
-## 🚀 项目特性
+在线预览：[https://cr3atl.github.io/creatl-s-blog](https://cr3atl.github.io/creatl-s-blog)
 
-- **现代化UI设计**: 使用Ant Design组件库，配合毛玻璃效果和粒子动画背景
-- **响应式布局**: 适配不同屏幕尺寸的设备，包括专门的移动端布局
-- **多页面支持**: 包含首页、文章列表、关于页面、随机兔子图片页面、音乐游戏曲库页面
-- **音乐游戏曲库**: 集成maimai、中二节奏(CHUNITHM)和SDVX曲库数据
-- **高级筛选功能**: 支持按标题、艺术家、版本、类型、难度等多种条件筛选歌曲
-- **随机选曲功能**: 一键随机选择符合条件的歌曲
-- **谱面详情展示**: 显示歌曲的详细信息、难度等级和谱面设计师
-- **GitHub Pages部署**: 通过GitHub Actions自动化部署
-- **React Router**: 实现客户端路由导航
-- **动态内容**: 随机兔子图片展示功能
-- **社交链接**: 集成GitHub、Bilibili、OSU等社交平台链接
+## 当前功能
 
-## 🛠️ 技术栈
+- **首页**：个人简介、社交入口、常用工具入口和最新动态。
+- **文章**：轻量文章列表，后续可继续扩展详情页、标签和归档。
+- **工具页**：集中展示当前可用和未来计划中的小工具。
+- **随机兔子图片**：从本地图片集中随机展示一张图片，并支持下载。
+- **比赛报名**：保留中的轻量报名表单，后续可补齐提交和确认流程。
+- **关于页**：个人资料、兴趣标签和联系方式。
+- **GitHub Pages 部署**：支持 SPA 深链刷新和 404 fallback。
 
-- **前端框架**: React 19.1.1
-- **UI组件库**: Ant Design 5.27.0
-- **路由管理**: React Router DOM 7.8.1
-- **构建工具**: Create React App (react-scripts 5.0.1)
-- **部署工具**: GitHub Pages + GitHub Actions
-- **开发工具**: ESLint, Jest, React Testing Library
+## 技术栈
 
-## 📁 项目结构
+- React 19
+- React Router DOM 7
+- Ant Design 5
+- Create React App / react-scripts
+- GitHub Pages + GitHub Actions
+- Jest + React Testing Library
 
-```
+## 项目结构
+
+```txt
 src/
-├── components/          # 公共组件
-│   ├── Layout.js      # 布局组件（包含导航和背景）
-│   ├── ArticleCard.js # 文章卡片组件
-│   ├── Sidebar.js     # 侧边栏组件
-│   ├── ParticleCanvas.js # 粒子动画组件
-│   ├── SafeImage.js   # 安全图片组件（支持错误处理和URL转换）
-│   ├── MaimaiFilter.js # maimai曲库筛选组件
-│   ├── ResponsiveLayout.js # 响应式布局组件
-│   ├── MobileLayout.js # 移动端布局组件
-│   └── NoteDetailModal.js # 谱面详情模态框组件
-├── Page/              # 页面组件
-│   ├── Home.js        # 首页
-│   ├── Article.js     # 文章列表页
-│   ├── About.js       # 关于页面
-│   ├── Randomssiba.js # 随机兔子图片页面
-│   ├── MaimaiSongs.js # maimai曲库页面
-│   ├── ChunithmSongs.js # 中二节奏曲库页面
-│   ├── SdvxSongs.js   # SDVX曲库页面
-│   └── RaceSignon.js  # 比赛报名页面
-├── assets/            # 静态资源
-├── icons/             # 图标资源
-│   ├── OSUIcon.png    # OSU图标
-│   ├── QQIcon.png     # QQ图标
-│   └── bilibiliIcon.ico # Bilibili图标
-├── images/            # 图片资源
-│   └── Background.jpg # 背景图片
-├── ssiba/             # 兔子图片资源目录
-├── styles/            # 样式文件
-│   └── responsive.css # 响应式样式
-├── types/             # TypeScript类型定义
-│   └── maimai.ts      # maimai数据类型定义
-└── utils/             # 工具函数
-    ├── analytics.js   # 分析工具
-    ├── deviceDetector.js # 设备检测工具
-    ├── maimaiData.js  # maimai数据处理工具
-    ├── maimaiFilters.js # maimai筛选工具
-    └── random.js      # 随机数生成工具
+├── Page/                    # 活动页面
+│   ├── Home.js              # 首页
+│   ├── Article.js           # 文章列表
+│   ├── Tools.js             # 工具集合页
+│   ├── Randomssiba.js       # 随机兔子图片工具
+│   ├── RaceSignon.js        # 比赛报名工具
+│   ├── About.js             # 关于页
+│   └── NotFound.js          # 404 页面
+├── archive/
+│   └── song-catalog/        # 旧曲库实现归档，仅作未来重做参考
+├── components/              # 布局和通用组件
+├── icons/                   # 图标资源
+├── images/                  # 背景等图片资源
+├── ssiba/                   # 随机图片素材
+├── styles/                  # 全局样式和页面样式
+└── utils/                   # 通用工具函数
 ```
 
-## 🎯 主要功能
+## 旧曲库归档
 
-### 首页
-- 个人介绍和头像展示
-- 文章分类卡片导航
-- 最新动态展示
-- 响应式卡片布局
+旧版 CHUNITHM、SOUND VOLTEX 和 maimai 曲库页面已从 active app 中移除。相关代码保存在：
 
-### 文章页面
-- 文章列表展示
-- 文章摘要和标签
-- 阅读时间统计
-- 文章详情页面（开发中）
+```txt
+src/archive/song-catalog/
+```
 
-### 关于页面
-- 个人信息展示
-- 技能标签云
-- 联系方式
-- 社交媒体链接
-- QQ、GitHub、Bilibili、OSU等平台链接
+这些文件只作为未来重做曲库时的参考，不建议直接恢复到路由中。未来曲库应优先采用配置驱动、统一页面壳和更清晰的数据适配层。
 
-### 随机兔子页面
-- 随机展示兔子图片
-- 动态加载效果
-- 一键切换图片功能
-- 支持多种图片格式（PNG、JPG、GIF）
+## 本地开发
 
-### 音乐游戏曲库页面
-- **maimai曲库**: 完整的maimai歌曲数据，包含基本信息、难度等级和谱面信息
-- **中二节奏曲库**: CHUNITHM歌曲数据，支持多种难度筛选
-- **SDVX曲库**: Sound Voltex歌曲数据，提供详细的谱面信息
-- **高级筛选**: 支持按标题、艺术家、版本、类型、难度、BPM等多种条件筛选
-- **随机选曲**: 一键随机选择符合条件的歌曲，带有动画效果
-- **谱面详情**: 点击歌曲可查看详细信息，包括各难度等级和谱面设计师
-- **响应式表格**: 适配不同屏幕尺寸的歌曲列表展示
+安装依赖：
 
-## 🚀 快速开始
-
-### 环境要求
-- Node.js 18+ 
-- npm 或 yarn
-
-### 安装依赖
 ```bash
 npm install
 ```
 
-### 开发环境运行
+启动开发服务器：
+
 ```bash
 npm start
 ```
-访问 [http://localhost:3000](http://localhost:3000) 查看应用
 
-### 构建生产版本
+构建生产版本：
+
 ```bash
 npm run build
 ```
 
-### 部署到GitHub Pages
+运行测试：
+
+```bash
+npm test
+```
+
+部署到 GitHub Pages：
+
 ```bash
 npm run deploy
 ```
 
-## 📝 可用脚本
+## 路由
 
-- `npm start` - 启动开发服务器
-- `npm run build` - 构建生产版本
-- `npm test` - 运行测试
-- `npm run deploy` - 部署到GitHub Pages
-- `npm run eject` - 暴露配置文件（不可逆操作）
+```txt
+/              首页
+/home          首页别名
+/article       文章
+/tools         工具
+/randomssiba   随机兔子图片
+/race-signon   比赛报名
+/about         关于
+*              404
+```
 
-## 🌐 在线预览
+旧曲库路径现在会进入 404：
 
-项目已部署到GitHub Pages：[https://cr3atl.github.io/creatl-s-blog](https://cr3atl.github.io/creatl-s-blog)
+```txt
+/chunithm-songs
+/sdvx-songs
+/maimai-songs
+```
 
-## 🔄 自动化部署
+## 维护说明
 
-项目使用GitHub Actions实现自动化部署：
-- 推送到master分支自动触发构建
-- 自动部署到GitHub Pages
-- 支持手动触发部署
+- 不要从 `src/archive/song-catalog/` 直接 import 代码到 active app。
+- 新工具优先加入 `src/Page/Tools.js`，再视复杂度拆成独立 feature。
+- 页面文案和源码统一使用 UTF-8。
+- 大体量静态素材后续建议迁到 `public/`、对象存储或 CDN，并用 manifest 管理。
 
-## 🎨 设计特色
-
-- **毛玻璃效果**: 使用backdrop-filter实现现代化的毛玻璃UI
-- **粒子动画背景**: 动态粒子效果增强视觉体验
-- **渐变文字**: 标题使用CSS渐变和动画效果
-- **阴影效果**: 多层阴影营造立体感
-- **响应式设计**: 适配移动端和桌面端
-- **交互动画**: 图标悬停效果和图片加载动画
-- **个性化图标**: 自定义OSU、QQ、Bilibili等平台图标
-
-## 📄 许可证
+## License
 
 MIT License
-
-## 🤝 贡献
-
-欢迎提交Issue和Pull Request来改进这个项目！
-
-## 📝 更新日志
-
-### v1.4.0 (2025-08-23)
-- 优化了maimai曲库筛选界面，隐藏了部分高级筛选功能
-- 保留了核心筛选功能，简化了用户操作流程
-- 修复了React Hook依赖项缺失问题
-- 移除了未使用的组件和变量导入
-
-### v1.3.0 (2025-08-23)
-
-- 完成了中二节奏与sdvx的曲库（数据来源于https://arcade-songs.zetaraku.dev/）
-- 添加了随机歌曲的功能
-- 添加了歌曲筛选/搜索的功能
-
-
-### v1.2.0 (2025-8-19)
-- 为手机端添加了专门适配的Layout
-- 添加了一个时钟组件
-
-
-### v1.1.1 (2025-8-18)
- - 随机兔子页面新增了下载按钮
-
-### v1.1.0 (2025-08-18)
-- 新增随机兔子图片页面功能
-- 修复图片组件使用问题
-- 完善项目文档
-- 优化UI交互效果
-
-### v1.0.0 (2025-08-18)
-- 项目初始化
-- 完成基础页面架构
-- 实现响应式布局
-- 集成GitHub Actions部署

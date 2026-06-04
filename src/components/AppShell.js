@@ -32,7 +32,7 @@ const AppShell = ({ children, header, variant = 'desktop' }) => {
           {children}
         </Content>
         <Footer className={`shell-footer shell-footer-${variant}`}>
-          <div>©2025 creatL. All rights reserved.</div>
+          <div>© 2025 creatL. All rights reserved.</div>
         </Footer>
       </AntLayout>
     </div>

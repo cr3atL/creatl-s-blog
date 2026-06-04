@@ -1,8 +1,8 @@
 import { Typography, Avatar, Space, Tag, message } from 'antd';
-import ResponsiveLayout from '../components/ResponsiveLayout';
 import { GithubOutlined } from '@ant-design/icons';
-import QQIcon from '../icons/QQIcon.png';
 import { useState } from 'react';
+import ResponsiveLayout from '../components/ResponsiveLayout';
+import QQIcon from '../icons/QQIcon.png';
 
 const avatarImage = 'https://github.com/cr3atL.png';
 
@@ -33,14 +33,14 @@ const About = () => {
             <div className="page-hero-content">
               <div className="page-eyebrow">About</div>
               <Title level={2}>CreatL</Title>
-              <Paragraph type="secondary">桔子酱！ | cr3atL</Paragraph>
+              <Paragraph type="secondary">桔子酱 | cr3atL</Paragraph>
               {isHovered && (
                 <Paragraph className="about-avatar-hint">
-                  点击就可以摸摸桔子酱！。
+                  点击就可以摸摸桔子酱！
                 </Paragraph>
               )}
               <Paragraph className="page-body-text">
-                你好，我是桔子酱！。我喜欢玩 osu!mania，也在学习前端开发。
+                你好，我是桔子酱。喜欢 osu!mania，也在学习前端开发。
               </Paragraph>
             </div>
           </section>

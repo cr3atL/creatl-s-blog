@@ -13,7 +13,6 @@ const ResponsiveLayout = ({ children }) => {
     setIsLoading(false);
 
     const cleanup = watchDeviceChange(setDeviceType);
-
     return cleanup;
   }, []);
 

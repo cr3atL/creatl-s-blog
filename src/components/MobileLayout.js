@@ -23,7 +23,7 @@ const MobileLayout = ({ children }) => {
       header={(currentTime) => (
         <>
           <Header className="shell-header shell-header-mobile">
-            <div className="blog-title shell-title-mobile">creatL's Blog</div>
+            <div className="blog-title shell-title-mobile">creatL's Site</div>
             <div className="shell-time shell-mobile-time-inline">{currentTime}</div>
             <Button
               type="text"

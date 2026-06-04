@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
     <AppShell
       header={(currentTime) => (
         <Header className="shell-header shell-header-desktop header-container">
-          <div className="blog-title shell-title-desktop">creatL's Blog</div>
+          <div className="blog-title shell-title-desktop">creatL's Site</div>
           <div className="menu-container">
             <Menu
               theme="dark"

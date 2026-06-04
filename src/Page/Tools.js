@@ -33,7 +33,8 @@ const Tools = () => {
             <div className="page-eyebrow">Tools</div>
             <Title level={2}>工具</Title>
             <Paragraph className="page-intro">
-              这里放一些已经可用或正在打磨的小工具。旧曲库页面暂时下线，之后会用更清晰的结构重做。
+              这里放一些已经可用或正在打磨的小工具。旧曲库页面暂时下线，
+              之后会用更清晰的结构重做。
             </Paragraph>
           </div>
         </section>
@@ -58,7 +59,7 @@ const Tools = () => {
         <section className="page-section">
           <Title level={3}>未来工具</Title>
           <Paragraph className="page-body-text">
-            新工具会优先放在这里，导航保持简短，首页只保留核心入口。
+            新工具会优先放在这里。导航保持简短，首页只保留核心入口。
           </Paragraph>
         </section>
       </div>
