@@ -4,6 +4,15 @@ creatL 的个人主页 + 工具站。这个项目用于展示个人信息、文�
 
 在线预览：[https://cr3atl.github.io/creatl-s-blog](https://cr3atl.github.io/creatl-s-blog)
 
+## 项目状态
+
+当前版本已完成从“音乐游戏曲库站”到“个人主页 + 工具站”的第一轮重构：
+
+- 活动导航和路由已聚焦于首页、文章、工具与关于页。
+- 原有 CHUNITHM、SOUND VOLTEX 和 maimai 曲库已下线并归档。
+- 活动页面已统一布局和中文文案。
+- 旧曲库路径及未知路径统一进入 404 页面。
+
 ## 当前功能
 
 - **首页**：个人简介、社交入口、常用工具入口和最新动态。
@@ -57,10 +66,15 @@ src/archive/song-catalog/
 
 ## 本地开发
 
+环境要求：
+
+- Node.js 18 或更高版本
+- npm
+
 安装依赖：
 
 ```bash
-npm install
+npm ci
 ```
 
 启动开发服务器：
@@ -78,13 +92,14 @@ npm run build
 运行测试：
 
 ```bash
-npm test
+npm test -- --watchAll=false
 ```
 
-部署到 GitHub Pages：
+提交改动前建议依次运行：
 
 ```bash
-npm run deploy
+npm test -- --watchAll=false
+npm run build
 ```
 
 ## 路由
@@ -115,6 +130,13 @@ npm run deploy
 - 页面文案和源码统一使用 UTF-8。
 - 大体量静态素材后续建议迁到 `public/`、对象存储或 CDN，并用 manifest 管理。
 
+## 部署说明
+
+- 生产站点部署在 GitHub Pages 的 `/creatl-s-blog` 子路径。
+- `BrowserRouter` 的 `basename` 与 `package.json` 中的 `homepage` 必须保持一致。
+- `public/404.html` 与 `public/index.html` 中的重定向脚本用于支持 SPA 深链刷新。
+- GitHub Actions 工作流位于 `.github/workflows/static.yml`。
+
 ## License
 
-MIT License
+当前仓库尚未添加独立的 License 文件。
