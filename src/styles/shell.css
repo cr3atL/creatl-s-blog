@@ -10,18 +10,17 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: var(--shell-background-image);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: saturate(0.84) brightness(1.08);
-  z-index: -1;
+  background: var(--theme-bg, #080b0a);
+  z-index: 0;
 }
 
 .shell-background::after {
   position: absolute;
   inset: 0;
-  background: rgba(244, 248, 248, 0.68);
+  background:
+    radial-gradient(circle at 24% 32%, rgba(148, 215, 170, 0.08), transparent 24%),
+    radial-gradient(circle at 78% 26%, rgba(121, 201, 213, 0.08), transparent 22%),
+    rgba(8, 11, 10, 0.74);
   content: "";
 }
 
@@ -29,7 +28,7 @@
   min-height: 100vh;
   background: transparent;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .shell-header {
@@ -270,4 +269,61 @@
   .shell-mobile-time-inline {
     display: none;
   }
+}
+
+[data-ui-theme="ascii-modern"] .shell-background {
+  background-color: var(--theme-bg);
+}
+
+[data-ui-theme="ascii-modern"] .shell-background::after {
+  background:
+    radial-gradient(circle at 18% 26%, rgba(121, 201, 213, 0.08), transparent 24%),
+    radial-gradient(circle at 86% 24%, rgba(148, 215, 170, 0.06), transparent 28%),
+    rgba(8, 11, 10, 0.48);
+}
+
+[data-ui-theme="ascii-modern"] .shell-header {
+  backdrop-filter: blur(14px);
+}
+
+[data-ui-theme="ascii-modern"] .blog-title,
+[data-ui-theme="ascii-modern"] .shell-time {
+  font-family: var(--theme-mono);
+}
+
+[data-ui-theme="ascii-modern"] .blog-title {
+  color: var(--theme-signal-green);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[data-ui-theme="ascii-modern"] .shell-time {
+  letter-spacing: 0.04em;
+}
+
+[data-ui-theme="ascii-modern"] .shell-desktop-menu.ant-menu-dark .ant-menu-item,
+[data-ui-theme="ascii-modern"] .shell-desktop-menu.ant-menu-dark .ant-menu-submenu-title {
+  border-radius: 4px;
+}
+
+[data-ui-theme="ascii-modern"] .shell-desktop-menu.ant-menu-dark .ant-menu-item-selected,
+[data-ui-theme="ascii-modern"] .shell-desktop-menu.ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background: var(--page-accent-soft);
+  color: var(--theme-signal-green);
+}
+
+[data-ui-theme="ascii-modern"] .shell-content-desktop,
+[data-ui-theme="ascii-modern"] .shell-content-mobile {
+  backdrop-filter: blur(8px);
+}
+
+[data-ui-theme="ascii-modern"] .shell-content-desktop {
+  margin: 20px;
+  padding: 28px;
+}
+
+[data-ui-theme="ascii-modern"] .shell-footer {
+  font-family: var(--theme-mono);
+  letter-spacing: 0.04em;
 }

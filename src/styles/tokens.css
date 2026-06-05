@@ -32,6 +32,45 @@
   --shell-drawer-text: #1f2933;
 }
 
+[data-ui-theme="ascii-modern"] {
+  color-scheme: dark;
+  --theme-bg: #080b0a;
+  --theme-surface: rgba(16, 22, 19, 0.88);
+  --theme-surface-strong: #111713;
+  --theme-surface-muted: rgba(20, 28, 23, 0.92);
+  --theme-line: rgba(197, 219, 207, 0.16);
+  --theme-line-strong: rgba(197, 219, 207, 0.28);
+  --theme-text: #e5e9e6;
+  --theme-muted: #a8b2ac;
+  --theme-subtle: #77837c;
+  --theme-signal-green: #94d7aa;
+  --theme-signal-cyan: #79c9d5;
+  --theme-signal-yellow: #dfc47a;
+  --theme-danger: #de7777;
+  --theme-mono: Consolas, "Cascadia Mono", "Courier New", monospace;
+  --page-card-radius: 6px;
+  --page-glass-bg: var(--theme-surface);
+  --page-glass-border: var(--theme-line);
+  --page-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+  --page-avatar-shadow: 0 0 0 4px rgba(148, 215, 170, 0.08);
+  --page-text: var(--theme-text);
+  --page-text-muted: var(--theme-muted);
+  --page-text-subtle: var(--theme-subtle);
+  --page-accent: var(--theme-signal-green);
+  --page-accent-soft: rgba(148, 215, 170, 0.12);
+  --shell-surface: rgba(8, 11, 10, 0.76);
+  --shell-surface-strong: rgba(12, 17, 14, 0.94);
+  --shell-surface-muted: var(--theme-surface-muted);
+  --shell-border: var(--theme-line);
+  --shell-shadow: none;
+  --shell-header-bg: rgba(8, 11, 10, 0.92);
+  --shell-header-border: var(--theme-line);
+  --shell-header-text: var(--theme-text);
+  --shell-header-muted: var(--theme-muted);
+  --shell-drawer-bg: var(--theme-surface-strong);
+  --shell-drawer-text: var(--theme-text);
+}
+
 @media (max-width: 768px) {
   :root {
     --page-inline-padding: 16px;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout as AntLayout } from 'antd';
-import backgroundImage from '../images/Background.jpg';
+import AmbientCanvas from './ambient/AmbientCanvas';
 import '../styles/shell.css';
 
 const { Content, Footer } = AntLayout;
@@ -20,11 +20,9 @@ const AppShell = ({ children, header, variant = 'desktop' }) => {
   }, []);
 
   return (
-    <div
-      className="shell-root"
-      style={{ '--shell-background-image': `url(${backgroundImage})` }}
-    >
+    <div className="shell-root">
       <div className="shell-background" />
+      {document.documentElement.dataset.uiTheme === 'ascii-modern' && <AmbientCanvas />}
 
       <AntLayout className="shell-layout">
         {header(currentTime)}

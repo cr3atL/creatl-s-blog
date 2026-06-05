@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ConfigProvider } from 'antd';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { asciiModernTheme, resolveUITheme } from './theme/uiTheme';
+
+const queryTheme = new URLSearchParams(window.location.search).get('ui');
+const configuredTheme = process.env.REACT_APP_UI_THEME || 'ascii-modern';
+const uiTheme = resolveUITheme(queryTheme, configuredTheme);
+
+document.documentElement.dataset.uiTheme = uiTheme;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ConfigProvider theme={uiTheme === 'ascii-modern' ? asciiModernTheme : undefined}>
+      <App />
+    </ConfigProvider>
   </React.StrictMode>
 );
 

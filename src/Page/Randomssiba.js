@@ -68,10 +68,13 @@ const Randomssiba = () => {
           </div>
         </section>
 
-        <section className="page-section">
-          <div className="random-image-stage">
+        <section className="page-section random-image-panel">
+          <div className="random-image-stage" aria-live="polite">
             {loading ? (
-              <Spin size="large" />
+              <div className="random-image-status">
+                <Spin size="large" />
+                <span>正在接收图像信号...</span>
+              </div>
             ) : currentImage ? (
               <div className="random-image-preview">
                 {isVideoFile(currentImage) ? (
@@ -108,7 +111,7 @@ const Randomssiba = () => {
             )}
           </div>
 
-          <div className="page-action-row">
+          <div className="page-action-row random-image-actions">
             <Button
               type="primary"
               icon={<ReloadOutlined />}

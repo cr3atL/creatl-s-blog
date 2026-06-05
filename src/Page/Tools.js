@@ -39,10 +39,10 @@ const Tools = () => {
           </div>
         </section>
 
-        <section className="page-section">
-          <div className="page-grid page-grid--two">
+        <section className="page-section tools-directory">
+          <div className="page-grid page-grid--two tools-grid">
             {tools.map((tool) => (
-              <div key={tool.key} className="tool-card">
+              <div key={tool.key} className="tool-card tool-card--process">
                 <span className="tool-card-icon">{tool.icon}</span>
                 <div className="tool-card-body">
                   <Title level={4}>{tool.title}</Title>
@@ -56,7 +56,7 @@ const Tools = () => {
           </div>
         </section>
 
-        <section className="page-section">
+        <section className="page-section future-tools">
           <Title level={3}>未来工具</Title>
           <Paragraph className="page-body-text">
             新工具会优先放在这里。导航保持简短，首页只保留核心入口。

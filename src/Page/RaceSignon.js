@@ -17,7 +17,7 @@ const RaceSignon = () => {
           </div>
         </section>
 
-        <section className="page-section">
+        <section className="page-section race-form-section">
           <Form layout="vertical" className="quiet-form">
             <Form.Item label="游戏 ID">
               <Input />

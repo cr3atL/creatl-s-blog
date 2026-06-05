@@ -6,6 +6,7 @@ import OSUIcon from '../icons/OSUIcon.png';
 import BiliBiliIcon from '../icons/bilibiliIcon.ico';
 import CloudmusicIcon from '../icons/CloudmusicIcon.ico';
 import { trackEvent } from '../utils/analytics';
+import StationWeather from '../components/ambient/StationWeather';
 
 const avatarImage = 'https://github.com/cr3atL.png';
 
@@ -13,6 +14,7 @@ const { Title, Paragraph } = Typography;
 
 const Home = () => {
   const navigate = useNavigate();
+  const isAsciiModern = document.documentElement.dataset.uiTheme === 'ascii-modern';
 
   const handleIconClick = (url, platform) => {
     trackEvent('Social_Media', 'Click', platform);
@@ -24,59 +26,70 @@ const Home = () => {
     navigate(path);
   };
 
+  const heroContent = (
+    <>
+      <Avatar src={avatarImage} size={72} className="page-heading-avatar" />
+      <div className="page-hero-content">
+        <div className="page-eyebrow">个人主页 + 工具站</div>
+        <Title level={2}>creatL 的小站</Title>
+        <Paragraph className="page-intro">
+          这里会放一些个人内容、文章和随手做的小工具。旧曲库页面已经从活动入口下线，
+          之后会用更清晰的结构重新设计。
+        </Paragraph>
+        <div className="social-links">
+          <GithubOutlined
+            className="social-link-icon"
+            onClick={() => handleIconClick('https://github.com/cr3atL', 'GitHub')}
+            title="GitHub"
+          />
+          <img
+            src={BiliBiliIcon}
+            alt="bilibili"
+            className="social-link-icon"
+            onClick={() =>
+              handleIconClick(
+                'https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/',
+                'Bilibili'
+              )
+            }
+            title="bilibili 主页"
+          />
+          <img
+            src={OSUIcon}
+            alt="OSU!"
+            className="social-link-icon"
+            onClick={() =>
+              handleIconClick('https://osu.ppy.sh/users/24792120', 'OSU')
+            }
+            title="OSU! 主页"
+          />
+          <img
+            src={CloudmusicIcon}
+            alt="网易云歌单"
+            className="social-link-icon"
+            onClick={() =>
+              handleIconClick(
+                'https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4=',
+                'Netease_Music'
+              )
+            }
+            title="网易云歌单"
+          />
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <ResponsiveLayout>
       <div className="page-container">
-        <section className="page-hero">
-          <Avatar src={avatarImage} size={72} className="page-heading-avatar" />
-          <div className="page-hero-content">
-            <div className="page-eyebrow">个人主页 + 工具站</div>
-            <Title level={2}>creatL 的小站</Title>
-            <Paragraph className="page-intro">
-              这里会放一些个人内容、文章和随手做的小工具。旧曲库页面已经从活动入口下线，
-              之后会用更清晰的结构重新设计。
-            </Paragraph>
-            <div className="social-links">
-              <GithubOutlined
-                className="social-link-icon"
-                onClick={() => handleIconClick('https://github.com/cr3atL', 'GitHub')}
-                title="GitHub"
-              />
-              <img
-                src={BiliBiliIcon}
-                alt="bilibili"
-                className="social-link-icon"
-                onClick={() =>
-                  handleIconClick(
-                    'https://space.bilibili.com/401366615?spm_id_from=333.1007.0.0/',
-                    'Bilibili'
-                  )
-                }
-                title="bilibili 主页"
-              />
-              <img
-                src={OSUIcon}
-                alt="OSU!"
-                className="social-link-icon"
-                onClick={() =>
-                  handleIconClick('https://osu.ppy.sh/users/24792120', 'OSU')
-                }
-                title="OSU! 主页"
-              />
-              <img
-                src={CloudmusicIcon}
-                alt="网易云歌单"
-                className="social-link-icon"
-                onClick={() =>
-                  handleIconClick(
-                    'https://music.163.com/playlist?id=12625543271&uct2=U2FsdGVkX1+cyjQGLYDuxxrxXWCr+2t5vb0lSKRkye4=',
-                    'Netease_Music'
-                  )
-                }
-                title="网易云歌单"
-              />
-            </div>
-          </div>
+        <section className={`page-hero${isAsciiModern ? ' home-hero' : ''}`}>
+          {isAsciiModern ? (
+            <div className="home-hero__identity">{heroContent}</div>
+          ) : (
+            heroContent
+          )}
+          {isAsciiModern && <StationWeather />}
         </section>
 
         <section className="page-section">

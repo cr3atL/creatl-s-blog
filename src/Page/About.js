@@ -20,8 +20,8 @@ const About = () => {
     <>
       {contextHolder}
       <ResponsiveLayout>
-        <div className="page-container page-container--narrow">
-          <section className="page-hero profile-card">
+        <div className="page-container page-container--narrow about-page">
+          <section className="page-hero profile-card about-hero">
             <Avatar
               size={112}
               src={avatarImage}
@@ -45,7 +45,7 @@ const About = () => {
             </div>
           </section>
 
-          <section className="page-section">
+          <section className="page-section about-tags">
             <Title level={3}>兴趣和技能</Title>
             <Space size={[8, 12]} wrap>
               <Tag color="blue">OSU!Mania</Tag>
@@ -55,7 +55,7 @@ const About = () => {
             </Space>
           </section>
 
-          <section className="page-section">
+          <section className="page-section about-contact">
             <Title level={3}>联系方式</Title>
             <div className="contact-row">
               <img src={QQIcon} alt="QQ" className="contact-icon" />

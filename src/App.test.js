@@ -1,98 +1,81 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
+let mockRouterBasename;
+
 jest.mock(
   'react-router-dom',
   () => {
     const React = require('react');
 
-    return {
-      BrowserRouter: ({ children }) => <>{children}</>,
-      Routes: ({ children }) => {
-        const homeRoute = React.Children.toArray(children).find(
-          (child) => child.props.path === '/'
-        );
+    const matchesPath = (routePath, pathname) => {
+      if (routePath === '*') {
+        return true;
+      }
 
-        return homeRoute?.props.element ?? null;
+      return routePath === pathname;
+    };
+
+    return {
+      BrowserRouter: ({ basename, children }) => {
+        mockRouterBasename = basename;
+        return <>{children}</>;
+      },
+      Routes: ({ children }) => {
+        const pathname =
+          globalThis.location.pathname.replace('/creatl-s-blog', '') || '/';
+        const routes = React.Children.toArray(children);
+        const route =
+          routes.find((child) => matchesPath(child.props.path, pathname)) ||
+          routes.find((child) => child.props.path === '*');
+
+        return route?.props.element ?? null;
       },
       Route: () => null,
       useLocation: () => ({ pathname: '/', search: '' }),
-      useNavigate: () => jest.fn(),
     };
   },
   { virtual: true }
 );
 
-jest.mock('antd/es/list/Item', () => ({
-  __esModule: true,
-  default: ({ children, ...props }) => <div {...props}>{children}</div>,
-}));
-
-jest.mock('antd', () => {
-  const React = require('react');
-  const Component = (tag) => ({ children }) =>
-    React.createElement(tag, null, children);
-  const Layout = Component('div');
-
-  Layout.Header = Component('header');
-  Layout.Content = Component('main');
-  Layout.Footer = Component('footer');
-
-  return {
-    __esModule: true,
-    Avatar: Component('div'),
-    Button: Component('button'),
-    Card: Component('section'),
-    Drawer: Component('aside'),
-    Layout,
-    Menu: Component('nav'),
-    Typography: {
-      Title: Component('h1'),
-      Paragraph: Component('p'),
-    },
-  };
-});
-
 jest.mock('./utils/analytics', () => ({
   initGA: jest.fn(),
-  trackEvent: jest.fn(),
   trackPageView: jest.fn(),
 }));
 
-jest.mock('./components/ParticleCanvas', () => ({
-  __esModule: true,
-  default: () => <canvas />,
-}));
+jest.mock('./Page/Home', () => () => <div>home-page</div>);
+jest.mock('./Page/About', () => () => <div>about-page</div>);
+jest.mock('./Page/Article', () => () => <div>article-page</div>);
+jest.mock('./Page/Tools', () => () => <div>tools-page</div>);
+jest.mock('./Page/Randomssiba', () => () => <div>random-image-page</div>);
+jest.mock('./Page/RaceSignon', () => () => <div>race-signon-page</div>);
+jest.mock('./Page/NotFound', () => () => <div>not-found-page</div>);
 
-jest.mock('./Page/Randomssiba', () => ({
-  __esModule: true,
-  default: () => null,
-}));
+const routeCases = [
+  ['/', 'home-page'],
+  ['/home', 'home-page'],
+  ['/about', 'about-page'],
+  ['/article', 'article-page'],
+  ['/tools', 'tools-page'],
+  ['/randomssiba', 'random-image-page'],
+  ['/race-signon', 'race-signon-page'],
+  ['/missing-route', 'not-found-page'],
+];
 
-jest.mock('./Page/Article', () => ({
-  __esModule: true,
-  default: () => null,
-}));
+describe('application routes', () => {
+  test.each(routeCases)('renders %s', (path, expectedPage) => {
+    window.history.pushState({}, '', `/creatl-s-blog${path}`);
 
-jest.mock('./Page/About', () => ({
-  __esModule: true,
-  default: () => null,
-}));
+    render(<App />);
 
-jest.mock('./Page/Tools', () => ({
-  __esModule: true,
-  default: () => null,
-}));
+    expect(screen.getByText(expectedPage)).toBeInTheDocument();
+  });
 
-jest.mock('./Page/RaceSignon', () => ({
-  __esModule: true,
-  default: () => null,
-}));
+  test('preserves the GitHub Pages basename', () => {
+    window.history.pushState({}, '', '/creatl-s-blog/');
 
-test('renders the site app shell', () => {
-  window.history.pushState({}, '', '/creatl-s-blog/');
+    render(<App />);
 
-  render(<App />);
-
-  expect(screen.getByText(/creatL's Site/i)).toBeInTheDocument();
+    expect(mockRouterBasename).toBe('/creatl-s-blog');
+  });
 });

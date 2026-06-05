@@ -37,14 +37,15 @@ const Article = () => {
             </div>
           </section>
 
-          <section className="page-section">
+          <section className="page-section article-feed">
             <List
+              className="article-list"
               itemLayout="vertical"
               size="large"
               dataSource={articles}
               renderItem={(item) => (
                 <List.Item key={item.id}>
-                  <Card hoverable className="article-list-card">
+                  <Card hoverable className="article-list-card article-list-card--editorial">
                     <div className="article-list-content">
                       <div className="article-list-main">
                         <Title level={3} className="article-list-title">

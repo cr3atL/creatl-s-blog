@@ -1,0 +1,26 @@
+[data-ui-theme="ascii-modern"] .ant-btn:focus-visible,
+[data-ui-theme="ascii-modern"] .ant-menu-item:focus-visible,
+[data-ui-theme="ascii-modern"] .ant-drawer-close:focus-visible {
+  outline: 2px solid var(--theme-signal-cyan);
+  outline-offset: 2px;
+}
+
+[data-ui-theme="ascii-modern"] .ant-btn-primary {
+  color: #08100b;
+  font-weight: 600;
+}
+
+[data-ui-theme="ascii-modern"] .ant-card,
+[data-ui-theme="ascii-modern"] .ant-list-item {
+  border-color: var(--theme-line);
+}
+
+[data-ui-theme="ascii-modern"] .ant-tag {
+  font-family: var(--theme-mono);
+}
+
+[data-ui-theme="ascii-modern"] .ant-input,
+[data-ui-theme="ascii-modern"] .ant-input-affix-wrapper,
+[data-ui-theme="ascii-modern"] .ant-select-selector {
+  border-color: var(--theme-line-strong);
+}
