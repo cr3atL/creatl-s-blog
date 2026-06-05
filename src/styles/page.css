@@ -351,134 +351,134 @@
   }
 }
 
-[data-ui-theme="ascii-modern"] .page-container {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .page-container {
   min-height: 60vh;
 }
 
-[data-ui-theme="ascii-modern"] .page-hero {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .page-hero {
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(135deg, rgba(148, 215, 170, 0.06), transparent 48%),
+    linear-gradient(135deg, rgba(216, 180, 95, 0.06), transparent 48%),
     var(--page-glass-bg);
 }
 
-[data-ui-theme="ascii-modern"] .page-hero::before {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .page-hero::before {
   position: absolute;
   top: 0;
   left: 0;
   width: 72px;
-  border-top: 1px solid var(--theme-signal-green);
+  border-top: 1px solid var(--theme-accent);
   content: "";
 }
 
-[data-ui-theme="ascii-modern"] .page-eyebrow,
-[data-ui-theme="ascii-modern"] .article-list-meta,
-[data-ui-theme="ascii-modern"] .about-avatar-hint {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .page-eyebrow,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .article-list-meta,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .about-avatar-hint {
   font-family: var(--theme-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-[data-ui-theme="ascii-modern"] .page-section-header {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .page-section-header {
   border-bottom: 1px solid var(--theme-line);
   padding-bottom: 12px;
 }
 
-[data-ui-theme="ascii-modern"] .tool-card,
-[data-ui-theme="ascii-modern"] .profile-card,
-[data-ui-theme="ascii-modern"] .empty-state,
-[data-ui-theme="ascii-modern"] .quiet-form {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .profile-card,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .empty-state,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .quiet-form {
   box-shadow: none;
 }
 
-[data-ui-theme="ascii-modern"] .tool-card {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card {
   position: relative;
   transition: border-color 0.16s ease, background-color 0.16s ease;
 }
 
 @media (hover: hover) {
-  [data-ui-theme="ascii-modern"] .tool-card:hover {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card:hover {
     border-color: var(--theme-line-strong);
-    background: rgba(20, 28, 23, 0.94);
+    background: var(--theme-surface-muted-strong);
   }
 }
 
-[data-ui-theme="ascii-modern"] .contact-row + .contact-row {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .contact-row + .contact-row {
   border-top-color: var(--theme-line);
 }
 
-[data-ui-theme="ascii-modern"] .random-image-media {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-media {
   border: 1px solid var(--theme-line);
   box-shadow: none;
 }
 
-[data-ui-theme="ascii-modern"] .tools-grid {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tools-grid {
   gap: 12px;
 }
 
-[data-ui-theme="ascii-modern"] .tool-card--process {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card--process {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
 }
 
-[data-ui-theme="ascii-modern"] .tool-card--process .tool-card-body h4,
-[data-ui-theme="ascii-modern"] .tool-card--process .tool-card-body p {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card--process .tool-card-body h4,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card--process .tool-card-body p {
   margin-bottom: 4px;
 }
 
-[data-ui-theme="ascii-modern"] .future-tools {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .future-tools {
   border-top: 1px solid var(--theme-line);
   padding-top: 18px;
 }
 
-[data-ui-theme="ascii-modern"] .article-feed .ant-list-item {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .article-feed .ant-list-item {
   border-block-end: 0;
   padding: 0;
 }
 
-[data-ui-theme="ascii-modern"] .article-list-card--editorial.ant-card {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .article-list-card--editorial.ant-card {
   background: transparent;
   border: 0;
   border-bottom: 1px solid var(--theme-line);
   border-radius: 0;
 }
 
-[data-ui-theme="ascii-modern"] .article-list-card--editorial .ant-card-body {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .article-list-card--editorial .ant-card-body {
   padding: 22px 0;
 }
 
-[data-ui-theme="ascii-modern"] .article-list-tags .ant-tag {
-  background: rgba(121, 201, 213, 0.08);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .article-list-tags .ant-tag {
+  background: rgba(112, 203, 216, 0.08);
   border-color: var(--theme-line);
-  color: var(--theme-signal-cyan);
+  color: var(--theme-data);
 }
 
-[data-ui-theme="ascii-modern"] .about-hero {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .about-hero {
   align-items: center;
 }
 
-[data-ui-theme="ascii-modern"] .about-tags,
-[data-ui-theme="ascii-modern"] .about-contact,
-[data-ui-theme="ascii-modern"] .race-form-section,
-[data-ui-theme="ascii-modern"] .random-image-panel {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .about-tags,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .about-contact,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-form-section,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-panel {
   border-top: 1px solid var(--theme-line);
   padding-top: 18px;
 }
 
-[data-ui-theme="ascii-modern"] .about-contact a {
-  color: var(--theme-signal-cyan);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .about-contact a {
+  color: var(--theme-data);
 }
 
-[data-ui-theme="ascii-modern"] .random-image-stage {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-stage {
   border: 1px solid var(--theme-line);
-  background: rgba(8, 11, 10, 0.34);
+  background: rgba(6, 6, 5, 0.34);
   min-height: 360px;
   padding: 20px;
 }
 
-[data-ui-theme="ascii-modern"] .random-image-status {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-status {
   align-items: center;
   color: var(--theme-muted);
   display: flex;
@@ -488,41 +488,41 @@
   letter-spacing: 0.04em;
 }
 
-[data-ui-theme="ascii-modern"] .random-image-media {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-media {
   max-height: min(58vh, 460px);
   max-width: min(100%, 640px);
 }
 
-[data-ui-theme="ascii-modern"] .random-image-actions {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .random-image-actions {
   justify-content: center;
 }
 
-[data-ui-theme="ascii-modern"] .quiet-form {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .quiet-form {
   max-width: 560px;
 }
 
-[data-ui-theme="ascii-modern"] .not-found-state {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-state {
   justify-content: center;
 }
 
-[data-ui-theme="ascii-modern"] .not-found-ascii {
-  color: var(--theme-signal-yellow);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-ascii {
+  color: var(--theme-accent-strong);
   font-family: var(--theme-mono);
   font-size: 15px;
   line-height: 1.15;
   margin: 0 0 18px;
 }
 
-[data-ui-theme="ascii-modern"] .home-hero {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
 }
 
-[data-ui-theme="ascii-modern"] .home-hero__identity {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-hero__identity {
   align-items: center;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather {
   color: var(--theme-text);
   display: flex;
   flex-direction: column;
@@ -534,26 +534,26 @@
   min-width: 0;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__command,
-[data-ui-theme="ascii-modern"] .station-weather__output {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
   color: var(--theme-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__command::before,
-[data-ui-theme="ascii-modern"] .station-weather__output::before {
-  color: var(--theme-signal-green);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command::before,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output::before {
+  color: var(--theme-accent);
   content: "> ";
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__display {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__display {
   width: min(100%, 440px);
   margin-left: auto;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__rule {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__rule {
   height: 1px;
   background: repeating-linear-gradient(
     90deg,
@@ -563,14 +563,14 @@
   opacity: 0.74;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__head,
-[data-ui-theme="ascii-modern"] .station-weather__body {
-  border-left: 2px solid rgba(229, 233, 230, 0.74);
-  border-right: 2px solid rgba(229, 233, 230, 0.74);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
+  border-left: 2px solid var(--theme-rule);
+  border-right: 2px solid var(--theme-rule);
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__head {
-  color: var(--theme-signal-yellow);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head {
+  color: var(--theme-accent-strong);
   display: flex;
   font-weight: 700;
   gap: 18px;
@@ -578,7 +578,7 @@
   padding: 7px 12px 6px;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__body {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
   display: grid;
   gap: 24px;
   grid-template-columns: minmax(72px, 0.8fr) minmax(150px, 1.2fr);
@@ -586,62 +586,96 @@
   padding: 14px 12px 12px;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__temperature {
-  color: var(--theme-signal-cyan);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__temperature {
+  color: var(--theme-data);
   font-size: 18px;
   font-weight: 700;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__details {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details {
   align-content: start;
-  color: var(--theme-signal-cyan);
+  color: var(--theme-data);
   display: grid;
   gap: 8px;
   margin: 0;
   text-align: right;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__details div {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details div {
   display: flex;
   gap: 5px;
   justify-content: flex-end;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__details dt {
-  color: var(--theme-signal-cyan);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details dt {
+  color: var(--theme-data);
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__details dd {
-  color: #78a9ff;
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details dd {
+  color: var(--theme-data);
   font-weight: 700;
   margin: 0;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__output {
-  border-top: 1px dashed rgba(229, 233, 230, 0.64);
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
+  border-top: 1px dashed var(--theme-rule-soft);
   margin: 2px 0 0;
   padding-top: 8px;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__note,
-[data-ui-theme="ascii-modern"] .station-weather__origin,
-[data-ui-theme="ascii-modern"] .station-weather__time {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__note,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__origin,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__time {
   color: var(--theme-muted);
   font-size: 12px;
   margin: 0;
 }
 
-[data-ui-theme="ascii-modern"] .station-weather__origin {
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__origin {
   font-size: 10px;
   text-align: right;
 }
 
 @media (max-width: 768px) {
-  [data-ui-theme="ascii-modern"] .home-hero {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-hero {
     grid-template-columns: 1fr;
   }
 
-  [data-ui-theme="ascii-modern"] .tool-card--process {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card--process {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__display {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command,
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
+    gap: 10px;
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details {
+    text-align: left;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details div {
+    justify-content: space-between;
   }
 }

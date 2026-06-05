@@ -1,6 +1,6 @@
 import { theme as antdTheme } from 'antd';
 
-const supportedThemes = ['legacy', 'ascii-modern'];
+const supportedThemes = ['legacy', 'ascii-modern', 'archive-terminal'];
 
 export const resolveUITheme = (queryTheme, configuredTheme = 'legacy') => {
   if (supportedThemes.includes(queryTheme)) {
@@ -10,35 +10,37 @@ export const resolveUITheme = (queryTheme, configuredTheme = 'legacy') => {
   return supportedThemes.includes(configuredTheme) ? configuredTheme : 'legacy';
 };
 
-export const asciiModernTheme = {
+export const archiveTerminalTheme = {
   algorithm: antdTheme.darkAlgorithm,
   token: {
-    colorPrimary: '#94d7aa',
-    colorInfo: '#79c9d5',
-    colorWarning: '#dfc47a',
-    colorError: '#de7777',
-    colorBgBase: '#080b0a',
-    colorBgContainer: '#111713',
-    colorBgElevated: '#161d19',
-    colorBorder: 'rgba(197, 219, 207, 0.2)',
-    colorText: '#e5e9e6',
-    colorTextSecondary: '#a8b2ac',
+    colorPrimary: '#d8b45f',
+    colorInfo: '#70cbd8',
+    colorWarning: '#e0b968',
+    colorError: '#e07a66',
+    colorBgBase: '#060605',
+    colorBgContainer: '#10100d',
+    colorBgElevated: '#161510',
+    colorBorder: 'rgba(241, 238, 228, 0.18)',
+    colorText: '#f1eee4',
+    colorTextSecondary: '#a8a193',
     borderRadius: 6,
     controlHeight: 36,
     fontFamily:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      'Inter, "Noto Sans SC", "Segoe UI", sans-serif',
   },
   components: {
     Button: {
       primaryShadow: 'none',
     },
     Drawer: {
-      colorBgElevated: '#111713',
+      colorBgElevated: '#10100d',
     },
     Menu: {
       darkItemBg: 'transparent',
-      darkItemSelectedBg: 'rgba(148, 215, 170, 0.14)',
+      darkItemSelectedBg: 'rgba(216, 180, 95, 0.14)',
       itemBorderRadius: 4,
     },
   },
 };
+
+export const asciiModernTheme = archiveTerminalTheme;

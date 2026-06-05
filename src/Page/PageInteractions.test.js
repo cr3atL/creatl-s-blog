@@ -31,7 +31,8 @@ jest.mock('./Randomssiba', () => () => (
 
 jest.mock('@ant-design/icons', () => ({
   DownloadOutlined: () => <span />,
-  GithubOutlined: (props) => <button aria-label="GitHub" {...props} />,
+  GithubOutlined: (props) => <span {...props} />,
+  MenuOutlined: () => <span />,
   PictureOutlined: () => <span />,
   ReloadOutlined: () => <span />,
   TrophyOutlined: () => <span />,
@@ -98,14 +99,14 @@ describe('critical page interactions', () => {
 
     const { container } = render(<Home />);
 
-    expect(screen.queryByText('CreatL Station')).not.toBeInTheDocument();
-    expect(container.querySelector('.home-hero__identity')).not.toBeInTheDocument();
+    expect(screen.queryByText('weather --station creatl --live')).not.toBeInTheDocument();
+    expect(container.querySelector('.archive-hero')).not.toBeInTheDocument();
   });
 
   test('home tool actions preserve navigation and analytics events', () => {
     render(<Home />);
 
-    const openButtons = screen.getAllByRole('button', { name: '打开' });
+    const openButtons = screen.getAllByRole('button', { name: /OPEN/ });
     fireEvent.click(openButtons[0]);
     fireEvent.click(openButtons[1]);
 
@@ -124,10 +125,72 @@ describe('critical page interactions', () => {
     expect(window.open).toHaveBeenCalledWith('https://github.com/cr3atL', '_blank');
   });
 
+  test('home removes avatar and renders archive sections', () => {
+    const { container } = render(<Home />);
+
+    expect(container.querySelector('.archive-hero')).toBeInTheDocument();
+    expect(container.querySelectorAll('.page-heading-avatar')).toHaveLength(0);
+    expect(screen.getByText('ARCHIVE LOG')).toBeInTheDocument();
+    expect(screen.getByText('SELECTED TOOLS')).toBeInTheDocument();
+    expect(screen.getByText('WRITING PREVIEW')).toBeInTheDocument();
+    expect(
+      screen.getByText('[EMPTY] articles are being organized')
+    ).toBeInTheDocument();
+  });
+
+  test('home process rows include numbered entries and statuses', () => {
+    render(<Home />);
+
+    expect(screen.getByText('001')).toBeInTheDocument();
+    expect(screen.getByText('002')).toBeInTheDocument();
+    expect(screen.getAllByText('READY').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('DRAFT').length).toBeGreaterThan(0);
+  });
+
+  test('archive log entries expose date and category inline', () => {
+    const { container } = render(<Home />);
+    const log = container.querySelector('.archive-log');
+
+    expect(log).toBeInTheDocument();
+    expect(log.querySelector('.archive-log__date-value').textContent).toMatch(
+      /^2026\.06$/
+    );
+    expect(log.textContent).toMatch(/THEME/);
+    expect(log.textContent).toMatch(/TOOLS/);
+    expect(log.textContent).toMatch(/NOTE/);
+    expect(log.textContent).toMatch(/SIGNAL/);
+  });
+
+  test('process row open button includes the tool status in its accessible name', () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole('button', { name: /OPEN 随机兔子图片 \(READY\)/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /OPEN 比赛报名 \(DRAFT\)/ })
+    ).toBeInTheDocument();
+  });
+
+  test('home secondary navigation links preserve analytics and routing', () => {
+    render(<Home />);
+
+    fireEvent.click(screen.getByRole('button', { name: /VIEW ALL TOOLS/i }));
+    expect(mockNavigate).toHaveBeenLastCalledWith('/tools');
+    expect(trackEvent).toHaveBeenCalledWith(
+      'Navigation',
+      'Click',
+      'Tools_Directory'
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /OPEN WRITING/i }));
+    expect(mockNavigate).toHaveBeenLastCalledWith('/article');
+  });
+
   test('tools preserve both destinations', () => {
     render(<Tools />);
 
-    const openButtons = screen.getAllByRole('button', { name: '打开' });
+    const openButtons = screen.getAllByRole('button', { name: /OPEN/ });
     fireEvent.click(openButtons[0]);
     fireEvent.click(openButtons[1]);
 
@@ -135,18 +198,17 @@ describe('critical page interactions', () => {
     expect(mockNavigate).toHaveBeenNthCalledWith(2, '/race-signon');
   });
 
-  test('not found returns home', () => {
-    render(<NotFound />);
-
-    fireEvent.click(screen.getByRole('button', { name: '返回首页' }));
-
-    expect(mockNavigate).toHaveBeenCalledWith('/');
-  });
-
-  test('not found keeps the stronger ASCII state decorative', () => {
+  test('not found returns home and keeps the ASCII frame decorative', () => {
     const { container } = render(<NotFound />);
 
-    expect(screen.getByText('页面不存在')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /RETURN HOME/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(trackEvent).toHaveBeenCalledWith(
+      'Navigation',
+      'Click',
+      'NotFound_ReturnHome'
+    );
     expect(container.querySelector('.not-found-ascii')).toHaveAttribute(
       'aria-hidden',
       'true'
@@ -156,25 +218,27 @@ describe('critical page interactions', () => {
   test('article action still shows the unfinished message', () => {
     render(<Article />);
 
-    fireEvent.click(screen.getByRole('button', { name: '阅读全文' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: /阅读全文 Osu!mania 怎么玩/ })
+    );
 
     expect(mockMessageInfo).toHaveBeenCalledWith('这篇还没写完 >_<');
+    expect(trackEvent).toHaveBeenCalledWith(
+      'Article',
+      'Click',
+      'osu-mania-how-to-play'
+    );
   });
 
-  test('about avatar interaction and links remain available', () => {
+  test('about page renders avatar and contact links', () => {
     render(<About />);
 
-    fireEvent.click(screen.getByText('CreatL').closest('section').querySelector('.about-avatar'));
-
-    expect(mockMessageError).toHaveBeenCalledWith('不准摸！');
-    expect(screen.getByText('点击添加我的 QQ')).toHaveAttribute(
-      'href',
-      'https://qm.qq.com/q/MFdHgohGqm'
-    );
-    expect(screen.getByText('cr3atL')).toHaveAttribute(
+    expect(screen.getByAltText('creatL 头像')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
       'href',
       'https://github.com/cr3atL'
     );
+    expect(screen.getAllByRole('link', { name: 'QQ' }).length).toBeGreaterThan(0);
   });
 
   test('race sign-on keeps the existing fields and submit control', () => {

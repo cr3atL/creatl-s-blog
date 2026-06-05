@@ -1,37 +1,74 @@
-import { Typography, Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
+import { useState } from 'react';
 import ResponsiveLayout from '../components/ResponsiveLayout';
-
-const { Title, Paragraph } = Typography;
+import SectionHeader from '../components/archive/SectionHeader';
+import { trackEvent } from '../utils/analytics';
+import '../styles/pages/race-signon.css';
 
 const RaceSignon = () => {
-  return (
-    <ResponsiveLayout>
-      <div className="page-container page-container--narrow">
-        <section className="page-hero">
-          <div className="page-hero-content">
-            <div className="page-eyebrow">Tool</div>
-            <Title level={2}>比赛报名</Title>
-            <Paragraph className="page-intro">
-              轻量报名表单，后续会继续补齐提交和确认流程。
-            </Paragraph>
-          </div>
-        </section>
+  const [messageApi, contextHolder] = message.useMessage();
+  const [submitting, setSubmitting] = useState(false);
 
-        <section className="page-section race-form-section">
-          <Form layout="vertical" className="quiet-form">
-            <Form.Item label="游戏 ID">
-              <Input />
-            </Form.Item>
-            <Form.Item label="RATING">
-              <Input />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary">报名</Button>
-            </Form.Item>
-          </Form>
-        </section>
-      </div>
-    </ResponsiveLayout>
+  const handleSubmit = () => {
+    setSubmitting(true);
+    trackEvent('Race_Signon', 'Submit', 'Form_Channel');
+    setTimeout(() => {
+      messageApi.info('报名流程正在补齐，提交暂未开启。');
+      setSubmitting(false);
+    }, 320);
+  };
+
+  return (
+    <>
+      {contextHolder}
+      <ResponsiveLayout>
+        <div className="page-container page-container--narrow race-signon-page">
+          <section
+            className="race-signon-hero"
+            aria-labelledby="race-signon-hero-title"
+          >
+            <span className="race-signon-hero__eyebrow">TOOL / RACE SIGN-ON</span>
+            <h1 id="race-signon-hero-title" className="race-signon-hero__title">
+              比赛报名
+            </h1>
+            <p className="race-signon-hero__intro">
+              轻量报名表单。表单字段保持和以前一致：游戏 ID 和 RATING。
+              提交按钮在 Archive Terminal 主题下使用琥珀强调。
+            </p>
+          </section>
+
+          <section
+            className="race-signon-section"
+            aria-labelledby="race-signon-form-title"
+          >
+            <SectionHeader
+              number="F.1"
+              title="FORM CHANNEL"
+              id="race-signon-form-title"
+              meta={submitting ? 'TRANSMITTING' : 'STANDBY'}
+            />
+            <Form layout="vertical" className="race-signon-form">
+              <Form.Item label="游戏 ID">
+                <Input placeholder="请输入游戏 ID" autoComplete="off" />
+              </Form.Item>
+              <Form.Item label="RATING">
+                <Input placeholder="请输入当前 RATING" autoComplete="off" />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  loading={submitting}
+                  onClick={handleSubmit}
+                  className="race-signon-form__submit"
+                >
+                  报名
+                </Button>
+              </Form.Item>
+            </Form>
+          </section>
+        </div>
+      </ResponsiveLayout>
+    </>
   );
 };
 

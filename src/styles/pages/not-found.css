@@ -1,0 +1,127 @@
+/* Archive Terminal — Not Found page (Archive Missing) */
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-page {
+  display: block;
+  padding-bottom: 64px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-hero {
+  align-items: center;
+  border: 1px solid var(--theme-line);
+  border-radius: var(--archive-surface-radius);
+  background:
+    linear-gradient(135deg, var(--theme-accent-wash), transparent 55%),
+    var(--theme-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--page-section-gap);
+  padding: clamp(20px, 4vw, 36px);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-hero::before {
+  border-top: 1px solid var(--theme-accent);
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 72px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-hero__eyebrow {
+  color: var(--theme-accent);
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-hero__title {
+  color: var(--theme-text);
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 4px 0 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-hero__intro {
+  color: var(--page-text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--page-body-font-size);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 60ch;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-ascii {
+  color: var(--theme-accent-strong);
+  font-family: var(--theme-mono);
+  font-size: 15px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  white-space: pre;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-section {
+  margin-top: var(--page-section-gap);
+  scroll-margin-top: 96px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status {
+  display: grid;
+  gap: 0;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status div {
+  border-top: 1px solid var(--theme-line);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 120px minmax(0, 1fr);
+  padding: 12px 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status div:last-child {
+  border-bottom: 1px solid var(--theme-line);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status dt {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status dd {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-actions__button {
+  min-width: 180px;
+}
+
+@media (max-width: 576px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-status div {
+    grid-template-columns: 1fr;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .not-found-actions__button {
+    width: 100%;
+  }
+}

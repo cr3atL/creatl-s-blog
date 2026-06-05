@@ -23,8 +23,13 @@ const MobileLayout = ({ children }) => {
       header={(currentTime) => (
         <>
           <Header className="shell-header shell-header-mobile">
-            <div className="blog-title shell-title-mobile">creatL's Site</div>
-            <div className="shell-time shell-mobile-time-inline">{currentTime}</div>
+            <div className="shell-mobile-identity">
+              <div className="blog-title shell-title-mobile">creatL</div>
+              <div className="shell-status shell-status-mobile">ARCHIVE ONLINE</div>
+            </div>
+            <div className="shell-time shell-mobile-time-inline">
+              {currentTime} / CST
+            </div>
             <Button
               type="text"
               icon={<MenuOutlined />}
@@ -35,7 +40,7 @@ const MobileLayout = ({ children }) => {
           </Header>
 
           <Drawer
-            title="导航菜单"
+            title="ARCHIVE NAVIGATION"
             placement="right"
             onClose={() => setDrawerVisible(false)}
             open={drawerVisible}
@@ -43,7 +48,7 @@ const MobileLayout = ({ children }) => {
             width="min(304px, 88vw)"
           >
             <Menu
-              theme="light"
+              theme="dark"
               mode="vertical"
               selectedKeys={[location.pathname]}
               items={navItems}

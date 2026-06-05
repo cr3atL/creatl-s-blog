@@ -1,66 +1,130 @@
-import { Button, Typography } from 'antd';
-import { PictureOutlined, TrophyOutlined } from '@ant-design/icons';
+import { Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveLayout from '../components/ResponsiveLayout';
+import SectionHeader from '../components/archive/SectionHeader';
+import ProcessRow from '../components/archive/ProcessRow';
+import StatusTag from '../components/archive/StatusTag';
+import { trackEvent } from '../utils/analytics';
+import tools from '../data/tools';
+import '../styles/pages/tools.css';
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
-const tools = [
+const futureEntries = [
   {
-    key: 'random-image',
-    title: '随机兔子图片',
-    description: '从本地图片集中随机抽一张兔子图片，适合放松一下。',
-    path: '/randomssiba',
-    icon: <PictureOutlined />,
+    number: '003',
+    category: 'UTILITY',
+    title: 'Writing Preview',
+    description: '文章详情页或摘要工具，未来按档案 Feed 形式开放。',
+    status: 'COMING SOON',
   },
   {
-    key: 'race-signon',
-    title: '比赛报名',
-    description: '保留中的轻量报名工具，后续可以继续完善表单流程。',
-    path: '/race-signon',
-    icon: <TrophyOutlined />,
+    number: '004',
+    category: 'ARCHIVE',
+    title: 'Song Catalog',
+    description: '把站内旧曲库重新整理成档案节点，等其它页面稳定后再启用。',
+    status: 'ARCHIVED',
   },
 ];
 
 const Tools = () => {
   const navigate = useNavigate();
 
+  const handleOpen = (path) => {
+    trackEvent('Navigation', 'Click', 'Tools_Page');
+    navigate(path);
+  };
+
   return (
     <ResponsiveLayout>
-      <div className="page-container page-container--medium">
-        <section className="page-hero">
-          <div className="page-hero-content">
-            <div className="page-eyebrow">Tools</div>
-            <Title level={2}>工具</Title>
-            <Paragraph className="page-intro">
-              这里放一些已经可用或正在打磨的小工具。旧曲库页面暂时下线，
-              之后会用更清晰的结构重做。
+      <div className="page-container page-container--medium tools-page">
+        <section
+          className="tools-hero"
+          aria-labelledby="tools-hero-title"
+        >
+          <div className="tools-hero__lead">
+            <span className="tools-hero__eyebrow">03 / TOOLS</span>
+            <h1 id="tools-hero-title" className="tools-hero__title">
+              可以立即使用的小工具
+            </h1>
+            <Paragraph className="tools-hero__intro">
+              工具被组织成 Process Queue。每一个条目都带有编号、分类、状态码和
+              明确的打开按钮；旧曲库页面已暂时下线。
             </Paragraph>
           </div>
+          <dl className="tools-hero__status" aria-label="process queue status">
+            <div>
+              <dt>QUEUE</dt>
+              <dd>{tools.length} ACTIVE</dd>
+            </div>
+            <div>
+              <dt>STATION</dt>
+              <dd>ONLINE</dd>
+            </div>
+          </dl>
         </section>
 
-        <section className="page-section tools-directory">
-          <div className="page-grid page-grid--two tools-grid">
+        <section
+          className="tools-section"
+          aria-labelledby="tools-process-queue-title"
+        >
+          <SectionHeader
+            number="03.1"
+            title="PROCESS QUEUE"
+            id="tools-process-queue-title"
+            meta="READY + DRAFT"
+          />
+          <div className="tools-section__list">
             {tools.map((tool) => (
-              <div key={tool.key} className="tool-card tool-card--process">
-                <span className="tool-card-icon">{tool.icon}</span>
-                <div className="tool-card-body">
-                  <Title level={4}>{tool.title}</Title>
-                  <Paragraph className="page-body-text">{tool.description}</Paragraph>
-                </div>
-                <Button type="primary" onClick={() => navigate(tool.path)}>
-                  打开
-                </Button>
-              </div>
+              <ProcessRow
+                key={tool.key}
+                number={tool.number}
+                category={tool.category}
+                title={tool.title}
+                description={tool.description}
+                status={tool.status}
+                onOpen={() => handleOpen(tool.path)}
+                path={tool.path}
+              />
             ))}
           </div>
         </section>
 
-        <section className="page-section future-tools">
-          <Title level={3}>未来工具</Title>
-          <Paragraph className="page-body-text">
-            新工具会优先放在这里。导航保持简短，首页只保留核心入口。
-          </Paragraph>
+        <section
+          className="tools-section"
+          aria-labelledby="tools-future-queue-title"
+        >
+          <SectionHeader
+            number="03.2"
+            title="FUTURE QUEUE"
+            id="tools-future-queue-title"
+            meta="COMING SOON + ARCHIVED"
+          />
+          <ul className="tools-future" aria-label="future process entries">
+            {futureEntries.map((entry) => (
+              <li
+                key={entry.number}
+                className="tools-future__entry"
+                data-status={entry.status}
+              >
+                <div className="tools-future__meta">
+                  <span className="tools-future__label">PROCESS</span>
+                  <span className="tools-future__number">{entry.number}</span>
+                  <span className="tools-future__divider" aria-hidden="true">
+                    /
+                  </span>
+                  <span className="tools-future__category">{entry.category}</span>
+                </div>
+                <div className="tools-future__body">
+                  <h3 className="tools-future__title">{entry.title}</h3>
+                  <p className="tools-future__description">{entry.description}</p>
+                </div>
+                <div className="tools-future__action">
+                  <StatusTag status={entry.status} />
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </ResponsiveLayout>

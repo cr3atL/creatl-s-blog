@@ -21,13 +21,21 @@ describe('AppShell atmosphere integration', () => {
       </AppShell>
     );
 
-  test('mounts the atmosphere only for ascii-modern', () => {
-    document.documentElement.dataset.uiTheme = 'ascii-modern';
+  test('mounts the atmosphere for archive-terminal', () => {
+    document.documentElement.dataset.uiTheme = 'archive-terminal';
 
     const { container } = renderShell();
 
     expect(screen.getByTestId('ambient-canvas')).toBeInTheDocument();
     expect(container.querySelector('.shell-root')).not.toHaveAttribute('style');
+  });
+
+  test('keeps the ascii-modern alias compatible', () => {
+    document.documentElement.dataset.uiTheme = 'ascii-modern';
+
+    renderShell();
+
+    expect(screen.getByTestId('ambient-canvas')).toBeInTheDocument();
   });
 
   test('keeps the legacy shell free of the atmosphere', () => {

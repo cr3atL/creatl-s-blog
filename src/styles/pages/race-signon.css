@@ -1,0 +1,90 @@
+/* Archive Terminal — Race Sign-on page (Form Channel) */
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-page {
+  display: block;
+  padding-bottom: 64px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-hero {
+  border: 1px solid var(--theme-line);
+  border-radius: var(--archive-surface-radius);
+  background:
+    linear-gradient(135deg, var(--theme-accent-wash), transparent 55%),
+    var(--theme-surface);
+  margin-bottom: var(--page-section-gap);
+  padding: clamp(20px, 4vw, 36px);
+  position: relative;
+  overflow: hidden;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-hero::before {
+  border-top: 1px solid var(--theme-accent);
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 72px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-hero__eyebrow {
+  color: var(--theme-accent);
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-hero__title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: clamp(24px, 3.4vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 8px 0 12px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-hero__intro {
+  color: var(--page-text-muted);
+  font-size: var(--page-body-font-size);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 60ch;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-section {
+  margin-top: var(--page-section-gap);
+  scroll-margin-top: 96px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-form {
+  border: 1px solid var(--theme-line);
+  border-radius: var(--archive-surface-radius);
+  background: var(--theme-surface);
+  box-shadow: none;
+  margin-top: 16px;
+  max-width: 560px;
+  padding: 24px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-form .ant-form-item-label > label {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-form .ant-input {
+  background: var(--theme-surface-strong);
+  border-color: var(--theme-line-strong);
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-form .ant-input::placeholder {
+  color: var(--theme-subtle);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .race-signon-form__submit {
+  min-width: 120px;
+}

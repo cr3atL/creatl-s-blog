@@ -20,7 +20,8 @@ const ResponsiveLayout = ({ children }) => {
     return <div className="shell-loading">加载中...</div>;
   }
 
-  const LayoutComponent = deviceType === 'mobile' ? MobileLayout : Layout;
+  const LayoutComponent =
+    deviceType === 'mobile' || deviceType === 'tablet' ? MobileLayout : Layout;
 
   return <LayoutComponent>{children}</LayoutComponent>;
 };

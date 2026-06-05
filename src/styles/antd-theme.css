@@ -1,26 +1,32 @@
-[data-ui-theme="ascii-modern"] .ant-btn:focus-visible,
-[data-ui-theme="ascii-modern"] .ant-menu-item:focus-visible,
-[data-ui-theme="ascii-modern"] .ant-drawer-close:focus-visible {
-  outline: 2px solid var(--theme-signal-cyan);
+[data-ui-theme="ascii-modern"] :focus-visible,
+[data-ui-theme="archive-terminal"] :focus-visible {
+  outline: 2px solid var(--theme-data);
   outline-offset: 2px;
 }
 
-[data-ui-theme="ascii-modern"] .ant-btn-primary {
+[data-ui-theme="ascii-modern"] .ant-btn-primary,
+[data-ui-theme="archive-terminal"] .ant-btn-primary {
   color: #08100b;
   font-weight: 600;
 }
 
 [data-ui-theme="ascii-modern"] .ant-card,
-[data-ui-theme="ascii-modern"] .ant-list-item {
+[data-ui-theme="ascii-modern"] .ant-list-item,
+[data-ui-theme="archive-terminal"] .ant-card,
+[data-ui-theme="archive-terminal"] .ant-list-item {
   border-color: var(--theme-line);
 }
 
-[data-ui-theme="ascii-modern"] .ant-tag {
+[data-ui-theme="ascii-modern"] .ant-tag,
+[data-ui-theme="archive-terminal"] .ant-tag {
   font-family: var(--theme-mono);
 }
 
 [data-ui-theme="ascii-modern"] .ant-input,
 [data-ui-theme="ascii-modern"] .ant-input-affix-wrapper,
-[data-ui-theme="ascii-modern"] .ant-select-selector {
+[data-ui-theme="ascii-modern"] .ant-select-selector,
+[data-ui-theme="archive-terminal"] .ant-input,
+[data-ui-theme="archive-terminal"] .ant-input-affix-wrapper,
+[data-ui-theme="archive-terminal"] .ant-select-selector {
   border-color: var(--theme-line-strong);
 }

@@ -10,6 +10,7 @@ const createMatchMedia = (matches) => ({
 describe('AmbientCanvas', () => {
   let context;
   let matchMedia;
+  let animationCallbacks;
 
   beforeEach(() => {
     context = {
@@ -22,9 +23,13 @@ describe('AmbientCanvas', () => {
       set textBaseline(value) {},
     };
     matchMedia = createMatchMedia(false);
+    animationCallbacks = [];
 
     window.matchMedia = jest.fn(() => matchMedia);
-    window.requestAnimationFrame = jest.fn(() => 42);
+    window.requestAnimationFrame = jest.fn((callback) => {
+      animationCallbacks.push(callback);
+      return animationCallbacks.length;
+    });
     window.cancelAnimationFrame = jest.fn();
     HTMLCanvasElement.prototype.getContext = jest.fn(() => context);
     Object.defineProperty(document, 'hidden', {
@@ -69,9 +74,31 @@ describe('AmbientCanvas', () => {
       value: 600,
     });
     act(() => window.dispatchEvent(new Event('resize')));
+    act(() => animationCallbacks[animationCallbacks.length - 1]());
 
     expect(canvas.width).toBe(1200);
     expect(canvas.style.width).toBe('600px');
+  });
+
+  test('reduces canvas backing scale on very large viewports', () => {
+    Object.defineProperty(window, 'devicePixelRatio', {
+      configurable: true,
+      value: 2,
+    });
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: 3840,
+    });
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 2160,
+    });
+
+    render(<AmbientCanvas />);
+    const canvas = screen.getByTestId('ambient-canvas');
+
+    expect(canvas.width * canvas.height).toBeLessThanOrEqual(10000000);
+    expect(canvas.width).toBeLessThan(7680);
   });
 
   test('renders a static frame when reduced motion is requested', () => {
@@ -111,7 +138,7 @@ describe('AmbientCanvas', () => {
       value: true,
     });
     act(() => document.dispatchEvent(new Event('visibilitychange')));
-    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(42);
+    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(1);
 
     Object.defineProperty(document, 'hidden', {
       configurable: true,
@@ -122,7 +149,7 @@ describe('AmbientCanvas', () => {
 
     unmount();
 
-    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(42);
+    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(1);
     expect(removeWindowListener).toHaveBeenCalledWith('resize', expect.any(Function));
     expect(removeDocumentListener).toHaveBeenCalledWith(
       'visibilitychange',

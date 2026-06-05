@@ -1,13 +1,26 @@
 import { useEffect, useRef } from 'react';
 import useReducedMotion from '../../hooks/useReducedMotion';
 
-const oceanCharacters = ['#', '~', '.', '.', '.', ' '];
+const oceanCharacters = ['~', '.', '.', ':', "'", ' '];
+const disturbanceCharacters = ['A', 'R', 'C', 'H', 'I', 'V', 'E'];
 const maxDpr = 2;
+const maxBackingPixels = 10_000_000;
 const maxCharacters = 1800;
 
 const stableCharacter = (column, row, frameBucket) => {
   const hash = Math.abs((column * 17 + row * 31 + frameBucket * 13 + column * row * 7) % 97);
   return oceanCharacters[hash % oceanCharacters.length];
+};
+
+const getCanvasDpr = (width, height) => {
+  const deviceDpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+  const desiredPixels = width * height * deviceDpr * deviceDpr;
+
+  if (desiredPixels <= maxBackingPixels) {
+    return deviceDpr;
+  }
+
+  return Math.max(1, Math.sqrt(maxBackingPixels / (width * height)));
 };
 
 const AmbientCanvas = () => {
@@ -23,6 +36,7 @@ const AmbientCanvas = () => {
     }
 
     let animationFrame = null;
+    let resizeFrame = null;
     let width = 0;
     let height = 0;
     let columns = 0;
@@ -31,6 +45,10 @@ const AmbientCanvas = () => {
     let cellHeight = 15;
     let lastFrameTime = 0;
     let font = '12px monospace';
+    let pointer = null;
+    const enablePointerDisturbance =
+      !reducedMotion &&
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
     const resize = () => {
       width = window.innerWidth;
@@ -49,9 +67,9 @@ const AmbientCanvas = () => {
         cellHeight += 1;
       }
 
-      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
+      const dpr = getCanvasDpr(width, height);
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -69,27 +87,36 @@ const AmbientCanvas = () => {
       context.textAlign = 'left';
       context.textBaseline = 'top';
 
-      const frameBucket = reducedMotion ? 0 : Math.floor(time / 220);
-      const waterline = Math.floor(rows * 0.38);
+      const frameBucket = reducedMotion ? 0 : Math.floor(time / 240);
+      const waterline = Math.floor(rows * 0.63);
+      const pointerAge = pointer ? time - pointer.time : Infinity;
 
       for (let column = 0; column < columns; column += 1) {
         const wave =
           Math.sin(column * 0.21 + time * 0.0007) +
           Math.sin(column * 0.08 - time * 0.00038) * 0.9;
-        const crest = Math.max(0, Math.floor(waterline + wave * 2.2));
+        const crest = Math.max(0, Math.floor(waterline + wave * 1.8));
 
         for (let row = crest; row < rows; row += 1) {
-          const char =
-            row === crest ? '#' : stableCharacter(column, row, frameBucket);
-          context.fillStyle =
-            row === crest
-              ? 'rgba(121, 201, 213, 0.56)'
-              : 'rgba(146, 157, 150, 0.34)';
-          context.fillText(
-            char,
-            column * cellWidth,
-            row * cellHeight
-          );
+          const x = column * cellWidth;
+          const y = row * cellHeight;
+          const isCrest = row === crest;
+          const nearPointer =
+            enablePointerDisturbance &&
+            pointerAge < 420 &&
+            Math.hypot(pointer.x - x, pointer.y - y) < 92;
+          const char = nearPointer
+            ? disturbanceCharacters[(column + row + frameBucket) % disturbanceCharacters.length]
+            : isCrest
+              ? '~'
+              : stableCharacter(column, row, frameBucket);
+
+          context.fillStyle = nearPointer
+            ? 'rgba(216, 180, 95, 0.62)'
+            : isCrest
+              ? 'rgba(112, 203, 216, 0.36)'
+              : 'rgba(241, 238, 228, 0.24)';
+          context.fillText(char, x, y);
         }
       }
     };
@@ -122,8 +149,23 @@ const AmbientCanvas = () => {
     };
 
     const handleResize = () => {
-      resize();
-      startAnimation();
+      if (resizeFrame !== null) {
+        return;
+      }
+
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = null;
+        resize();
+        startAnimation();
+      });
+    };
+
+    const handlePointerMove = (event) => {
+      pointer = {
+        x: event.clientX,
+        y: event.clientY,
+        time: performance.now(),
+      };
     };
 
     const handleVisibilityChange = () => {
@@ -137,11 +179,20 @@ const AmbientCanvas = () => {
     resize();
     startAnimation();
     window.addEventListener('resize', handleResize);
+    if (enablePointerDisturbance) {
+      window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    }
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       stopAnimation();
+      if (resizeFrame !== null) {
+        window.cancelAnimationFrame(resizeFrame);
+      }
       window.removeEventListener('resize', handleResize);
+      if (enablePointerDisturbance) {
+        window.removeEventListener('pointermove', handlePointerMove);
+      }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [reducedMotion]);

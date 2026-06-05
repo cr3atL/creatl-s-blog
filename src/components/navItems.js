@@ -10,22 +10,22 @@ const navItems = [
   {
     key: '/',
     icon: <HomeOutlined />,
-    label: '首页',
+    label: 'HOME',
   },
   {
     key: '/article',
     icon: <FileTextOutlined />,
-    label: '文章',
+    label: 'WRITING',
   },
   {
     key: '/tools',
     icon: <AppstoreOutlined />,
-    label: '工具',
+    label: 'TOOLS',
   },
   {
     key: '/about',
     icon: <UserOutlined />,
-    label: '关于',
+    label: 'ABOUT',
   },
 ];
 

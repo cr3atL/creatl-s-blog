@@ -3,6 +3,13 @@
 @import './styles/page.css';
 @import './styles/antd-theme.css';
 @import './styles/atmosphere.css';
+@import './styles/pages/home.css';
+@import './styles/pages/tools.css';
+@import './styles/pages/article.css';
+@import './styles/pages/about.css';
+@import './styles/pages/random-image.css';
+@import './styles/pages/race-signon.css';
+@import './styles/pages/not-found.css';
 
 @keyframes pulse {
   0% {
@@ -40,12 +47,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-[data-ui-theme="ascii-modern"] body {
+[data-ui-theme="ascii-modern"] body,
+[data-ui-theme="archive-terminal"] body {
   background: var(--theme-bg);
   color: var(--theme-text);
+  font-family: var(--font-ui);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
 }

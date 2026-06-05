@@ -49,7 +49,7 @@ const StationWeather = () => {
         CREATL STATION / GENERATED INTERNAL CLIMATE
       </div>
       <time className="station-weather__time" dateTime={weather.stationDate}>
-        {stationClock} ^ {weather.timezone}
+        {stationClock} / {weather.timezone}
       </time>
     </aside>
   );

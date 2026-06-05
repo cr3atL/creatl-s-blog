@@ -1,24 +1,27 @@
 import React from 'react';
-import { Typography, Card, List, Tag, Space, Button, message } from 'antd';
+import { Typography, Button, message } from 'antd';
 import ResponsiveLayout from '../components/ResponsiveLayout';
+import SectionHeader from '../components/archive/SectionHeader';
+import { trackEvent } from '../utils/analytics';
+import '../styles/pages/article.css';
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 const articles = [
   {
-    id: 1,
+    id: 'osu-mania-how-to-play',
     title: 'Osu!mania 怎么玩',
     summary: '随手写一点入门体验和个人理解。',
-    date: '2025-08-19',
-    readTime: '114514 分钟',
-    tags: ['Osu!mania', 'how2play'],
+    date: '2025.08.19',
+    tags: ['OSU!MANIA', 'HOW2PLAY'],
   },
 ];
 
 const Article = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
-  const info = () => {
+  const handleRead = (article) => {
+    trackEvent('Article', 'Click', article.id);
     messageApi.info('这篇还没写完 >_<');
   };
 
@@ -26,62 +29,67 @@ const Article = () => {
     <>
       {contextHolder}
       <ResponsiveLayout>
-        <div className="page-container page-container--medium">
-          <section className="page-hero">
-            <div className="page-hero-content">
-              <div className="page-eyebrow">Articles</div>
-              <Title level={2}>文章列表</Title>
-              <Paragraph className="page-intro">
-                一些随手写的内容，先放在这里慢慢补。
-              </Paragraph>
-            </div>
+        <div className="page-container page-container--medium article-page">
+          <section
+            className="article-hero"
+            aria-labelledby="article-hero-title"
+          >
+            <span className="article-hero__eyebrow">02 / WRITING</span>
+            <h1 id="article-hero-title" className="article-hero__title">
+              文章与记录
+            </h1>
+            <Paragraph className="article-hero__intro">
+              文章按 Editorial Archive Feed 的方式排列：左侧日期，中间标题和
+              摘要，右侧标签和阅读动作。后续会把更多笔记迁移到这条 Feed。
+            </Paragraph>
           </section>
 
-          <section className="page-section article-feed">
-            <List
-              className="article-list"
-              itemLayout="vertical"
-              size="large"
-              dataSource={articles}
-              renderItem={(item) => (
-                <List.Item key={item.id}>
-                  <Card hoverable className="article-list-card article-list-card--editorial">
-                    <div className="article-list-content">
-                      <div className="article-list-main">
-                        <Title level={3} className="article-list-title">
-                          {item.title}
-                        </Title>
-                        <Paragraph className="article-list-summary">
-                          {item.summary}
-                        </Paragraph>
-                        <Space>
-                          <span className="article-list-meta">{item.date}</span>
-                          <span className="article-list-meta">
-                            阅读时间: {item.readTime}
-                          </span>
-                        </Space>
-                        <div className="article-list-tags">
-                          <Space>
-                            {item.tags.map((tag) => (
-                              <Tag key={tag} color="blue">
-                                {tag}
-                              </Tag>
-                            ))}
-                          </Space>
-                        </div>
-                      </div>
+          <section
+            className="article-section"
+            aria-labelledby="article-feed-title"
+          >
+            <SectionHeader
+              number="02.1"
+              title="EDITORIAL ARCHIVE"
+              id="article-feed-title"
+              meta={`${articles.length} ENTRY`}
+            />
+            {articles.length === 0 ? (
+              <p className="article-section__empty">
+                [EMPTY] articles are being organized
+              </p>
+            ) : (
+              <ol className="article-feed" aria-label="article entries">
+                {articles.map((article) => (
+                  <li key={article.id} className="article-feed__entry">
+                    <time className="article-feed__date" dateTime={article.date}>
+                      {article.date}
+                    </time>
+                    <div className="article-feed__body">
+                      <h2 className="article-feed__title">{article.title}</h2>
+                      <p className="article-feed__summary">{article.summary}</p>
+                      <ul className="article-feed__tags" aria-label="article tags">
+                        {article.tags.map((tag) => (
+                          <li key={tag} className="article-feed__tag">
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="article-feed__action">
                       <Button
                         type="primary"
-                        className="article-list-action"
-                        onClick={info}
+                        onClick={() => handleRead(article)}
+                        className="article-feed__button"
+                        aria-label={`阅读全文 ${article.title}`}
                       >
-                        阅读全文
+                        READ
                       </Button>
                     </div>
-                  </Card>
-                </List.Item>
-              )}
-            />
+                  </li>
+                ))}
+              </ol>
+            )}
           </section>
         </div>
       </ResponsiveLayout>

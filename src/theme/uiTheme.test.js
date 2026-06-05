@@ -7,11 +7,13 @@ describe('resolveUITheme', () => {
 
   test('uses a supported configured theme', () => {
     expect(resolveUITheme(null, 'ascii-modern')).toBe('ascii-modern');
+    expect(resolveUITheme(null, 'archive-terminal')).toBe('archive-terminal');
   });
 
   test('lets a supported query override the configured theme', () => {
-    expect(resolveUITheme('legacy', 'ascii-modern')).toBe('legacy');
+    expect(resolveUITheme('legacy', 'archive-terminal')).toBe('legacy');
     expect(resolveUITheme('ascii-modern', 'legacy')).toBe('ascii-modern');
+    expect(resolveUITheme('archive-terminal', 'legacy')).toBe('archive-terminal');
   });
 
   test('rejects unsupported theme values', () => {
