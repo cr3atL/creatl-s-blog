@@ -12,18 +12,11 @@ const { Paragraph } = Typography;
 
 const futureEntries = [
   {
-    number: '003',
+    number: '004',
     category: 'UTILITY',
     title: 'Writing Preview',
     description: '文章详情页或摘要工具，未来按档案 Feed 形式开放。',
     status: 'COMING SOON',
-  },
-  {
-    number: '004',
-    category: 'ARCHIVE',
-    title: 'Song Catalog',
-    description: '把站内旧曲库重新整理成档案节点，等其它页面稳定后再启用。',
-    status: 'ARCHIVED',
   },
 ];
 

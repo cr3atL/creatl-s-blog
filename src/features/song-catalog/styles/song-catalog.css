@@ -1,0 +1,1527 @@
+/* Song Catalog — pure black + white, no rounded corners, square frames.
+ * Scoped under [data-ui-theme="ascii-modern" / "archive-terminal"] so the
+ * archive atmosphere (ASCII background) still shows through. All accent
+ * colors have been removed; status is encoded with line-weight + prefix.
+ */
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page {
+  color: var(--page-text);
+  display: block;
+  padding-bottom: 64px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home {
+  max-width: min(1280px, calc(100vw - 64px));
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page {
+  max-width: min(1680px, calc(100vw - 96px));
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__header {
+  border-bottom: 1px solid var(--theme-line);
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__eyebrow {
+  color: var(--theme-muted);
+  display: block;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__intro {
+  color: var(--page-text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 70ch;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__item {
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__card {
+  align-items: stretch;
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  text-align: left;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__card:hover,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__card:focus-visible {
+  border-color: var(--theme-text);
+  outline: 1px solid var(--theme-text);
+  outline-offset: -1px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__icon-frame {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  border: 1px solid var(--theme-line);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__icon {
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__meta {
+  align-items: baseline;
+  color: var(--theme-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__number {
+  color: var(--theme-text);
+  font-weight: 700;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__divider {
+  color: var(--theme-muted);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__label {
+  color: var(--theme-text);
+  font-weight: 600;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__description {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--page-text-muted);
+  display: -webkit-box;
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+  min-height: 40px;
+  overflow: hidden;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__footer {
+  align-items: center;
+  border-top: 1px solid var(--theme-line-soft);
+  display: flex;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  justify-content: space-between;
+  letter-spacing: 0.08em;
+  padding-top: 8px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__count {
+  color: var(--theme-muted);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__open {
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  padding: 2px 8px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__sources,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__sources {
+  align-items: baseline;
+  border-top: 1px solid var(--theme-line);
+  color: var(--theme-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  margin-top: 32px;
+  padding-top: 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__sources-label,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__sources-label {
+  color: var(--theme-text);
+  font-weight: 700;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home__sources-divider,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__sources-divider {
+  color: var(--theme-line-soft);
+}
+
+/* ----- Song Catalog Page ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__header {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__back {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__heading {
+  min-width: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__eyebrow {
+  color: var(--theme-muted);
+  display: block;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__subtitle {
+  color: var(--page-text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 70ch;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__code {
+  background: transparent;
+  border: 1px solid var(--theme-line-soft);
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  padding: 0 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__status {
+  align-items: center;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  display: flex;
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  gap: 16px;
+  letter-spacing: 0.08em;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__status--error {
+  border-color: var(--theme-line);
+  flex-wrap: wrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__retry {
+  background: transparent;
+  border: 1px solid var(--theme-text);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-left: auto;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+/* ----- Toolbar ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar {
+  border: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__views {
+  display: inline-flex;
+  gap: 0;
+  margin-right: auto;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__view {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-muted);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-left: -1px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__view:first-child {
+  margin-left: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__view.is-active {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__sort {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__sort-label {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__select {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--theme-text);
+  font: inherit;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 5px 6px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__select option {
+  background: #000;
+  color: #fff;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__sort-dir {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 5px 8px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__action {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__action:disabled {
+  color: var(--theme-muted);
+  cursor: not-allowed;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__action--accent {
+  border-color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__count {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-toolbar__hint {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ----- Active filter tags ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-active {
+  border-top: 1px solid var(--theme-line-soft);
+  border-bottom: 1px solid var(--theme-line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 8px 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-active__tag {
+  align-items: center;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  display: inline-flex;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  padding: 3px 6px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-active__label {
+  color: var(--theme-muted);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-active__clear {
+  background: transparent;
+  border: 0;
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  padding: 0;
+}
+
+/* ----- Pagination ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination {
+  align-items: center;
+  border-bottom: 1px solid var(--theme-line-soft);
+  border-top: 1px solid var(--theme-line-soft);
+  color: var(--theme-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  gap: 8px;
+  justify-content: space-between;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px;
+  padding: 8px 0;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination + .song-catalog-grid,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination + .song-catalog-table-wrap,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination + .song-catalog-summary {
+  margin-top: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid + .song-catalog-pagination,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table-wrap + .song-catalog-pagination,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary + .song-catalog-pagination {
+  margin: 12px 0 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__controls,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__size {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__button,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__select {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__button {
+  cursor: pointer;
+  min-width: 34px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__button:disabled {
+  color: var(--theme-muted);
+  cursor: not-allowed;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__select option {
+  background: #000;
+  color: #fff;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__page,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-pagination__range {
+  color: var(--theme-text);
+  min-width: max-content;
+}
+
+/* ----- Body layout ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__body {
+  align-items: flex-start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 960px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__body {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  }
+}
+
+@media (min-width: 1440px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__body {
+    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) 400px;
+  }
+}
+
+@media (min-width: 1760px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page__body {
+    grid-template-columns: minmax(0, 1fr) 420px;
+  }
+}
+
+/* ----- Result Grid ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__item {
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__card {
+  align-items: stretch;
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  text-align: left;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__card:hover,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__card:focus-visible {
+  border-color: var(--theme-line-strong);
+  background: var(--theme-surface-muted-soft);
+  outline: none;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__cover {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  border: 1px solid var(--theme-line-soft);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__cover-img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__cover-fallback {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__meta {
+  align-items: baseline;
+  color: var(--theme-muted);
+  display: flex;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  gap: 6px;
+  justify-content: space-between;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__diff {
+  color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__level {
+  color: var(--theme-text);
+  font-weight: 700;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__artist {
+  color: var(--page-text-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-grid__version {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ----- Result Table ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table-wrap {
+  border: 1px solid var(--theme-line);
+  overflow-x: auto;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table {
+  border-collapse: collapse;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  min-width: 640px;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table thead th {
+  border-bottom: 1px solid var(--theme-line);
+  color: var(--theme-muted);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 8px 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__index {
+  color: var(--theme-muted);
+  width: 56px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__title {
+  color: var(--theme-text);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__artist,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__version,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__designer {
+  color: var(--page-text-muted);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__diff,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__level,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__bpm {
+  color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table td {
+  padding: 8px 10px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__row {
+  border-bottom: 1px solid var(--theme-line-soft);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.16s ease;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__row:hover,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__row:focus-visible {
+  background: var(--theme-surface-muted-soft);
+  outline: 1px solid var(--theme-line);
+  outline-offset: -1px;
+}
+
+@media (max-width: 768px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__bpm-col,
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table__designer-col {
+    display: none;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-table {
+    min-width: 0;
+  }
+}
+
+/* ----- Result Summary ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__stats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__stats div {
+  border: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__stats dt {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__stats dd {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__heading {
+  border-bottom: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto auto;
+  padding: 4px 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-label {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-bar {
+  background: var(--theme-surface-muted);
+  border: 1px solid var(--theme-line-soft);
+  display: block;
+  height: 8px;
+  position: relative;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-bar-fill {
+  background: var(--theme-text);
+  display: block;
+  height: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-count {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-avg {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ----- Random Panel ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random {
+  border: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding: 14px;
+  position: sticky;
+  top: 80px;
+}
+
+@media (max-width: 960px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random {
+    max-height: none;
+    position: static;
+  }
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__head {
+  border-bottom: 1px solid var(--theme-line-soft);
+  padding-bottom: 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__eyebrow {
+  color: var(--theme-muted);
+  display: block;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__title {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__drawbar {
+  border-bottom: 1px solid var(--theme-line-soft);
+  padding-bottom: 10px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__cover {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  border: 1px solid var(--theme-line-soft);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  max-width: 220px;
+  overflow: hidden;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__cover-img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__cover-fallback {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-artist {
+  color: var(--page-text-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  margin: 0 0 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-meta,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-picked,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-difficulties,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__latest-time {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__action {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  flex: 1 1 0;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 5px 6px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__action:disabled {
+  color: var(--theme-muted);
+  cursor: not-allowed;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__action--primary {
+  border-color: var(--theme-text);
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__empty {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__history-head {
+  align-items: baseline;
+  border-top: 1px solid var(--theme-line-soft);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__history-title {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__history-count {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__item-button {
+  align-items: baseline;
+  background: transparent;
+  border: 1px solid var(--theme-line-soft);
+  color: var(--theme-text);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  gap: 2px;
+  letter-spacing: 0.04em;
+  padding: 4px 6px;
+  text-align: left;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__item-button:hover {
+  border-color: var(--theme-line);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__item-time {
+  color: var(--theme-muted);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__item-title {
+  color: var(--theme-text);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__item-diff {
+  color: var(--theme-muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-random__clear {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  margin-top: 4px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+/* ----- Filter modal ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 999;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__panel {
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  max-height: min(90vh, 720px);
+  max-width: min(720px, 96vw);
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__header {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--theme-line);
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__eyebrow {
+  color: var(--theme-muted);
+  display: block;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__title {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__status {
+  align-items: center;
+  color: var(--theme-muted);
+  display: flex;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  gap: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__close {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__search {
+  border-bottom: 1px solid var(--theme-line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__search-label {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__search-input,
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__input {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-controls {
+  align-items: center;
+  border-bottom: 1px solid var(--theme-line-soft);
+  display: flex;
+  gap: 8px;
+  padding: 6px 16px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-toggle {
+  background: transparent;
+  border: 1px solid var(--theme-line-soft);
+  color: var(--theme-muted);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-toggle:hover {
+  border-color: var(--theme-text);
+  color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section {
+  border-bottom: 1px solid var(--theme-line-soft);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-head {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--theme-text);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  gap: 8px;
+  letter-spacing: 0.12em;
+  padding: 10px 16px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-prefix {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-label {
+  color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px 12px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__chip {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--theme-line-soft);
+  color: var(--theme-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  gap: 4px;
+  letter-spacing: 0.06em;
+  padding: 3px 6px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__chip.is-active {
+  border-color: var(--theme-text);
+  color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__chip-marker {
+  font-size: 10px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__field-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__field-label {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__empty {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__hint {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__footer {
+  border-top: 1px solid var(--theme-line);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 12px 16px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__action {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__action--accent {
+  border-color: var(--theme-text);
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__action:disabled {
+  color: var(--theme-muted);
+  cursor: not-allowed;
+}
+
+/* ----- Detail dialog ----- */
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 1000;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__panel {
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: min(640px, 96vw);
+  padding: 20px;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__head {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__eyebrow {
+  color: var(--theme-muted);
+  display: block;
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__title {
+  color: var(--theme-text);
+  font-family: var(--font-ui);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__artist {
+  color: var(--page-text-muted);
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__close {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__meta {
+  border: 1px solid var(--theme-line);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  margin: 0;
+  padding: 10px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__meta dt {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__meta dd {
+  color: var(--theme-text);
+  font-family: var(--theme-mono);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__cover {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  border: 1px solid var(--theme-line-soft);
+  display: flex;
+  justify-content: center;
+  max-width: 320px;
+  overflow: hidden;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__cover-img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__cover-fallback {
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__action {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: var(--theme-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-detail__action:disabled {
+  color: var(--theme-muted);
+  cursor: not-allowed;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-empty {
+  border: 1px dashed var(--theme-line-soft);
+  color: var(--theme-muted);
+  font-family: var(--theme-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 18px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-home,
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-page {
+    max-width: 100%;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-filter__field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) auto;
+  }
+
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .song-catalog-summary__row-avg {
+    display: none;
+  }
+}

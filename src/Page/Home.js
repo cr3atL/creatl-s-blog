@@ -52,6 +52,34 @@ const Home = () => {
         )}
 
         <section
+          className="home-section home-section--catalog"
+          aria-labelledby="home-section-catalog-title"
+        >
+          <SectionHeader
+            number="01"
+            title="SONG CATALOG"
+            meta="OPEN"
+            id="home-section-catalog-title"
+          />
+          <div className="home-section__catalog">
+            <p className="home-section__catalog-body">
+              黑白极简曲库档案，覆盖 maimai / CHUNITHM / SOUND VOLTEX。
+              支持筛选、视图切换、随机抽谱面，抽选历史按游戏保存到本地存储。
+            </p>
+            <Button
+              type="primary"
+              onClick={() => {
+                trackEvent('Navigation', 'Click', 'Song_Catalog_Home');
+                navigate('/songs');
+              }}
+              className="home-section__catalog-button"
+            >
+              OPEN SONG CATALOG →
+            </Button>
+          </div>
+        </section>
+
+        <section
           className="home-section home-section--log"
           aria-labelledby="home-section-archive-log-title"
         >

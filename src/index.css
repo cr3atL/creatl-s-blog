@@ -54,6 +54,16 @@ body {
   font-family: var(--font-ui);
 }
 
+[data-ui-theme="ascii-modern"] *,
+[data-ui-theme="ascii-modern"] *::before,
+[data-ui-theme="ascii-modern"] *::after,
+[data-ui-theme="archive-terminal"] *,
+[data-ui-theme="archive-terminal"] *::before,
+[data-ui-theme="archive-terminal"] *::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

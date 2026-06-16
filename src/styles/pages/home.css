@@ -24,6 +24,29 @@
   border-top: 1px solid var(--theme-line);
 }
 
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-section__catalog {
+  border-top: 1px solid var(--theme-line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 0 6px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-section__catalog-body {
+  color: var(--page-text);
+  font-size: var(--page-body-font-size);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 720px;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-section__catalog-button {
+  align-self: flex-start;
+  font-family: var(--theme-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-section__tools-footer,
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-section__writing-footer {
   display: flex;

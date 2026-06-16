@@ -106,14 +106,19 @@ describe('critical page interactions', () => {
   test('home tool actions preserve navigation and analytics events', () => {
     render(<Home />);
 
-    const openButtons = screen.getAllByRole('button', { name: /OPEN/ });
-    fireEvent.click(openButtons[0]);
-    fireEvent.click(openButtons[1]);
+    const toolOpenButtons = screen.getAllByRole('button', { name: /OPEN .+ \((READY|DRAFT|ARCHIVED|COMING SOON)\)/ });
+    expect(toolOpenButtons.length).toBeGreaterThanOrEqual(3);
+
+    fireEvent.click(toolOpenButtons[0]);
+    fireEvent.click(toolOpenButtons[1]);
+    fireEvent.click(toolOpenButtons[2]);
 
     expect(mockNavigate).toHaveBeenNthCalledWith(1, '/randomssiba');
-    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/race-signon');
+    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/songs');
+    expect(mockNavigate).toHaveBeenNthCalledWith(3, '/race-signon');
     expect(trackEvent).toHaveBeenNthCalledWith(1, 'Navigation', 'Click', 'Random_Image');
-    expect(trackEvent).toHaveBeenNthCalledWith(2, 'Navigation', 'Click', 'Race_Signon');
+    expect(trackEvent).toHaveBeenNthCalledWith(2, 'Navigation', 'Click', 'Song_Catalog');
+    expect(trackEvent).toHaveBeenNthCalledWith(3, 'Navigation', 'Click', 'Race_Signon');
   });
 
   test('home social links preserve analytics and external navigation', () => {
@@ -168,6 +173,9 @@ describe('critical page interactions', () => {
       screen.getByRole('button', { name: /OPEN 随机兔子图片 \(READY\)/ })
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('button', { name: /OPEN Song Catalog \(READY\)/ })
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole('button', { name: /OPEN 比赛报名 \(DRAFT\)/ })
     ).toBeInTheDocument();
   });
@@ -187,15 +195,17 @@ describe('critical page interactions', () => {
     expect(mockNavigate).toHaveBeenLastCalledWith('/article');
   });
 
-  test('tools preserve both destinations', () => {
+  test('tools preserve all destinations in the new queue', () => {
     render(<Tools />);
 
     const openButtons = screen.getAllByRole('button', { name: /OPEN/ });
     fireEvent.click(openButtons[0]);
     fireEvent.click(openButtons[1]);
+    fireEvent.click(openButtons[2]);
 
     expect(mockNavigate).toHaveBeenNthCalledWith(1, '/randomssiba');
-    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/race-signon');
+    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/songs');
+    expect(mockNavigate).toHaveBeenNthCalledWith(3, '/race-signon');
   });
 
   test('not found returns home and keeps the ASCII frame decorative', () => {
