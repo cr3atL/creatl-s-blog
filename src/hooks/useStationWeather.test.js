@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import useStationWeather from './useStationWeather';
 
 describe('useStationWeather', () => {
@@ -10,17 +10,19 @@ describe('useStationWeather', () => {
     jest.useRealTimers();
   });
 
-  test('keeps the forecast stable across ordinary clock ticks', () => {
+  test('refreshes the fictional forecast on the live event interval', () => {
     const { result, unmount } = renderHook(() => useStationWeather());
     const firstForecast = result.current;
 
-    jest.advanceTimersByTime(30 * 1000);
+    act(() => {
+      jest.advanceTimersByTime(10000);
+    });
 
-    expect(result.current).toEqual(firstForecast);
+    expect(result.current).not.toEqual(firstForecast);
     unmount();
   });
 
-  test('cleans up its date watcher on unmount', () => {
+  test('cleans up its watcher on unmount', () => {
     const clearIntervalSpy = jest.spyOn(window, 'clearInterval');
     const { unmount } = renderHook(() => useStationWeather());
 

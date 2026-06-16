@@ -91,7 +91,12 @@ describe('critical page interactions', () => {
 
     expect(screen.getByText('weather --station creatl --live')).toBeInTheDocument();
     expect(screen.getByText('CREATL STATION / GENERATED INTERNAL CLIMATE')).toBeInTheDocument();
-    expect(screen.getByText(/站内虚构预报/)).toBeInTheDocument();
+    expect(screen.getByText(/站内虚构天气/)).toBeInTheDocument();
+    expect(screen.getByText(/Event:/)).toBeInTheDocument();
+    expect(screen.getByText(/°F/)).toBeInTheDocument();
+    expect(screen.getByText(/mph/)).toBeInTheDocument();
+    expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
+    expect(document.querySelector('.station-weather__scan')).not.toBeInTheDocument();
   });
 
   test('legacy home does not render station weather', () => {

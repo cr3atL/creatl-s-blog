@@ -584,12 +584,28 @@
   grid-template-columns: minmax(72px, 0.8fr) minmax(150px, 1.2fr);
   min-height: 116px;
   padding: 14px 12px 12px;
+  position: relative;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__primary {
+  align-content: start;
+  display: grid;
+  gap: 10px;
 }
 
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__temperature {
   color: var(--theme-data);
   font-size: 18px;
   font-weight: 700;
+}
+
+:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__ascii {
+  animation: stationWeatherAsciiTone 22s ease-in-out infinite;
+  color: var(--theme-muted);
+  font: inherit;
+  line-height: 1.05;
+  margin: 0;
+  white-space: pre;
 }
 
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details {
@@ -634,6 +650,24 @@
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__origin {
   font-size: 10px;
   text-align: right;
+}
+
+@keyframes stationWeatherAsciiTone {
+  0% {
+    color: var(--theme-subtle);
+  }
+  45% {
+    color: var(--theme-muted);
+  }
+  100% {
+    color: var(--theme-subtle);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__ascii {
+    animation: none;
+  }
 }
 
 @media (max-width: 768px) {
