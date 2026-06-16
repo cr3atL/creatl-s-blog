@@ -24,8 +24,8 @@ const ArchiveHero = ({ socialLinks }) => {
           creatL 的小站
         </Title>
         <Paragraph className="archive-hero__intro">
-          个人档案 + 工具站。写作、动态、工具和联系方式都按时间线和状态码
-          组织在一起，没有营销话术，也没有头像。
+          这里是我的个人主页和工具站。收集了文章、随手做的小工具
+          和音游曲库，简单直接。
         </Paragraph>
 
         <ul className="archive-hero__status" aria-label="archive station status">

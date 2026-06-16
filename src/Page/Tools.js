@@ -14,8 +14,8 @@ const futureEntries = [
   {
     number: '004',
     category: 'UTILITY',
-    title: 'Writing Preview',
-    description: '文章详情页或摘要工具，未来按档案 Feed 形式开放。',
+    title: '文章摘要',
+    description: '把文章列表整理成可筛选、可排序的摘要视图。',
     status: 'COMING SOON',
   },
 ];
@@ -41,11 +41,11 @@ const Tools = () => {
               可以立即使用的小工具
             </h1>
             <Paragraph className="tools-hero__intro">
-              工具被组织成 Process Queue。每一个条目都带有编号、分类、状态码和
-              明确的打开按钮；旧曲库页面已暂时下线。
+              这里是目前可以直接打开使用的小工具。每一条都标了编号、
+              分类和当前状态，点击 OPEN 就能进入。
             </Paragraph>
           </div>
-          <dl className="tools-hero__status" aria-label="process queue status">
+          <dl className="tools-hero__status" aria-label="tool station status">
             <div>
               <dt>QUEUE</dt>
               <dd>{tools.length} ACTIVE</dd>
@@ -63,7 +63,7 @@ const Tools = () => {
         >
           <SectionHeader
             number="03.1"
-            title="PROCESS QUEUE"
+            title="AVAILABLE TOOLS"
             id="tools-process-queue-title"
             meta="READY + DRAFT"
           />
@@ -89,11 +89,11 @@ const Tools = () => {
         >
           <SectionHeader
             number="03.2"
-            title="FUTURE QUEUE"
+            title="UPCOMING"
             id="tools-future-queue-title"
             meta="COMING SOON + ARCHIVED"
           />
-          <ul className="tools-future" aria-label="future process entries">
+          <ul className="tools-future" aria-label="upcoming tools">
             {futureEntries.map((entry) => (
               <li
                 key={entry.number}

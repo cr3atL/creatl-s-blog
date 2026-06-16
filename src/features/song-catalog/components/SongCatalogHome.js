@@ -65,8 +65,8 @@ const SongCatalogHome = () => {
           <span className="song-catalog-home__eyebrow">01 / 曲库</span>
           <h1 className="song-catalog-home__title">曲库档案</h1>
           <p className="song-catalog-home__intro">
-            一个黑白的 arcade 音游曲库索引。选择一个游戏，浏览 / 筛选 / 随机抽选
-            sheet；筛选字段与 arcade-songs.zetaraku.dev 对齐，所有数据来自公开 CDN。
+            收录 maimai DX、CHUNITHM 和 SOUND VOLTEX EXCEED GEAR 的曲目与谱面。
+            可以按游戏浏览、筛选、排序，也可以随机抽一张谱面练练手。
           </p>
         </header>
 

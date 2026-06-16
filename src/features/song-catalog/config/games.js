@@ -115,7 +115,7 @@ const games = [
     iconSource: 'SEGA Fave Store — maimai deluxe official fanbook',
     iconUrl: 'https://segafavestore.jp/products/maimaidx_officialfanbook',
     dataSource: 'https://dp4p6x0xfi5o9.cloudfront.net/maimai',
-    shortDescription: 'A monochrome index of maimai deluxe sheets.',
+    shortDescription: 'maimai deluxe 曲目与谱面索引。',
     sortOptions: buildSortOptions('maimai'),
     summaryVersionOrder: MAIMAI_VERSION_ORDER_NEWEST_FIRST,
     filterConfig: {
@@ -132,7 +132,7 @@ const games = [
     iconSource: 'Yamaha MEH — CHUNITHM piano concert',
     iconUrl: 'https://www.yamaha-meh.co.jp/business/event/sega-chunithm/',
     dataSource: 'https://dp4p6x0xfi5o9.cloudfront.net/chunithm',
-    shortDescription: 'A monochrome index of CHUNITHM sheets.',
+    shortDescription: 'CHUNITHM 曲目与谱面索引。',
     sortOptions: buildSortOptions('chunithm'),
     filterConfig: {
       fields: COMMON_FIELDS,
@@ -148,7 +148,7 @@ const games = [
     iconSource: 'SteamGridDB — Sound Voltex Exceed Gear',
     iconUrl: 'https://www.steamgriddb.com/game/5363674/icons',
     dataSource: 'https://dp4p6x0xfi5o9.cloudfront.net/sdvx',
-    shortDescription: 'A monochrome index of SOUND VOLTEX Exceed Gear sheets.',
+    shortDescription: 'SOUND VOLTEX EXCEED GEAR 曲目与谱面索引。',
     sortOptions: buildSortOptions('sdvx'),
     filterConfig: {
       fields: COMMON_FIELDS,

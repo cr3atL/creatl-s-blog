@@ -13,7 +13,7 @@ const RaceSignon = () => {
     setSubmitting(true);
     trackEvent('Race_Signon', 'Submit', 'Form_Channel');
     setTimeout(() => {
-      messageApi.info('报名流程正在补齐，提交暂未开启。');
+      messageApi.info('当前表单用于轻量收集报名意向。');
       setSubmitting(false);
     }, 320);
   };
@@ -32,8 +32,8 @@ const RaceSignon = () => {
               比赛报名
             </h1>
             <p className="race-signon-hero__intro">
-              轻量报名表单。表单字段保持和以前一致：游戏 ID 和 RATING。
-              提交按钮在 Archive Terminal 主题下使用琥珀强调。
+              填写游戏 ID 和当前 RATING 即可提交。
+              当前表单用于轻量收集报名意向。
             </p>
           </section>
 
@@ -43,9 +43,9 @@ const RaceSignon = () => {
           >
             <SectionHeader
               number="F.1"
-              title="FORM CHANNEL"
+              title="SIGN-ON FORM"
               id="race-signon-form-title"
-              meta={submitting ? 'TRANSMITTING' : 'STANDBY'}
+              meta={submitting ? 'SUBMITTING' : 'STANDBY'}
             />
             <Form layout="vertical" className="race-signon-form">
               <Form.Item label="游戏 ID">

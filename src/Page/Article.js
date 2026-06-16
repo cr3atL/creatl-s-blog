@@ -39,8 +39,8 @@ const Article = () => {
               文章与记录
             </h1>
             <Paragraph className="article-hero__intro">
-              文章按 Editorial Archive Feed 的方式排列：左侧日期，中间标题和
-              摘要，右侧标签和阅读动作。后续会把更多笔记迁移到这条 Feed。
+              这里会放一些笔记、想法和项目记录。内容不定期更新，
+              欢迎随手翻翻。
             </Paragraph>
           </section>
 
@@ -50,7 +50,7 @@ const Article = () => {
           >
             <SectionHeader
               number="02.1"
-              title="EDITORIAL ARCHIVE"
+              title="WRITING ARCHIVE"
               id="article-feed-title"
               meta={`${articles.length} ENTRY`}
             />

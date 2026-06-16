@@ -44,8 +44,8 @@ const Home = () => {
               <div className="page-eyebrow">个人主页 + 工具站</div>
               <Typography.Title level={2}>creatL 的小站</Typography.Title>
               <Paragraph className="page-intro">
-                这里会放一些个人内容、文章和随手做的小工具。Archive Terminal
-                主题预览会在 archive-terminal / ascii-modern 模式下启用。
+                这里是我的个人主页和工具站，收集了文章、随手做的小工具
+                和音游曲库。你可以慢慢往下看，也可以直接去工具页逛逛。
               </Paragraph>
             </div>
           </section>
@@ -63,8 +63,8 @@ const Home = () => {
           />
           <div className="home-section__catalog">
             <p className="home-section__catalog-body">
-              黑白极简曲库档案，覆盖 maimai / CHUNITHM / SOUND VOLTEX。
-              支持筛选、视图切换、随机抽谱面，抽选历史按游戏保存到本地存储。
+              收录 maimai、CHUNITHM 和 SOUND VOLTEX 的曲目与谱面。
+              可以筛选、排序、查看详情，也可以随机抽一张谱面练习。
             </p>
             <Button
               type="primary"
@@ -102,7 +102,7 @@ const Home = () => {
           <SectionHeader
             number="03"
             title="SELECTED TOOLS"
-            meta="PROCESS QUEUE"
+            meta="READY + DRAFT"
             id="home-section-tools-title"
           />
           <div className="home-section__tools">

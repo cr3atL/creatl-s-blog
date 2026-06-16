@@ -301,8 +301,8 @@ const SongCatalogPage = ({ game }) => {
             </span>
             <h1 className="song-catalog-page__title">{game.label}</h1>
             <p className="song-catalog-page__subtitle">
-              {game.shortDescription} 数据实时来自{' '}
-              <code className="song-catalog-page__code">{game.dataSource}</code>.
+              {game.shortDescription} 数据来自公开的{' '}
+              <code className="song-catalog-page__code">{game.dataSource}</code>。
             </p>
           </div>
         </header>
