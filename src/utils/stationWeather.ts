@@ -167,17 +167,17 @@ const conditions = [
 
 const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 
-const pick = (items, random) => items[Math.floor(random() * items.length)];
-const range = (min, max, random) => Math.round(min + random() * (max - min));
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const celsiusToFahrenheit = (celsius) => Math.round((celsius * 9) / 5 + 32);
+const pick = <T,>(items: T[], random: () => number): T => items[Math.floor(random() * items.length)];
+const range = (min: number, max: number, random: () => number) => Math.round(min + random() * (max - min));
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const celsiusToFahrenheit = (celsius: number) => Math.round((celsius * 9) / 5 + 32);
 
 export const getStationDateParts = (date = new Date(), offsetDays = 0) => {
   const shiftedDate = new Date(date.getTime() + offsetDays * dayMs);
   const parts = formatter.formatToParts(shiftedDate).reduce((result, part) => {
     result[part.type] = part.value;
     return result;
-  }, {});
+  }, {} as Record<string, string>);
 
   return {
     stationDate: `${parts.year}-${parts.month}-${parts.day}`,
@@ -228,3 +228,5 @@ export const generateStationWeather = (date = new Date(), offsetDays = 0, eventT
     pulse: (Math.abs(eventTick) % 9) + 1,
   };
 };
+
+export type StationWeather = ReturnType<typeof generateStationWeather>;

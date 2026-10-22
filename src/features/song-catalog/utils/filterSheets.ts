@@ -1,34 +1,37 @@
+import type { Song, Sheet, CatalogSheet, FilterConfig, SongFilters, LevelRange, ActiveFilterTag } from '../types';
+
 // Filter helpers shared by the three catalog games.
 // All functions take the generic game config so callers don't reach
 // into song-specific shapes.
 
-const getByPath = (item, path) => {
+const getByPath = (item: unknown, path: string | ((item: unknown) => unknown) | undefined): unknown => {
   if (!path) return undefined;
   if (typeof path === 'function') return path(item);
-  return String(path)
-    .split('.')
-    .reduce((value, key) => (value === null || value === undefined ? value : value[key]), item);
+  return path.split('.').reduce<unknown>((value, key) =>
+    typeof value === 'object' && value !== null
+      ? (value as Record<string, unknown>)[key] : undefined, item);
 };
 
-const songFields = (config) => config?.fields?.song || {};
-const sheetFields = (config) => config?.fields?.sheet || {};
+const songFields = (config: FilterConfig) => config?.fields?.song || {};
+const sheetFields = (config: FilterConfig) => config?.fields?.sheet || {};
 
-const uniq = (values) => [...new Set(values.filter(Boolean))];
+const uniq = <T,>(values: T[]) => [...new Set(values.filter(Boolean))];
+const textOptions = (values: unknown[]): string[] => uniq(values.map(safeString));
 
-const normalizeText = (value) => safeString(value).toLowerCase();
+const normalizeText = (value: unknown) => safeString(value).toLowerCase();
 
-const safeString = (value) => (value === null || value === undefined ? '' : String(value));
+const safeString = (value: unknown) => (value === null || value === undefined ? '' : String(value));
 
-const safeNumber = (value) => {
+const safeNumber = (value: unknown) => {
   if (value === null || value === undefined || value === '') return null;
-  const parsed = typeof value === 'number' ? value : parseFloat(value);
+  const parsed = typeof value === 'number' ? value : parseFloat(String(value));
   return Number.isNaN(parsed) ? null : parsed;
 };
 
-const compareText = (a, b, dir) =>
+const compareText = (a: unknown, b: unknown, dir: number) =>
   safeString(a).localeCompare(safeString(b)) * dir;
 
-const compareNumber = (a, b, dir) => {
+const compareNumber = (a: unknown, b: unknown, dir: number) => {
   const aNumber = safeNumber(a);
   const bNumber = safeNumber(b);
   const aMissing = aNumber === null;
@@ -39,13 +42,13 @@ const compareNumber = (a, b, dir) => {
   return (aNumber - bNumber) * dir;
 };
 
-const isDefaultLevelRange = (range, config) => {
+const isDefaultLevelRange = (range: LevelRange, config: FilterConfig) => {
   if (!config?.levelRange?.default) return false;
   const [min, max] = config.levelRange.default;
   return range[0] === min && range[1] === max;
 };
 
-const readSheetLevel = (sheet, config) => {
+const readSheetLevel = (sheet: Sheet, config: FilterConfig) => {
   const fields = sheetFields(config);
   const value =
     getByPath(sheet, fields.internalLevelValue) ??
@@ -54,7 +57,7 @@ const readSheetLevel = (sheet, config) => {
   return safeNumber(value);
 };
 
-export const createDefaultFilters = (config) => ({
+export const createDefaultFilters = (config: FilterConfig): SongFilters => ({
   searchText: '',
   difficultyFilter: [],
   versionFilter: [],
@@ -68,7 +71,7 @@ export const createDefaultFilters = (config) => ({
   bpmMax: null,
 });
 
-export const cloneFilters = (filters) => ({
+export const cloneFilters = (filters: SongFilters): SongFilters => ({
   ...filters,
   difficultyFilter: [...filters.difficultyFilter],
   versionFilter: [...filters.versionFilter],
@@ -79,23 +82,23 @@ export const cloneFilters = (filters) => ({
   regionFilter: [...filters.regionFilter],
 });
 
-export const collectFilterOptions = (songs, config) => {
+export const collectFilterOptions = (songs: Song[], config: FilterConfig) => {
   const sFields = songFields(config);
   const shFields = sheetFields(config);
 
-  const difficulties = uniq(
+  const difficulties = textOptions(
     songs.flatMap((song) =>
       (song.sheets || []).map((sheet) => getByPath(sheet, shFields.difficulty))
     )
   );
-  const versions = uniq(songs.map((song) => getByPath(song, sFields.version)));
-  const types = uniq(
+  const versions = textOptions(songs.map((song) => getByPath(song, sFields.version)));
+  const types = textOptions(
     songs.map((song) =>
       getByPath(song, sFields.type) ?? getByPath(song, sFields.category)
     )
   );
-  const artists = uniq(songs.map((song) => getByPath(song, sFields.artist)));
-  const noteDesigners = uniq(
+  const artists = textOptions(songs.map((song) => getByPath(song, sFields.artist)));
+  const noteDesigners = textOptions(
     songs.flatMap((song) =>
       (song.sheets || []).map((sheet) => getByPath(sheet, shFields.noteDesigner))
     )
@@ -112,33 +115,33 @@ export const collectFilterOptions = (songs, config) => {
   };
 };
 
-const songMatchesText = (song, sFields, query) => {
+const songMatchesText = (song: Song, sFields: Record<string, string>, query: string) => {
   if (!query) return true;
   const title = normalizeText(getByPath(song, sFields.title));
   const artist = normalizeText(getByPath(song, sFields.artist));
   return title.includes(query) || artist.includes(query);
 };
 
-const songMatchesVersion = (song, sFields, versionFilter) => {
+const songMatchesVersion = (song: Song, sFields: Record<string, string>, versionFilter: string[]) => {
   if (!versionFilter || versionFilter.length === 0) return true;
-  return versionFilter.includes(getByPath(song, sFields.version));
+  return versionFilter.includes(safeString(getByPath(song, sFields.version)));
 };
 
-const songMatchesType = (song, sFields, typeFilter) => {
+const songMatchesType = (song: Song, sFields: Record<string, string>, typeFilter: string[]) => {
   if (!typeFilter || typeFilter.length === 0) return true;
   const value =
     getByPath(song, sFields.type) ?? getByPath(song, sFields.category);
-  return typeFilter.includes(value);
+  return typeFilter.includes(safeString(value));
 };
 
-const songMatchesArtist = (song, sFields, artistQuery) => {
+const songMatchesArtist = (song: Song, sFields: Record<string, string>, artistQuery: string) => {
   if (!artistQuery) return true;
   return normalizeText(getByPath(song, sFields.artist)).includes(
     normalizeText(artistQuery)
   );
 };
 
-const songMatchesBpm = (song, bpmMin, bpmMax) => {
+const songMatchesBpm = (song: Song, bpmMin: number | null, bpmMax: number | null) => {
   const min = safeNumber(bpmMin);
   const max = safeNumber(bpmMax);
   if (min === null && max === null) return true;
@@ -150,24 +153,24 @@ const songMatchesBpm = (song, bpmMin, bpmMax) => {
   return true;
 };
 
-const sheetMatchesNoteDesigner = (sheet, shFields, filter) => {
+const sheetMatchesNoteDesigner = (sheet: Sheet, shFields: Record<string, string>, filter: string[]) => {
   if (!filter || filter.length === 0) return true;
-  return filter.includes(getByPath(sheet, shFields.noteDesigner));
+  return filter.includes(safeString(getByPath(sheet, shFields.noteDesigner)));
 };
 
-const sheetMatchesDifficulty = (sheet, shFields, filter) => {
+const sheetMatchesDifficulty = (sheet: Sheet, shFields: Record<string, string>, filter: string[]) => {
   if (!filter || filter.length === 0) return true;
-  return filter.includes(getByPath(sheet, shFields.difficulty));
+  return filter.includes(safeString(getByPath(sheet, shFields.difficulty)));
 };
 
-const sheetMatchesLevel = (sheet, config, range) => {
+const sheetMatchesLevel = (sheet: Sheet, config: FilterConfig, range: LevelRange) => {
   if (isDefaultLevelRange(range, config)) return true;
   const level = readSheetLevel(sheet, config);
   if (level === null) return false;
   return level >= range[0] && level <= range[1];
 };
 
-export const applySongFilters = (songs, filters, config) => {
+export const applySongFilters = (songs: Song[], filters: SongFilters, config: FilterConfig): Song[] => {
   if (!songs) return [];
   const sFields = songFields(config);
   const shFields = sheetFields(config);
@@ -199,12 +202,12 @@ export const applySongFilters = (songs, filters, config) => {
         ? { ...song, allSheets: song.sheets || [], sheets: matched }
         : null;
     })
-    .filter(Boolean);
+    .filter((item) => item !== null);
 };
 
-export const expandFilteredSongsToSheets = (filteredSongs) => {
+export const expandFilteredSongsToSheets = (filteredSongs: Song[]): CatalogSheet[] => {
   if (!filteredSongs) return [];
-  const sheets = [];
+  const sheets: CatalogSheet[] = [];
   filteredSongs.forEach((song) => {
     const sourceSheets = song.allSheets || song.sheets || [];
     const songSheets = sourceSheets.map((sheet) => ({
@@ -239,22 +242,23 @@ export const expandFilteredSongsToSheets = (filteredSongs) => {
   return sheets;
 };
 
-export const sortSheets = (sheets, sortBy, sortDir, config) => {
+export const sortSheets = (sheets: CatalogSheet[], sortBy: string, sortDir: string, config: FilterConfig) => {
   const dir = sortDir === 'ASC' ? 1 : -1;
   const shFields = sheetFields(config);
-  const shLevel = (sheet) => {
+  const shLevel = (sheet: CatalogSheet) => {
     const value =
       getByPath(sheet, shFields.internalLevelValue) ??
       getByPath(sheet, shFields.levelValue) ??
       safeNumber(getByPath(sheet, shFields.level));
     return value;
   };
-  const byStableSheet = (a, b) =>
+  const byStableSheet = (a: CatalogSheet, b: CatalogSheet) =>
     compareText(a.songTitle, b.songTitle, 1) ||
     compareText(a.difficulty, b.difficulty, 1) ||
     compareText(a.id, b.id, 1);
-  const withFallback = (compare) => (a, b) => compare(a, b) || byStableSheet(a, b);
-  const compareVersion = (a, b) => {
+  type Comparator = (a: CatalogSheet, b: CatalogSheet) => number;
+  const withFallback = (compare: Comparator): Comparator => (a, b) => compare(a, b) || byStableSheet(a, b);
+  const compareVersion = (a: CatalogSheet, b: CatalogSheet) => {
     const order = config?.versionOrder || [];
     if (order.length > 0) {
       const aIndex = order.indexOf(a.songVersion);
@@ -267,12 +271,12 @@ export const sortSheets = (sheets, sortBy, sortDir, config) => {
     }
     return compareText(a.songVersion, b.songVersion, dir);
   };
-  const compareOrdered = (path, order) => withFallback((a, b) => {
+  const compareOrdered = (path: string, order?: string[]) => withFallback((a, b) => {
     if (!order || order.length === 0) return compareText(getByPath(a, path), getByPath(b, path), dir);
     const aValue = getByPath(a, path);
     const bValue = getByPath(b, path);
-    const aIndex = order.indexOf(aValue);
-    const bIndex = order.indexOf(bValue);
+    const aIndex = order.indexOf(safeString(aValue));
+    const bIndex = order.indexOf(safeString(bValue));
     if (aIndex !== -1 || bIndex !== -1) {
       if (aIndex === -1) return 1;
       if (bIndex === -1) return -1;
@@ -280,10 +284,10 @@ export const sortSheets = (sheets, sortBy, sortDir, config) => {
     }
     return compareText(aValue, bValue, dir);
   });
-  const comparePathNumber = (path) =>
+  const comparePathNumber = (path: string) =>
     withFallback((a, b) => compareNumber(getByPath(a, path), getByPath(b, path), dir));
 
-  const compareFns = {
+  const compareFns: Record<string, Comparator> = {
     songNo: withFallback((a, b) => compareNumber(a.songNo, b.songNo, dir)),
     level: withFallback((a, b) => compareNumber(shLevel(a), shLevel(b), dir)),
     levelValue: withFallback((a, b) => compareNumber(a.levelValue, b.levelValue, dir)),
@@ -317,8 +321,8 @@ export const sortSheets = (sheets, sortBy, sortDir, config) => {
   return [...sheets].sort(compare);
 };
 
-export const buildActiveFilterTags = (filters, config) => {
-  const tags = [];
+export const buildActiveFilterTags = (filters: SongFilters, config: FilterConfig) => {
+  const tags: ActiveFilterTag[] = [];
 
   if (filters.searchText) {
     tags.push({
@@ -380,7 +384,7 @@ export const buildActiveFilterTags = (filters, config) => {
   return tags;
 };
 
-export const clearFilter = (key, config) => {
+export const clearFilter = (key: keyof SongFilters | "bpmRange", config: FilterConfig) => {
   if (key === 'searchText') return '';
   if (key === 'artistFilter') return '';
   if (key === 'levelRange') return [...(config.levelRange.default || [1, 20])];

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import AppShell from './AppShell';
 
-jest.mock('antd', () => {
+vi.mock('antd', () => {
   const Layout = ({ children, ...props }) => <div {...props}>{children}</div>;
   Layout.Content = ({ children, ...props }) => <main {...props}>{children}</main>;
   Layout.Footer = ({ children, ...props }) => <footer {...props}>{children}</footer>;
@@ -9,9 +9,9 @@ jest.mock('antd', () => {
   return { Layout };
 });
 
-jest.mock('./ambient/AmbientCanvas', () => () => (
+vi.mock('./ambient/AmbientCanvas', () => ({ default: () => (
   <canvas data-testid="ambient-canvas" />
-));
+) }));
 
 describe('AppShell atmosphere integration', () => {
   const renderShell = () =>

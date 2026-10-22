@@ -1,4 +1,4 @@
-export const createSeededRandom = (seedText) => {
+export const createSeededRandom = (seedText: string) => {
   let seed = 0;
 
   for (let index = 0; index < seedText.length; index += 1) {

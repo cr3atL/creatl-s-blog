@@ -1,3 +1,4 @@
+import type { Game, GameId } from '../types';
 // Song catalog - game configurations
 // Each game entry exposes the CDN endpoint, display label, icon asset,
 // accent-free filter configuration and sheet normalization hints.
@@ -40,7 +41,7 @@ const COMMON_SORT_OPTIONS = [
   { key: 'releaseDate', label: '发行日' },
 ];
 
-const NOTE_SORT_OPTIONS = {
+const NOTE_SORT_OPTIONS: Partial<Record<GameId, { key: string; label: string }[]>> = {
   maimai: [
     { key: 'noteTap', label: 'TAP' },
     { key: 'noteTapPercent', label: 'TAP %' },
@@ -69,7 +70,7 @@ const NOTE_SORT_OPTIONS = {
   ],
 };
 
-const buildSortOptions = (gameId) => [
+const buildSortOptions = (gameId: GameId) => [
   ...COMMON_SORT_OPTIONS,
   ...(NOTE_SORT_OPTIONS[gameId] || []),
 ];
@@ -106,7 +107,7 @@ const MAIMAI_VERSION_ORDER_NEWEST_FIRST = [
   'maimai',
 ];
 
-const games = [
+const games: Game[] = [
   {
     id: 'maimai',
     label: 'MAIMAI DX',
@@ -158,9 +159,13 @@ const games = [
   },
 ];
 
-export const getGameById = (gameId) => games.find((game) => game.id === gameId);
+export function getGameById(gameId: GameId): Game;
+export function getGameById(gameId: string): Game | undefined;
+export function getGameById(gameId: string): Game | undefined {
+  return games.find((game) => game.id === gameId);
+}
 
-export const getGameByPath = (pathname) => {
+export const getGameByPath = (pathname: string) => {
   if (!pathname) return null;
   const trimmed = pathname.replace(/\/+$/, '');
   return games.find((game) => game.path === trimmed) || null;

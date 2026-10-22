@@ -1,8 +1,10 @@
+import type { Game, CatalogData } from '../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { normalizeSongData } from '../utils/normalizeSongData';
 
-const initialState = {
+interface CatalogState { data: CatalogData | null; loading: boolean; error: string | null }
+const initialState: CatalogState = {
   data: null,
   loading: true,
   error: null,
@@ -14,12 +16,12 @@ const initialState = {
 // loading/error/data state machine. The hook also exposes a `refetch`
 // callback so the error state can offer a retry button.
 
-const useSongCatalog = (game) => {
+const useSongCatalog = (game: Game | undefined) => {
   const [state, setState] = useState(initialState);
   const tokenRef = useRef(0);
 
   const load = useCallback(
-    (gameRef) => {
+    (gameRef: Game | undefined) => {
       if (!gameRef) {
         setState({ data: null, loading: false, error: 'Unknown game.' });
         return;
@@ -43,7 +45,7 @@ const useSongCatalog = (game) => {
           setState({
             data: null,
             loading: false,
-            error: `Failed to load ${gameRef.label} (${err.message}).`,
+            error: `Failed to load ${gameRef.label} (${err instanceof Error ? err.message : String(err)}).`,
           });
         }
       })();

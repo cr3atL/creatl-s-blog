@@ -3,8 +3,8 @@ import AmbientCanvas from './AmbientCanvas';
 
 const createMatchMedia = (matches) => ({
   matches,
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
 });
 
 describe('AmbientCanvas', () => {
@@ -14,9 +14,9 @@ describe('AmbientCanvas', () => {
 
   beforeEach(() => {
     context = {
-      clearRect: jest.fn(),
-      fillText: jest.fn(),
-      setTransform: jest.fn(),
+      clearRect: vi.fn(),
+      fillText: vi.fn(),
+      setTransform: vi.fn(),
       set fillStyle(value) {},
       set font(value) {},
       set textAlign(value) {},
@@ -25,13 +25,13 @@ describe('AmbientCanvas', () => {
     matchMedia = createMatchMedia(false);
     animationCallbacks = [];
 
-    window.matchMedia = jest.fn(() => matchMedia);
-    window.requestAnimationFrame = jest.fn((callback) => {
+    window.matchMedia = vi.fn(() => matchMedia);
+    window.requestAnimationFrame = vi.fn((callback) => {
       animationCallbacks.push(callback);
       return animationCallbacks.length;
     });
-    window.cancelAnimationFrame = jest.fn();
-    HTMLCanvasElement.prototype.getContext = jest.fn(() => context);
+    window.cancelAnimationFrame = vi.fn();
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => context);
     Object.defineProperty(document, 'hidden', {
       configurable: true,
       value: false,
@@ -103,7 +103,7 @@ describe('AmbientCanvas', () => {
 
   test('renders a static frame when reduced motion is requested', () => {
     matchMedia = createMatchMedia(true);
-    window.matchMedia = jest.fn(() => matchMedia);
+    window.matchMedia = vi.fn(() => matchMedia);
 
     render(<AmbientCanvas />);
 
@@ -113,7 +113,7 @@ describe('AmbientCanvas', () => {
 
   test('caps character detail for a 4K static frame', () => {
     matchMedia = createMatchMedia(true);
-    window.matchMedia = jest.fn(() => matchMedia);
+    window.matchMedia = vi.fn(() => matchMedia);
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: 3840,
@@ -129,8 +129,8 @@ describe('AmbientCanvas', () => {
   });
 
   test('pauses while hidden, resumes when visible, and cleans up on unmount', () => {
-    const removeWindowListener = jest.spyOn(window, 'removeEventListener');
-    const removeDocumentListener = jest.spyOn(document, 'removeEventListener');
+    const removeWindowListener = vi.spyOn(window, 'removeEventListener');
+    const removeDocumentListener = vi.spyOn(document, 'removeEventListener');
     const { unmount } = render(<AmbientCanvas />);
 
     Object.defineProperty(document, 'hidden', {

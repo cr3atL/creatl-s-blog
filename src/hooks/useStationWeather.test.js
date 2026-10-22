@@ -3,11 +3,11 @@ import useStationWeather from './useStationWeather';
 
 describe('useStationWeather', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test('refreshes the fictional forecast on the live event interval', () => {
@@ -15,7 +15,7 @@ describe('useStationWeather', () => {
     const firstForecast = result.current;
 
     act(() => {
-      jest.advanceTimersByTime(10000);
+      vi.advanceTimersByTime(10000);
     });
 
     expect(result.current).not.toEqual(firstForecast);
@@ -23,7 +23,7 @@ describe('useStationWeather', () => {
   });
 
   test('cleans up its watcher on unmount', () => {
-    const clearIntervalSpy = jest.spyOn(window, 'clearInterval');
+    const clearIntervalSpy = vi.spyOn(window, 'clearInterval');
     const { unmount } = renderHook(() => useStationWeather());
 
     unmount();

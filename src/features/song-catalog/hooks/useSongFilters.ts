@@ -1,3 +1,4 @@
+import type { Song, FilterConfig, SongFilters } from '../types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -10,7 +11,7 @@ import {
   sortSheets,
 } from '../utils/filterSheets';
 
-const useSongFilters = (songs, config) => {
+const useSongFilters = (songs: Song[], config: FilterConfig) => {
   const defaultFilters = useMemo(
     () => createDefaultFilters(config),
     [config]
@@ -65,7 +66,7 @@ const useSongFilters = (songs, config) => {
     setTempFilters(cloneFilters(defaultFilters));
   }, [defaultFilters]);
 
-  const setFilterValue = useCallback((key, value) => {
+  const setFilterValue = useCallback(<K extends keyof SongFilters,>(key: K, value: SongFilters[K]) => {
     const nextValue = Array.isArray(value) ? [...value] : value;
     setFilters((current) => ({
       ...current,
@@ -77,7 +78,7 @@ const useSongFilters = (songs, config) => {
     }));
   }, []);
 
-  const setTempFilterValue = useCallback((key, value) => {
+  const setTempFilterValue = useCallback(<K extends keyof SongFilters,>(key: K, value: SongFilters[K]) => {
     setTempFilters((current) => ({
       ...current,
       [key]: Array.isArray(value) ? [...value] : value,
@@ -103,7 +104,7 @@ const useSongFilters = (songs, config) => {
     activeTags,
     tempActiveTags,
     activeCount,
-    sortSheets: (sortBy, sortDir) =>
+    sortSheets: (sortBy: string, sortDir: string) =>
       sortSheets(filteredSheets, sortBy, sortDir, config),
   };
 };

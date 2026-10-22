@@ -1,14 +1,15 @@
+import type { CatalogSheet } from '../types';
 // Random sheet picking — always operates on the current filtered sheet
 // pool. Sheet-level picking (not song-level) is the contract: each
 // call returns a single sheet from the candidate pool.
 
-export const drawRandomSheet = (sheetPool) => {
+export const drawRandomSheet = <T,>(sheetPool: T[]): T | null => {
   if (!Array.isArray(sheetPool) || sheetPool.length === 0) return null;
   const index = Math.floor(Math.random() * sheetPool.length);
   return sheetPool[index];
 };
 
-export const drawRandomSheets = (sheetPool, count) => {
+export const drawRandomSheets = <T,>(sheetPool: T[], count: number): T[] => {
   if (!Array.isArray(sheetPool) || sheetPool.length === 0 || count <= 0) return [];
   const result = [];
   const used = new Set();
@@ -22,13 +23,13 @@ export const drawRandomSheets = (sheetPool, count) => {
   return result;
 };
 
-export const trimHistory = (history, max = 50) => {
+export const trimHistory = <T,>(history: T[], max = 50): T[] => {
   if (!Array.isArray(history)) return [];
   if (history.length <= max) return history;
   return history.slice(0, max);
 };
 
-export const buildHistoryEntry = (sheet) => {
+export const buildHistoryEntry = (sheet: CatalogSheet | null) => {
   if (!sheet) return null;
   return {
     sheetId: sheet.id,
@@ -53,3 +54,5 @@ export const buildHistoryEntry = (sheet) => {
     drawnAt: new Date().toISOString(),
   };
 };
+
+export type HistoryEntry = NonNullable<ReturnType<typeof buildHistoryEntry>>;

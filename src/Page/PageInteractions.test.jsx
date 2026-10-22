@@ -8,28 +8,28 @@ import Randomssiba from './Randomssiba';
 import Tools from './Tools';
 import { trackEvent } from '../utils/analytics';
 
-const mockNavigate = jest.fn();
-const mockMessageError = jest.fn();
-const mockMessageInfo = jest.fn();
+const mockNavigate = vi.hoisted(() => vi.fn());
+const mockMessageError = vi.hoisted(() => vi.fn());
+const mockMessageInfo = vi.hoisted(() => vi.fn());
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
-}), { virtual: true });
-
-jest.mock('../components/ResponsiveLayout', () => ({ children }) => <>{children}</>);
-
-jest.mock('../utils/analytics', () => ({
-  trackEvent: jest.fn(),
 }));
 
-jest.mock('./Randomssiba', () => () => (
+vi.mock('../components/ResponsiveLayout', () => ({ default: ({ children }) => <>{children}</> }));
+
+vi.mock('../utils/analytics', () => ({
+  trackEvent: vi.fn(),
+}));
+
+vi.mock('./Randomssiba', () => ({ default: () => (
   <div>
     <button>换一张</button>
     <button disabled>下载图片</button>
   </div>
-));
+) }));
 
-jest.mock('@ant-design/icons', () => ({
+vi.mock('@ant-design/icons', () => ({
   DownloadOutlined: () => <span />,
   GithubOutlined: (props) => <span {...props} />,
   MenuOutlined: () => <span />,
@@ -38,7 +38,7 @@ jest.mock('@ant-design/icons', () => ({
   TrophyOutlined: () => <span />,
 }));
 
-jest.mock('antd', () => {
+vi.mock('antd', () => {
   const Form = ({ children, ...props }) => <form {...props}>{children}</form>;
   Form.Item = ({ children, label }) => (
     <div>
@@ -82,7 +82,7 @@ describe('critical page interactions', () => {
     mockMessageError.mockClear();
     mockMessageInfo.mockClear();
     trackEvent.mockClear();
-    window.open = jest.fn();
+    window.open = vi.fn();
     document.documentElement.dataset.uiTheme = 'ascii-modern';
   });
 
@@ -265,7 +265,7 @@ describe('critical page interactions', () => {
   });
 
   test('random image keeps reload and disabled download controls', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     render(<Randomssiba />);
 
@@ -273,8 +273,8 @@ describe('critical page interactions', () => {
     expect(screen.getByRole('button', { name: '下载图片' })).toBeDisabled();
 
     act(() => {
-      jest.runOnlyPendingTimers();
+      vi.runOnlyPendingTimers();
     });
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 });

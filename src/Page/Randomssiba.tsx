@@ -5,17 +5,10 @@ import ResponsiveLayout from '../components/ResponsiveLayout';
 import SectionHeader from '../components/archive/SectionHeader';
 import '../styles/pages/random-image.css';
 
-const importAll = (r) => {
-  return r.keys().map(r);
-};
-
-const images = [];
-try {
-  const requireContext = require.context('../ssiba', false, /\.(png|jpe?g|svg|gif)$/);
-  images.push(...importAll(requireContext));
-} catch (error) {
-  console.error('Error loading images:', error);
-}
+const images = Object.values(import.meta.glob<string>(
+  '../ssiba/*.{png,jpg,jpeg,svg,gif}',
+  { eager: true, query: '?url', import: 'default' }
+));
 
 const Randomssiba = () => {
   const [currentImage, setCurrentImage] = useState('');
@@ -27,7 +20,7 @@ const Randomssiba = () => {
     return images[randomIndex];
   };
 
-  const isVideoFile = (filePath) => {
+  const isVideoFile = (filePath: string) => {
     return filePath.toLowerCase().endsWith('.mp4');
   };
 
@@ -103,9 +96,10 @@ const Randomssiba = () => {
                     loop
                     className="random-image-media"
                     onLoadedData={(event) => {
-                      event.target.style.opacity = '0';
+                      const media = event.currentTarget;
+                      media.style.opacity = '0';
                       setTimeout(() => {
-                        event.target.style.opacity = '1';
+                        media.style.opacity = '1';
                       }, 50);
                     }}
                   />
@@ -115,9 +109,10 @@ const Randomssiba = () => {
                     alt="随机兔子"
                     className="random-image-media"
                     onLoad={(event) => {
-                      event.target.style.opacity = '0';
+                      const media = event.currentTarget;
+                      media.style.opacity = '0';
                       setTimeout(() => {
-                        event.target.style.opacity = '1';
+                        media.style.opacity = '1';
                       }, 50);
                     }}
                   />

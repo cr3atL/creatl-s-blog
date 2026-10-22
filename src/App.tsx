@@ -14,7 +14,7 @@ import { getGameById } from './features/song-catalog/config/games';
 import { initGA, trackPageView } from './utils/analytics';
 
 // Google Analytics tracking ID. Replace with the real ID in production.
-const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACK_ID || 'G-XXXXXXXXXX';
+const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACK_ID || 'G-XXXXXXXXXX';
 
 function PageTracker() {
   const location = useLocation();

@@ -1,16 +1,17 @@
+import type { ThemeConfig } from 'antd';
 import { theme as antdTheme } from 'antd';
 
 const supportedThemes = ['legacy', 'ascii-modern', 'archive-terminal'];
 
-export const resolveUITheme = (queryTheme, configuredTheme = 'legacy') => {
-  if (supportedThemes.includes(queryTheme)) {
+export const resolveUITheme = (queryTheme: string | null, configuredTheme = 'legacy') => {
+  if (queryTheme !== null && supportedThemes.includes(queryTheme)) {
     return queryTheme;
   }
 
   return supportedThemes.includes(configuredTheme) ? configuredTheme : 'legacy';
 };
 
-export const archiveTerminalTheme = {
+export const archiveTerminalTheme: ThemeConfig = {
   algorithm: antdTheme.darkAlgorithm,
   token: {
     colorPrimary: '#ffffff',

@@ -1,3 +1,5 @@
+import type { ActiveFilterTag, CatalogSheet, Game } from '../types';
+import type { HistoryEntry } from '../utils/randomSheet';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +32,7 @@ const isMobileViewport = () => {
   return window.innerWidth <= 768;
 };
 
-const SongCatalogPage = ({ game }) => {
+const SongCatalogPage = ({ game }: { game: Game }) => {
   const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
 
@@ -39,13 +41,13 @@ const SongCatalogPage = ({ game }) => {
     game.id
   );
 
-  const [view, setView] = useState('grid');
+  const [view, setView] = useState<keyof typeof VIEW_MODES>('grid');
   const [sortBy, setSortBy] = useState('songNo');
   const [sortDir, setSortDir] = useState('DESC');
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [latest, setLatest] = useState(null);
-  const [detailSheet, setDetailSheet] = useState(null);
+  const [latest, setLatest] = useState<HistoryEntry | null>(null);
+  const [detailSheet, setDetailSheet] = useState<CatalogSheet | null>(null);
   const [isMobile, setIsMobile] = useState(isMobileViewport);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(48);
@@ -148,13 +150,18 @@ const SongCatalogPage = ({ game }) => {
     }, delay);
   }, [isDrawing, canDraw, sortedSheets, addEntry, reducedMotion]);
 
-  const handleSelectSheet = useCallback((sheet) => {
+  const handleSelectSheet = useCallback((sheet: CatalogSheet) => {
     setDetailSheet(sheet);
   }, []);
 
-  const handleSelectHistoryEntry = useCallback((entry) => {
+  const handleSelectHistoryEntry = useCallback((entry: HistoryEntry) => {
     setDetailSheet({
       ...entry,
+      songNo: 0,
+      songReleaseDate: '',
+      type: entry.songType,
+      noteCounts: null,
+      notePercents: null,
       id: entry.sheetId,
       songTitle: entry.title,
       songArtist: entry.artist,
@@ -186,14 +193,14 @@ const SongCatalogPage = ({ game }) => {
   }, [navigate]);
 
   const goToPage = useCallback(
-    (nextPage) => {
+    (nextPage: number) => {
       setPage(Math.min(Math.max(1, nextPage), totalPages));
     },
     [totalPages]
   );
 
   const clearTag = useCallback(
-    (tag) => {
+    (tag: ActiveFilterTag) => {
       if (tag.key === 'levelRange') {
         setFilterValue('levelRange', [...runtimeFilterConfig.levelRange.default]);
       } else if (tag.key === 'bpmRange') {

@@ -20,24 +20,24 @@ import {
 } from './utils/randomSheet';
 import { normalizeSongData } from './utils/normalizeSongData';
 
-const mockNavigate = jest.fn();
+const mockNavigate = vi.hoisted(() => vi.fn());
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: '/songs/maimai' }),
-}), { virtual: true });
-
-jest.mock('../../components/ResponsiveLayout', () => ({ children }) => <>{children}</>);
-
-jest.mock('../../utils/analytics', () => ({
-  trackEvent: jest.fn(),
 }));
 
-jest.mock('@ant-design/icons', () => ({
+vi.mock('../../components/ResponsiveLayout', () => ({ default: ({ children }) => <>{children}</> }));
+
+vi.mock('../../utils/analytics', () => ({
+  trackEvent: vi.fn(),
+}));
+
+vi.mock('@ant-design/icons', () => ({
   MenuOutlined: () => <span />,
 }));
 
-jest.mock('antd', () => {
+vi.mock('antd', () => {
   const Button = ({ children, onClick, ...props }) => (
     <button type="button" onClick={onClick} {...props}>
       {children}
@@ -355,7 +355,7 @@ describe('SongCatalogPage', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
     originalFetch = global.fetch;
-    global.fetch = jest.fn(() =>
+    global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve(SAMPLE_RAW),
@@ -425,7 +425,7 @@ describe('SongCatalogPage', () => {
   });
 
   test('renders error state with retry button when fetch fails', async () => {
-    global.fetch = jest.fn(() => Promise.reject(new Error('boom')));
+    global.fetch = vi.fn(() => Promise.reject(new Error('boom')));
 
     render(<SongCatalogPage game={game} />);
 

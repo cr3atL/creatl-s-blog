@@ -49,8 +49,8 @@ https://dp4p6x0xfi5o9.cloudfront.net/sdvx
 - React 19
 - React Router DOM 7
 - Ant Design 5
-- Create React App / react-scripts
-- Jest + React Testing Library
+- Vite 7 + TypeScript 5（严格类型检查，渐进迁移）
+- Vitest 4 + React Testing Library
 - GitHub Pages + GitHub Actions
 
 ## 项目结构
@@ -75,7 +75,7 @@ src/
 
 环境要求：
 
-- Node.js 18 或更高版本
+- Node.js 20.19+（20.x）、22.12+（22.x）或 24+（推荐 Node.js 22，见 `.nvmrc`）
 - npm
 
 安装依赖：
@@ -90,13 +90,27 @@ npm ci
 npm start
 ```
 
-运行测试：
+开发地址为 `http://localhost:5173/creatl-s-blog/`。
+
+运行测试（单次运行）：
 
 ```bash
-npm test -- --watchAll=false
+npm test
 ```
 
-构建生产版本：
+持续测试：
+
+```bash
+npm run test:watch
+```
+
+独立类型检查：
+
+```bash
+npm run typecheck
+```
+
+构建生产版本（包含类型检查，输出 `dist/`）：
 
 ```bash
 npm run build
@@ -105,8 +119,26 @@ npm run build
 曲库相关回归测试：
 
 ```bash
-npm test -- --runInBand --watchAll=false src/features/song-catalog/songCatalog.test.js
+npm test -- src/features/song-catalog/songCatalog.test.jsx
 ```
+
+预览生产产物：
+
+```bash
+npm run preview
+```
+
+预览地址为 `http://localhost:4173/creatl-s-blog/`。可用 `-- --port 4174` 更换端口。
+
+`npm run check` 顺序执行类型检查、全部测试和生产构建。
+
+## 环境变量
+
+复制 `.env.example` 为 `.env.local`，按需填写 `VITE_UI_THEME` 和 `VITE_GA_TRACK_ID`。旧配置 `REACT_APP_UI_THEME`、`REACT_APP_GA_TRACK_ID` 分别改为以上名称，保留原值。迁移后的配置应保存到忽略提交的 `.env.local`；原 `.env` 不必改动。为兼容已有部署，Vite 配置仅为这两个公开设置保留旧名回退，新名优先；新环境请使用新名。`VITE_*` 会编译到浏览器代码，只能放公开配置，不能放密钥。GitHub Actions 中可在构建步骤的 `env` 中提供同名变量，然后重新构建。
+
+## TypeScript 范围
+
+入口、路由、主题、随机图片、曲库页面与游戏配置、歌曲/谱面模型、远端数据适配、筛选排序、抽谱面和本地历史、天气生成和时钟已迁移为 `.ts` / `.tsx`，启用 `strict`。远端 JSON 在适配边界按 `unknown` 校验。其余展示组件与现有测试保留 `.jsx` / `.js`，通过 `allowJs` 渐进迁移，未启用 `checkJs`；历史 `src/archive/song-catalog/` 不参与类型检查。所有原有回归断言保留并运行于 Vitest。CSS 和主题样式保持原样。
 
 ## 路由
 
@@ -128,8 +160,8 @@ npm test -- --runInBand --watchAll=false src/features/song-catalog/songCatalog.t
 ## 维护说明
 
 - 不要把 `.agents/`、`docs/`、`demos/` 等过程文件纳入正式提交。
-- 曲库新增游戏时，优先扩展 `src/features/song-catalog/config/games.js`，再补充对应排序、筛选和测试。
-- 曲库数据适配应集中在 `normalizeSongData.js` 与 `filterSheets.js`，避免在 UI 组件里散落数据结构判断。
+- 曲库新增游戏时，优先扩展 `src/features/song-catalog/config/games.ts`，再补充对应排序、筛选和测试。
+- 曲库数据适配应集中在 `normalizeSongData.ts` 与 `filterSheets.ts`，避免在 UI 组件里散落数据结构判断。
 - 新工具优先加入 `src/data/tools.js`，复杂后再拆成独立 feature。
 - 页面文案和源码统一使用 UTF-8。
 - 修改主题或曲库后，至少运行相关测试；发布前建议运行完整测试和生产构建。
@@ -137,9 +169,10 @@ npm test -- --runInBand --watchAll=false src/features/song-catalog/songCatalog.t
 ## 部署说明
 
 - 生产站点部署在 GitHub Pages 的 `/creatl-s-blog` 子路径。
-- `BrowserRouter` 的 `basename` 与 `package.json` 中的 `homepage` 必须保持一致。
-- `public/404.html` 和 `public/index.html` 中的重定向脚本用于支持 SPA 深链刷新。
-- GitHub Actions 工作流位于 `.github/workflows/static.yml`。
+- Vite 的 `base` 为 `/creatl-s-blog/`；`BrowserRouter` 的 `basename` 为 `/creatl-s-blog`，与 `package.json` 的 `homepage` 保持一致。
+- 根目录 `index.html` 是 Vite 入口，使用 `%BASE_URL%` 引用公共资源。`public/404.html` 将深链编码到根页查询参数，根入口在 React 启动前恢复路径、查询参数和 hash。Vite 开发/预览服务器自身提供 SPA fallback；实际 Pages 重定向行为还需要发布后验证。
+- GitHub Actions 工作流位于 `.github/workflows/static.yml`，保留 `master` push 和手动触发。它使用 `.nvmrc` 的 Node 22，执行 `npm ci`、类型检查、完整测试和构建，上传 `dist/` 后部署。仓库 Pages 来源应选择 GitHub Actions。
+- 本地验证完成后，由维护者审查并提交、推送到 `master`，等待 Pages workflow 成功，再检查线上首页、曲库、随机图片与深链刷新。迁移本身不自动推送或发布；本地预览通过不代表线上部署已成功。
 
 ## License
 

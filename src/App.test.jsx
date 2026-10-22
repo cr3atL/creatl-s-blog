@@ -3,10 +3,10 @@ import App from './App';
 
 let mockRouterBasename;
 
-jest.mock(
+vi.mock(
   'react-router-dom',
-  () => {
-    const React = require('react');
+  async () => {
+    const React = await import('react');
 
     const matchesPath = (routePath, pathname) => {
       if (routePath === '*') {
@@ -34,22 +34,21 @@ jest.mock(
       Route: () => null,
       useLocation: () => ({ pathname: '/', search: '' }),
     };
-  },
-  { virtual: true }
+  }
 );
 
-jest.mock('./utils/analytics', () => ({
-  initGA: jest.fn(),
-  trackPageView: jest.fn(),
+vi.mock('./utils/analytics', () => ({
+  initGA: vi.fn(),
+  trackPageView: vi.fn(),
 }));
 
-jest.mock('./Page/Home', () => () => <div>home-page</div>);
-jest.mock('./Page/About', () => () => <div>about-page</div>);
-jest.mock('./Page/Article', () => () => <div>article-page</div>);
-jest.mock('./Page/Tools', () => () => <div>tools-page</div>);
-jest.mock('./Page/Randomssiba', () => () => <div>random-image-page</div>);
-jest.mock('./Page/RaceSignon', () => () => <div>race-signon-page</div>);
-jest.mock('./Page/NotFound', () => () => <div>not-found-page</div>);
+vi.mock('./Page/Home', () => ({ default: () => <div>home-page</div> }));
+vi.mock('./Page/About', () => ({ default: () => <div>about-page</div> }));
+vi.mock('./Page/Article', () => ({ default: () => <div>article-page</div> }));
+vi.mock('./Page/Tools', () => ({ default: () => <div>tools-page</div> }));
+vi.mock('./Page/Randomssiba', () => ({ default: () => <div>random-image-page</div> }));
+vi.mock('./Page/RaceSignon', () => ({ default: () => <div>race-signon-page</div> }));
+vi.mock('./Page/NotFound', () => ({ default: () => <div>not-found-page</div> }));
 
 const routeCases = [
   ['/', 'home-page'],
