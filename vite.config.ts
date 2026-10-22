@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
     base: '/creatl-s-blog/',
     plugins: [react()],
     define: {
-      'import.meta.env.VITE_UI_THEME': JSON.stringify(env.VITE_UI_THEME ?? env.REACT_APP_UI_THEME ?? 'archive-terminal'),
+      'import.meta.env.VITE_UI_THEME': JSON.stringify(env.VITE_UI_THEME ?? env.REACT_APP_UI_THEME ?? 'creatl-brand'),
       'import.meta.env.VITE_GA_TRACK_ID': JSON.stringify(env.VITE_GA_TRACK_ID ?? env.REACT_APP_GA_TRACK_ID ?? ''),
     },
     server: { port: 5173, strictPort: true },

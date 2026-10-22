@@ -1,0 +1,81 @@
+:root {
+  --motion-fast: 140ms;
+  --motion-standard: 240ms;
+  --motion-slow: 360ms;
+  --motion-ease-enter: cubic-bezier(.2, .7, .2, 1);
+  --motion-ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --motion-ease-move: cubic-bezier(.42, 0, .2, 1);
+  --motion-page-distance: 8px;
+  --motion-control-distance: 4px;
+}
+
+:where(button, .ant-btn, a, input, select, textarea) {
+  transition: color var(--motion-fast) var(--motion-ease-enter),
+    background-color var(--motion-fast) var(--motion-ease-enter),
+    border-color var(--motion-fast) var(--motion-ease-enter),
+    box-shadow var(--motion-fast) var(--motion-ease-enter),
+    transform var(--motion-fast) var(--motion-ease-enter);
+}
+
+:where(button, .ant-btn):not(:disabled):not([aria-disabled="true"]):active {
+  transform: scale(.98);
+}
+
+[data-ui-theme] :is(.ant-btn, .ant-input, .ant-input-affix-wrapper, .ant-select-selector, .ant-checkbox-inner, .ant-radio-inner) {
+  transition-duration: var(--motion-fast);
+  transition-timing-function: var(--motion-ease-enter);
+}
+
+/* Ant Design owns presence and focus; only its visual timing and scale change. */
+[data-ui-theme] .ant-zoom-enter,
+[data-ui-theme] .ant-zoom-appear {
+  animation-name: site-dialog-enter !important;
+  animation-duration: var(--motion-standard) !important;
+  animation-timing-function: var(--motion-ease-enter) !important;
+  transform-origin: center !important;
+}
+[data-ui-theme] .ant-zoom-leave {
+  animation-name: site-dialog-exit !important;
+  animation-duration: var(--motion-fast) !important;
+  animation-timing-function: var(--motion-ease-exit) !important;
+  transform-origin: center !important;
+}
+[data-ui-theme] .ant-modal-mask,
+[data-ui-theme] .ant-drawer-mask,
+[data-ui-theme] .ant-message-notice-wrapper {
+  animation-duration: var(--motion-fast) !important;
+}
+[data-ui-theme] .ant-drawer .ant-drawer-content-wrapper {
+  transition: transform var(--motion-slow) var(--motion-ease-enter), opacity var(--motion-slow) var(--motion-ease-enter);
+}
+[data-ui-theme] .ant-drawer .ant-drawer-mask {
+  transition: opacity var(--motion-fast) var(--motion-ease-enter);
+}
+.motion-feedback { animation: site-feedback-enter var(--motion-fast) var(--motion-ease-enter) both; }
+
+@keyframes site-dialog-enter {
+  from { opacity: 0; transform: scale(.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes site-dialog-exit {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(.98); }
+}
+@keyframes site-feedback-enter {
+  from { opacity: .4; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ui-theme] *,
+  [data-ui-theme] *::before,
+  [data-ui-theme] *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  :where(button, .ant-btn):not(:disabled):active { transform: none; }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import SongCover from './SongCover';
 
 const formatTime = (iso) => {
   if (!iso) return '—';
@@ -39,10 +40,11 @@ const allDifficultyText = (entry) => {
   if (!Array.isArray(entry.songSheets) || entry.songSheets.length === 0) {
     return '—';
   }
+  const showType = new Set(entry.songSheets.map((sheet) => sheet.type)).size > 1;
   return entry.songSheets
     .map((sheet) => {
       const picked = sheet.id === entry.sheetId ? ' *' : '';
-      return `${sheet.difficulty} ${sheetLevelLabel(sheet)}${picked}`;
+      return `${showType ? `${sheet.type.toUpperCase()} ` : ''}${sheet.difficulty} ${sheetLevelLabel(sheet)}${picked}`;
     })
     .join(' / ');
 };
@@ -52,6 +54,7 @@ const SongRandomPanel = ({
   latest,
   onDrawAgain,
   canDraw,
+  isDrawing,
   onClearHistory,
   onSelectEntry,
   maxHistory = 50,
@@ -60,8 +63,7 @@ const SongRandomPanel = ({
   return (
     <aside className="song-catalog-random" aria-label="随机谱面历史">
       <header className="song-catalog-random__head">
-        <span className="song-catalog-random__eyebrow">随机面板</span>
-        <h2 className="song-catalog-random__title">本次抽选</h2>
+        <h2 className="song-catalog-random__title">随机谱面</h2>
       </header>
 
       <div className="song-catalog-random__drawbar">
@@ -69,27 +71,16 @@ const SongRandomPanel = ({
           type="button"
           className="song-catalog-random__action song-catalog-random__action--primary"
           onClick={onDrawAgain}
-          disabled={!canDraw}
+          disabled={!canDraw || isDrawing}
+          aria-busy={isDrawing}
         >
-          {latest ? '再抽一次' : '随机抽谱面'}
+          {isDrawing ? '抽取中…' : latest ? '再抽一次' : '随机抽谱面'}
         </button>
       </div>
 
       {latest ? (
-        <div className="song-catalog-random__latest">
-          <div className="song-catalog-random__cover">
-            {latest.songImageUrl || latest.imageUrl ? (
-              <img
-                src={latest.songImageUrl || latest.imageUrl}
-                alt=""
-                className="song-catalog-random__cover-img"
-              />
-            ) : (
-              <span className="song-catalog-random__cover-fallback">
-                无封面
-              </span>
-            )}
-          </div>
+        <div key={`${latest.sheetId}-${latest.drawnAt}`} className="song-catalog-random__latest motion-feedback">
+          <SongCover className="song-catalog-random__cover" src={latest.imageUrl || latest.songImageUrl} />
           <p className="song-catalog-random__latest-title">{latest.title}</p>
           <p className="song-catalog-random__latest-artist">
             {latest.artist || '—'}
@@ -98,7 +89,7 @@ const SongRandomPanel = ({
             {latest.songVersion || '—'} · {latest.songType || latest.songCategory || '—'} · BPM {latest.bpm ?? '—'}
           </p>
           <p className="song-catalog-random__latest-picked">
-            抽中谱面：{latest.difficulty} {levelLabel(latest)}
+            {latest.difficulty} {levelLabel(latest)}
           </p>
           <p className="song-catalog-random__latest-difficulties">
             全部难度：{allDifficultyText(latest)}
@@ -116,27 +107,23 @@ const SongRandomPanel = ({
             </button>
           </div>
         </div>
-      ) : (
-        <p className="song-catalog-random__empty">
-          点击“随机抽谱面”，从当前筛选结果中抽取一张谱面。
-        </p>
-      )}
+      ) : null}
 
       <section className="song-catalog-random__history">
         <header className="song-catalog-random__history-head">
           <h3 className="song-catalog-random__history-title">历史记录</h3>
           <span className="song-catalog-random__history-count">
-            {String(historyCap).padStart(2, '0')} / {maxHistory} 条
+            {historyCap} / {maxHistory} 条
           </span>
         </header>
         {history.length === 0 ? (
-          <p className="song-catalog-random__empty">— 暂无历史 —</p>
+          <p className="song-catalog-random__empty">暂无历史</p>
         ) : (
           <ul className="song-catalog-random__list">
-            {history.slice(0, 12).map((entry) => {
+            {history.slice(0, maxHistory).map((entry, index) => {
               const key = `${entry.sheetId}-${entry.drawnAt}`;
               return (
-                <li key={key} className="song-catalog-random__item">
+                <li key={`${key}-${index}`} className="song-catalog-random__item">
                   <button
                     type="button"
                     className="song-catalog-random__item-button"

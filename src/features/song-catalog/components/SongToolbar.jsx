@@ -1,6 +1,7 @@
 import React from 'react';
 
 const VIEWS = [
+  { key: 'selection', label: '选曲' },
   { key: 'grid', label: '网格' },
   { key: 'detail', label: '详情' },
   { key: 'summary', label: '摘要' },
@@ -22,7 +23,6 @@ const SongToolbar = ({
   onOpenFilter,
   onClearFilters,
   resultCount,
-  isMobile,
   sortOptions,
 }) => {
   const options = sortOptions && sortOptions.length > 0
@@ -105,11 +105,6 @@ const SongToolbar = ({
         </span>
       </div>
 
-      {isMobile && (
-        <p className="song-catalog-toolbar__hint">
-          提示：点击谱面查看详情；随机面板中可再次抽选。
-        </p>
-      )}
     </div>
   );
 };

@@ -1,32 +1,4 @@
-import React from 'react';
-import {
-  AppstoreOutlined,
-  FileTextOutlined,
-  HomeOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { navigationRoutes } from '../features/content-selector/directory';
 
-const navItems = [
-  {
-    key: '/',
-    icon: <HomeOutlined />,
-    label: 'HOME',
-  },
-  {
-    key: '/article',
-    icon: <FileTextOutlined />,
-    label: 'WRITING',
-  },
-  {
-    key: '/tools',
-    icon: <AppstoreOutlined />,
-    label: 'TOOLS',
-  },
-  {
-    key: '/about',
-    icon: <UserOutlined />,
-    label: 'ABOUT',
-  },
-];
-
+const navItems = navigationRoutes.map((entry) => ({ key: entry.path, label: entry.title }));
 export default navItems;

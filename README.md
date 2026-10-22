@@ -6,13 +6,14 @@ creatL 的个人主页与轻量工具站。项目以 React 单页应用为主体
 
 ## 当前功能
 
-- **首页**：个人介绍、社交入口、站点动态、工具入口和曲库入口。
-- **文章**：轻量文章列表，收录笔记、想法和项目记录。
-- **工具页**：集中展示当前可用的小工具和计划中的工具。
+- **首页**：原始 Logo、个人介绍、真实社交入口和当前版本更新。内容目录进入后只显示当前层，支持键盘操作与返回恢复。
+- **首页开场**：当前标签页首次进入首页时，中央 Logo 淡入、停留并平滑归位，介绍和目录逐步展开。桌面约 2.2 秒、窄屏约 1.9 秒；通过 sessionStorage 记忆，站内返回和刷新不重播。点击、键盘、滚动与尺寸变化立即结束动效；减少动态效果时只做短淡入，锚点和恢复滚动位置优先。
+- **文章**：站点重构记录与个人文章；未完成文章保留明确状态和进度反馈。
+- **工具页**：提供音游曲库和随机兔子图片两个可用入口。
 - **随机兔子图片**：从本地素材集中随机展示图片，并支持下载。
-- **比赛报名**：轻量报名表单，收集游戏 ID 和 RATING。
-- **Song Catalog 曲库**：覆盖 maimai DX、CHUNITHM、SOUND VOLTEX EXCEED GEAR，支持筛选、排序、网格/详情/摘要视图、谱面详情和随机抽谱面历史。
-- **黑白档案主题**：站点采用克制的黑白视觉系统，并统一 Ant Design 控件的暗色样式。
+- **Song Catalog 曲库**：覆盖 maimai DX、CHUNITHM、SOUND VOLTEX EXCEED GEAR，支持选曲、筛选、排序、网格/详情/摘要视图、谱面详情和随机抽谱面历史。
+- **品牌主题**：默认采用奶油白、橙色、可可色和少量叶绿色，统一公共导航、页面和 Ant Design 控件。
+- **全站动效**：共享 140/240/360ms 三档时长，统一正文、目录、选曲、弹窗、图片和控件反馈；系统减少动态效果时取消位移与缩放。首页保留独立品牌开场，查询与排序不重播整页动效。
 - **GitHub Pages 部署**：支持 `/creatl-s-blog` 子路径和 SPA 深链刷新 fallback。
 
 ## 曲库能力
@@ -36,7 +37,7 @@ https://dp4p6x0xfi5o9.cloudfront.net/sdvx
 
 当前曲库交互包括：
 
-- 每页 48 / 96 / 144 个谱面。
+- 网格与详情列表每页 48 / 96 / 144 个谱面；选曲视图支持当前谱面预览。
 - 摘要视图不分页，直接统计完整筛选结果。
 - 默认按 `No.` 排序。
 - maimai 摘要页版本分布按版本从新到旧排序。
@@ -58,9 +59,10 @@ https://dp4p6x0xfi5o9.cloudfront.net/sdvx
 ```txt
 src/
 ├── Page/                         # 页面入口
-├── components/                   # 通用布局、导航、外壳和氛围组件
+├── components/                   # 通用布局、导航、外壳和品牌组件
 ├── data/                         # 工具与站点数据
 ├── features/
+│   ├── content-selector/         # 首页目录、选择与历史恢复
 │   └── song-catalog/             # 当前曲库功能
 ├── hooks/                        # 通用 hooks
 ├── icons/                        # 图标与曲库入口资源
@@ -138,7 +140,15 @@ npm run preview
 
 ## TypeScript 范围
 
-入口、路由、主题、随机图片、曲库页面与游戏配置、歌曲/谱面模型、远端数据适配、筛选排序、抽谱面和本地历史、天气生成和时钟已迁移为 `.ts` / `.tsx`，启用 `strict`。远端 JSON 在适配边界按 `unknown` 校验。其余展示组件与现有测试保留 `.jsx` / `.js`，通过 `allowJs` 渐进迁移，未启用 `checkJs`；历史 `src/archive/song-catalog/` 不参与类型检查。所有原有回归断言保留并运行于 Vitest。CSS 和主题样式保持原样。
+入口、路由、主题、页面、SafeImage、首页目录、曲库页面与游戏配置、歌曲/谱面模型、远端数据适配、筛选排序、抽谱面和本地历史使用 `.ts` / `.tsx`，启用 `strict`。远端 JSON 在适配边界按 `unknown` 校验。其余展示组件与现有测试保留 `.jsx` / `.js`，通过 `allowJs` 渐进迁移，未启用 `checkJs`；历史 `src/archive/song-catalog/` 不参与类型检查。测试随新界面调整定位方式，继续验证现有功能与统计事件。
+
+## 主题与页面约定
+
+默认主题 ID 为 `creatl-brand`，由根节点的 `data-ui-theme` 和 Ant Design ConfigProvider 共同生效。局部样式消费 `--brand-background`、`--brand-surface`、`--brand-text`、`--brand-muted`、`--brand-line`、`--brand-accent`、`--brand-accent-text`、`--brand-leaf`、`--brand-radius`；页面继续通过 `ResponsiveLayout` 的 `children` 接口使用公共外壳。
+
+首页 `?folder=catalog` 与 `?folder=tools` 可直接打开对应目录，返回后恢复上层选择。`/home` 别名与曲库随机历史存储键保持兼容。比赛报名已移除，原 `/race-signon` 地址进入 404；天气模块与旧版更新记录已删除。
+
+页面优先依靠标题、排列与间距说明用途，不添加机械编号、装饰状态或重复说明。保留表单标签、文章未完成状态、图片加载与失败等真实反馈。页面按钮与链接按至少 44px 触控高度设计，并尊重系统减少动态效果偏好。
 
 ## 路由
 
@@ -152,7 +162,6 @@ npm run preview
 /songs/chunithm CHUNITHM 曲库
 /songs/sdvx    SOUND VOLTEX 曲库
 /randomssiba   随机兔子图片
-/race-signon   比赛报名
 /about         关于
 *              404
 ```

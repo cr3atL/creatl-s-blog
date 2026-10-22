@@ -89,6 +89,9 @@ const useSongFilters = (songs: Song[], config: FilterConfig) => {
     setTempFilters(cloneFilters(filters));
   }, [filters]);
 
+  const sortFilteredSheets = useCallback((sortBy: string, sortDir: string) =>
+    sortSheets(filteredSheets, sortBy, sortDir, config), [filteredSheets, config]);
+
   return {
     filters,
     tempFilters,
@@ -104,8 +107,7 @@ const useSongFilters = (songs: Song[], config: FilterConfig) => {
     activeTags,
     tempActiveTags,
     activeCount,
-    sortSheets: (sortBy: string, sortDir: string) =>
-      sortSheets(filteredSheets, sortBy, sortDir, config),
+    sortSheets: sortFilteredSheets,
   };
 };
 

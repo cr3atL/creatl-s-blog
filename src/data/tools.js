@@ -1,36 +1,20 @@
-// Archive Terminal 工具入口数据
-// 字段保持扁平，避免页面或卡片组件直接依赖 Ant Design 图标节点。
-// 现有可用工具路径、analytics 标签和文案必须保留。
+// 当前可用工具；首页目录与工具页共用入口。
 const tools = [
   {
     key: 'random-image',
-    number: '001',
-    category: 'IMAGE',
     title: '随机兔子图片',
-    description: '从本地图片集中随机抽一张兔子图片，适合放松一下。',
+    description: '随机查看本地兔子图片，支持换图和下载。',
     path: '/randomssiba',
     status: 'READY',
     analyticsLabel: 'Random_Image',
   },
   {
     key: 'song-catalog',
-    number: '002',
-    category: 'ARCHIVE',
-    title: 'Song Catalog',
-    description: '收录 maimai、CHUNITHM 和 SOUND VOLTEX 的曲目与谱面，支持筛选与随机抽谱面。',
+    title: '音游曲库',
+    description: '查询 maimai DX、CHUNITHM 和 SOUND VOLTEX 的曲目与谱面，支持选曲、筛选、排序和随机抽谱面。',
     path: '/songs',
     status: 'READY',
     analyticsLabel: 'Song_Catalog',
-  },
-  {
-    key: 'race-signon',
-    number: '003',
-    category: 'FORM',
-    title: '比赛报名',
-    description: '轻量报名表单，收集游戏 ID 和 RATING。',
-    path: '/race-signon',
-    status: 'DRAFT',
-    analyticsLabel: 'Race_Signon',
   },
 ];
 

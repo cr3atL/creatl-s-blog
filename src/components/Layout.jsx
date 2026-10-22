@@ -1,43 +1,38 @@
-import React from 'react';
-import { Layout as AntLayout, Menu } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Button, Drawer } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import AppShell from './AppShell';
+import BrandLogo from './brand/BrandLogo';
 import navItems from './navItems';
+import useNavigationExit from './useNavigationExit';
 
-const { Header } = AntLayout;
-
-const Layout = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleMenuClick = ({ key }) => {
-    navigate(key);
+export default function Layout({ children }) {
+  const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef(null);
+  const { leave, cancel } = useNavigationExit();
+  const closeNavigation = () => {
+    leave(document.querySelector('.shell-navigation-drawer'));
+    setOpen(false);
+    menuButtonRef.current?.focus({ preventScroll: true });
   };
+  const location = useLocation();
+  const links = (close) => navItems.map((item) => (
+    <NavLink key={item.key} to={item.key} end={item.key === '/'}
+      className={({ isActive }) => `shell-nav__link${isActive || (item.key === '/' && location.pathname === '/home') ? ' is-active' : ''}`}
+      onClick={close}>{item.label}</NavLink>
+  ));
 
-  return (
-    <AppShell
-      header={(currentTime) => (
-        <Header className="shell-header shell-header-desktop header-container">
-          <div className="blog-title shell-title-desktop">creatL's Site</div>
-          <div className="shell-status shell-status-desktop">ARCHIVE ONLINE</div>
-          <div className="menu-container">
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              selectedKeys={[location.pathname]}
-              items={navItems}
-              onClick={handleMenuClick}
-              className="shell-desktop-menu"
-            />
-            <div className="shell-time desktop-time">{currentTime} / CST</div>
-          </div>
-          <div className="shell-time mobile-time">{currentTime} / CST</div>
-        </Header>
-      )}
-    >
-      {children}
-    </AppShell>
-  );
-};
-
-export default Layout;
+  return <AppShell header={() => <>
+    <header className="shell-header">
+      <div className="shell-header__inner">
+        <Link to="/" className="shell-home" aria-label="creatL 首页"><BrandLogo /></Link>
+        <nav className="shell-nav" aria-label="主导航">{links()}</nav>
+        <Button ref={menuButtonRef} type="text" className="shell-mobile-menu-button" icon={<MenuOutlined />} aria-label="打开导航菜单" onClick={() => { cancel(); setOpen(true); }} />
+      </div>
+    </header>
+    {open && <Drawer title="导航" open onClose={closeNavigation} className="shell-drawer" rootClassName="shell-navigation-drawer" width="min(304px, 88vw)">
+      <nav className="shell-mobile-nav" aria-label="移动导航">{links(closeNavigation)}</nav>
+    </Drawer>}
+  </>}>{children}</AppShell>;
+}

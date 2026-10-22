@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import AppShell from './AppShell';
+import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('antd', () => {
   const Layout = ({ children, ...props }) => <div {...props}>{children}</div>;
@@ -16,9 +17,9 @@ vi.mock('./ambient/AmbientCanvas', () => ({ default: () => (
 describe('AppShell atmosphere integration', () => {
   const renderShell = () =>
     render(
-      <AppShell header={() => <header>header</header>}>
+      <MemoryRouter><AppShell header={() => <header>header</header>}>
         content
-      </AppShell>
+      </AppShell></MemoryRouter>
     );
 
   test('mounts the atmosphere for archive-terminal', () => {
@@ -44,5 +45,14 @@ describe('AppShell atmosphere integration', () => {
     renderShell();
 
     expect(screen.queryByTestId('ambient-canvas')).not.toBeInTheDocument();
+  });
+
+  test('provides a main landmark and skip link without decorative status for the brand shell', () => {
+    document.documentElement.dataset.uiTheme = 'creatl-brand';
+    renderShell();
+    expect(screen.getByRole('main')).toHaveTextContent('content');
+    expect(screen.getByRole('link', { name: '跳到正文' })).toHaveAttribute('href', '#main-content');
+    expect(screen.queryByTestId('ambient-canvas')).not.toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).not.toHaveTextContent(/ONLINE|BUILT WITH REACT/);
   });
 });

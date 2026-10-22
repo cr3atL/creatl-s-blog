@@ -1,4 +1,13 @@
 :root {
+  --brand-background: #fff8eb;
+  --brand-surface: #fffcf5;
+  --brand-text: #44291b;
+  --brand-muted: #79604c;
+  --brand-line: #ddcdb5;
+  --brand-accent: #ff8a00;
+  --brand-accent-text: #44291b;
+  --brand-leaf: #85983c;
+  --brand-radius: 10px;
   --page-content-max-width: 1200px;
   --page-content-narrow-max-width: 800px;
   --page-content-medium-max-width: 1000px;
@@ -30,6 +39,61 @@
   --shell-header-muted: rgba(255, 255, 255, 0.66);
   --shell-drawer-bg: #f8faf9;
   --shell-drawer-text: #1f2933;
+}
+
+[data-ui-theme="creatl-brand"] {
+  color-scheme: light;
+  scrollbar-gutter: stable;
+  --font-ui: "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --font-mono: Consolas, "Cascadia Mono", monospace;
+  --theme-bg: var(--brand-background);
+  --theme-bg-soft: #f5ecd9;
+  --theme-surface: var(--brand-surface);
+  --theme-surface-strong: var(--brand-surface);
+  --theme-surface-muted: #f5ecd9;
+  --theme-surface-muted-strong: #eee0c7;
+  --theme-surface-muted-soft: #fcf3e3;
+  --theme-line: var(--brand-line);
+  --theme-line-soft: var(--brand-line);
+  --theme-line-strong: #a48b70;
+  --theme-text: var(--brand-text);
+  --theme-muted: var(--brand-muted);
+  --theme-subtle: var(--brand-muted);
+  --theme-accent: #995000;
+  --theme-accent-strong: #783e00;
+  --theme-accent-soft: #ffe2b7;
+  --theme-accent-line: #a05a12;
+  --theme-accent-wash: #fff1d8;
+  --theme-data: #596725;
+  --theme-data-soft: #edf0dc;
+  --theme-data-line: #85983c;
+  --theme-danger: #ab3528;
+  --theme-warning: #995000;
+  --theme-mono: var(--font-mono);
+  --theme-rule: var(--brand-text);
+  --theme-rule-soft: var(--brand-line);
+  --archive-surface-radius: var(--brand-radius);
+  --page-card-radius: var(--brand-radius);
+  --page-glass-bg: var(--brand-surface);
+  --page-glass-border: var(--brand-line);
+  --page-shadow: 0 8px 28px rgba(68, 41, 27, .06);
+  --page-avatar-shadow: none;
+  --page-text: var(--brand-text);
+  --page-text-muted: var(--brand-muted);
+  --page-text-subtle: var(--brand-muted);
+  --page-accent: #995000;
+  --page-accent-soft: #ffe2b7;
+  --shell-surface: var(--brand-surface);
+  --shell-surface-strong: var(--brand-surface);
+  --shell-surface-muted: #f5ecd9;
+  --shell-border: var(--brand-line);
+  --shell-shadow: none;
+  --shell-header-bg: var(--brand-background);
+  --shell-header-border: var(--brand-line);
+  --shell-header-text: var(--brand-text);
+  --shell-header-muted: var(--brand-muted);
+  --shell-drawer-bg: var(--brand-surface);
+  --shell-drawer-text: var(--brand-text);
 }
 
 [data-ui-theme="ascii-modern"],

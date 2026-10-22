@@ -1,280 +1,129 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import About from './About';
 import Article from './Article';
 import Home from './Home';
 import NotFound from './NotFound';
-import RaceSignon from './RaceSignon';
-import Randomssiba from './Randomssiba';
 import Tools from './Tools';
 import { trackEvent } from '../utils/analytics';
+import socialLinks from '../data/socialLinks';
+import archiveLogs from '../data/archiveLogs';
 
-const mockNavigate = vi.hoisted(() => vi.fn());
-const mockMessageError = vi.hoisted(() => vi.fn());
 const mockMessageInfo = vi.hoisted(() => vi.fn());
-
-vi.mock('react-router-dom', () => ({
-  useNavigate: () => mockNavigate,
-}));
-
 vi.mock('../components/ResponsiveLayout', () => ({ default: ({ children }) => <>{children}</> }));
-
-vi.mock('../utils/analytics', () => ({
-  trackEvent: vi.fn(),
-}));
-
-vi.mock('./Randomssiba', () => ({ default: () => (
-  <div>
-    <button>换一张</button>
-    <button disabled>下载图片</button>
-  </div>
-) }));
-
-vi.mock('@ant-design/icons', () => ({
-  DownloadOutlined: () => <span />,
-  GithubOutlined: (props) => <span {...props} />,
-  MenuOutlined: () => <span />,
-  PictureOutlined: () => <span />,
-  ReloadOutlined: () => <span />,
-  TrophyOutlined: () => <span />,
-}));
-
+vi.mock('../utils/analytics', () => ({ trackEvent: vi.fn() }));
 vi.mock('antd', () => {
-  const Form = ({ children, ...props }) => <form {...props}>{children}</form>;
-  Form.Item = ({ children, label }) => (
-    <div>
-      {label && <label>{label}</label>}
-      {children}
-    </div>
-  );
-
-  const List = ({ dataSource, renderItem }) => <div>{dataSource.map(renderItem)}</div>;
-  List.Item = ({ children }) => <article>{children}</article>;
-
+  const Form = ({ children, onFinish, ...props }) => <form {...props} onSubmit={event => { event.preventDefault(); onFinish?.(); }}>{children}</form>;
+  Form.Item = ({ children, label, name }) => <div>{label && <label htmlFor={name}>{label}</label>}{children && name ? <div>{children}</div> : children}</div>;
   return {
-    Avatar: ({ children, ...props }) => <div {...props}>{children}</div>,
-    Card: ({ children, hoverable, ...props }) => <section {...props}>{children}</section>,
-    Button: ({ children, loading, ...props }) => <button {...props}>{children}</button>,
+    Button: ({ children, loading, icon, size, type, htmlType, ...props }) => <button {...props} type={htmlType || 'button'}>{children}</button>,
     Form,
-    Input: (props) => <input {...props} />,
-    List,
-    Space: ({ children }) => <div>{children}</div>,
-    Spin: () => <div role="status">loading</div>,
-    Tag: ({ children }) => <span>{children}</span>,
-    message: {
-      useMessage: () => [
-        {
-          error: mockMessageError,
-          info: mockMessageInfo,
-        },
-        <div key="message-holder" />,
-      ],
-    },
-    Typography: {
-      Title: ({ children }) => <h1>{children}</h1>,
-      Paragraph: ({ children, ...props }) => <p {...props}>{children}</p>,
-    },
+    Input: props => <input {...props} />,
+    message: { useMessage: () => [{ info: mockMessageInfo }, <div key="holder" />] },
   };
 });
 
+function Location() { const location = useLocation(); return <span data-testid="location">{location.pathname}{location.search}</span>; }
+function show(page, initial = '/') { return render(<MemoryRouter initialEntries={[initial]}>{page}<Location /></MemoryRouter>); }
+
 describe('critical page interactions', () => {
   beforeEach(() => {
-    mockNavigate.mockClear();
-    mockMessageError.mockClear();
-    mockMessageInfo.mockClear();
-    trackEvent.mockClear();
-    window.open = vi.fn();
-    document.documentElement.dataset.uiTheme = 'ascii-modern';
+    vi.clearAllMocks();
+    vi.spyOn(window, 'open').mockImplementation(() => null);
+    document.documentElement.dataset.uiTheme = 'creatl-brand';
   });
 
-  test('home renders generated station weather only in the new theme', () => {
-    render(<Home />);
-
-    expect(screen.getByText('weather --station creatl --live')).toBeInTheDocument();
-    expect(screen.getByText('CREATL STATION / GENERATED INTERNAL CLIMATE')).toBeInTheDocument();
-    expect(screen.getByText(/站内虚构天气/)).toBeInTheDocument();
-    expect(screen.getByText(/Event:/)).toBeInTheDocument();
-    expect(screen.getByText(/°F/)).toBeInTheDocument();
-    expect(screen.getByText(/mph/)).toBeInTheDocument();
-    expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
-    expect(document.querySelector('.station-weather__scan')).not.toBeInTheDocument();
-  });
-
-  test('legacy home does not render station weather', () => {
+  test('the common home content remains available with the legacy theme parameter', () => {
     document.documentElement.dataset.uiTheme = 'legacy';
-
-    const { container } = render(<Home />);
-
-    expect(screen.queryByText('weather --station creatl --live')).not.toBeInTheDocument();
-    expect(container.querySelector('.archive-hero')).not.toBeInTheDocument();
+    show(<Home />);
+    expect(screen.getByRole('heading', { name: '桔子酱 / creatL' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /音游曲库/ })).toBeInTheDocument();
   });
 
-  test('home tool actions preserve navigation and analytics events', () => {
-    render(<Home />);
-
-    const toolOpenButtons = screen.getAllByRole('button', { name: /OPEN .+ \((READY|DRAFT|ARCHIVED|COMING SOON)\)/ });
-    expect(toolOpenButtons.length).toBeGreaterThanOrEqual(3);
-
-    fireEvent.click(toolOpenButtons[0]);
-    fireEvent.click(toolOpenButtons[1]);
-    fireEvent.click(toolOpenButtons[2]);
-
-    expect(mockNavigate).toHaveBeenNthCalledWith(1, '/randomssiba');
-    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/songs');
-    expect(mockNavigate).toHaveBeenNthCalledWith(3, '/race-signon');
-    expect(trackEvent).toHaveBeenNthCalledWith(1, 'Navigation', 'Click', 'Random_Image');
-    expect(trackEvent).toHaveBeenNthCalledWith(2, 'Navigation', 'Click', 'Song_Catalog');
-    expect(trackEvent).toHaveBeenNthCalledWith(3, 'Navigation', 'Click', 'Race_Signon');
+  test('home tool directory preserves destinations and analytics', () => {
+    show(<Home />);
+    fireEvent.click(screen.getByRole('button', { name: /小工具/ }));
+    const list = screen.getByRole('list', { name: '小工具' });
+    expect(within(list).getByRole('link', { name: /随机兔子图片/ })).toHaveAttribute('href', '/randomssiba');
+    expect(within(list).getAllByRole('link')).toHaveLength(1);
+    fireEvent.click(within(list).getByRole('link', { name: /随机兔子图片/ }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/randomssiba');
+    expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Random_Image');
   });
 
-  test('home social links preserve analytics and external navigation', () => {
-    render(<Home />);
-
-    fireEvent.click(screen.getByLabelText('GitHub'));
-
-    expect(trackEvent).toHaveBeenCalledWith('Social_Media', 'Click', 'GitHub');
-    expect(window.open).toHaveBeenCalledWith('https://github.com/cr3atL', '_blank');
+  test('home catalog directory preserves all game destinations', () => {
+    show(<Home />);
+    fireEvent.click(screen.getByRole('button', { name: /音游曲库/ }));
+    for (const [name, path] of [['maimai DX', 'maimai'], ['CHUNITHM', 'chunithm'], ['SOUND VOLTEX', 'sdvx']]) {
+      expect(screen.getByRole('link', { name: new RegExp(name) })).toHaveAttribute('href', '/songs/' + path);
+    }
   });
 
-  test('home removes avatar and renders archive sections', () => {
-    const { container } = render(<Home />);
-
-    expect(container.querySelector('.archive-hero')).toBeInTheDocument();
-    expect(container.querySelectorAll('.page-heading-avatar')).toHaveLength(0);
-    expect(screen.getByText('ARCHIVE LOG')).toBeInTheDocument();
-    expect(screen.getByText('SELECTED TOOLS')).toBeInTheDocument();
-    expect(screen.getByText('WRITING PREVIEW')).toBeInTheDocument();
-    expect(
-      screen.getByText('[EMPTY] articles are being organized')
-    ).toBeInTheDocument();
+  test('home social links preserve every account and analytics event', () => {
+    show(<Home />);
+    for (const link of socialLinks) {
+      fireEvent.click(screen.getByRole('button', { name: link.label, exact: true }));
+      expect(trackEvent).toHaveBeenCalledWith('Social_Media', 'Click', link.platform);
+      expect(window.open).toHaveBeenCalledWith(link.url, '_blank');
+    }
   });
 
-  test('home process rows include numbered entries and statuses', () => {
-    render(<Home />);
-
-    expect(screen.getByText('001')).toBeInTheDocument();
-    expect(screen.getByText('002')).toBeInTheDocument();
-    expect(screen.getAllByText('READY').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('DRAFT').length).toBeGreaterThan(0);
+  test('home shows original logo, current updates and writing destination', () => {
+    show(<Home />);
+    expect(screen.getByRole('img', { name: 'creatL' })).toBeInTheDocument();
+    const updates = screen.getByRole('list', { name: '最近更新' });
+    expect(within(updates).getAllByRole('listitem')).toHaveLength(archiveLogs.length);
+    for (const log of archiveLogs) expect(within(updates).getByText(log.title)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: /文章与记录/ }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/article');
+    expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Writing_Preview');
   });
 
-  test('archive log entries expose date and category inline', () => {
-    const { container } = render(<Home />);
-    const log = container.querySelector('.archive-log');
-
-    expect(log).toBeInTheDocument();
-    expect(log.querySelector('.archive-log__date-value').textContent).toMatch(
-      /^2026\.06$/
-    );
-    expect(log.textContent).toMatch(/THEME/);
-    expect(log.textContent).toMatch(/TOOLS/);
-    expect(log.textContent).toMatch(/NOTE/);
-    expect(log.textContent).toMatch(/SIGNAL/);
+  test('home directory has four real entries and no invented status', () => {
+    show(<Home />);
+    expect(within(screen.getByRole('list', { name: '主目录' })).getAllByRole('listitem')).toHaveLength(4);
+    expect(screen.queryByText('READY')).not.toBeInTheDocument();
+    expect(screen.queryByText('STANDBY')).not.toBeInTheDocument();
   });
 
-  test('process row open button includes the tool status in its accessible name', () => {
-    render(<Home />);
-
-    expect(
-      screen.getByRole('button', { name: /OPEN 随机兔子图片 \(READY\)/ })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /OPEN Song Catalog \(READY\)/ })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /OPEN 比赛报名 \(DRAFT\)/ })
-    ).toBeInTheDocument();
+  test.each([
+    ['随机兔子图片', '/randomssiba'],
+    ['音游曲库', '/songs'],
+  ])('tools preserve %s destination and analytics', (name, path) => {
+    show(<Tools />);
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(name) }));
+    expect(screen.getByTestId('location')).toHaveTextContent(path);
+    expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Tools_Page');
   });
 
-  test('home secondary navigation links preserve analytics and routing', () => {
-    render(<Home />);
-
-    fireEvent.click(screen.getByRole('button', { name: /VIEW ALL TOOLS/i }));
-    expect(mockNavigate).toHaveBeenLastCalledWith('/tools');
-    expect(trackEvent).toHaveBeenCalledWith(
-      'Navigation',
-      'Click',
-      'Tools_Directory'
-    );
-
-    fireEvent.click(screen.getByRole('button', { name: /OPEN WRITING/i }));
-    expect(mockNavigate).toHaveBeenLastCalledWith('/article');
+  test('not found returns home and keeps its error code decorative', () => {
+    show(<NotFound />, '/missing-page');
+    fireEvent.click(screen.getByRole('button', { name: '返回首页' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/');
+    expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'NotFound_ReturnHome');
+    expect(screen.getByText('404')).toHaveAttribute('aria-hidden', 'true');
   });
 
-  test('tools preserve all destinations in the new queue', () => {
-    render(<Tools />);
-
-    const openButtons = screen.getAllByRole('button', { name: /OPEN/ });
-    fireEvent.click(openButtons[0]);
-    fireEvent.click(openButtons[1]);
-    fireEvent.click(openButtons[2]);
-
-    expect(mockNavigate).toHaveBeenNthCalledWith(1, '/randomssiba');
-    expect(mockNavigate).toHaveBeenNthCalledWith(2, '/songs');
-    expect(mockNavigate).toHaveBeenNthCalledWith(3, '/race-signon');
-  });
-
-  test('not found returns home and keeps the ASCII frame decorative', () => {
-    const { container } = render(<NotFound />);
-
-    fireEvent.click(screen.getByRole('button', { name: /RETURN HOME/i }));
-
-    expect(mockNavigate).toHaveBeenCalledWith('/');
-    expect(trackEvent).toHaveBeenCalledWith(
-      'Navigation',
-      'Click',
-      'NotFound_ReturnHome'
-    );
-    expect(container.querySelector('.not-found-ascii')).toHaveAttribute(
-      'aria-hidden',
-      'true'
-    );
-  });
-
-  test('article action still shows the unfinished message', () => {
-    render(<Article />);
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /阅读全文 Osu!mania 怎么玩/ })
-    );
-
+  test('article still reports unfinished work and records the original event', () => {
+    show(<Article />);
+    expect(screen.getByText('尚未完成，暂无全文')).toBeInTheDocument();
+    expect(screen.getByText('随手写一点入门体验和个人理解。')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /查看进度 Osu!mania 怎么玩/ }));
     expect(mockMessageInfo).toHaveBeenCalledWith('这篇还没写完 >_<');
-    expect(trackEvent).toHaveBeenCalledWith(
-      'Article',
-      'Click',
-      'osu-mania-how-to-play'
-    );
+    expect(trackEvent).toHaveBeenCalledWith('Article', 'Click', 'osu-mania-how-to-play');
   });
 
-  test('about page renders avatar and contact links', () => {
-    render(<About />);
-
+  test('about preserves avatar and every real social account without duplicate links', () => {
+    show(<About />);
     expect(screen.getByAltText('creatL 头像')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
-      'href',
-      'https://github.com/cr3atL'
-    );
-    expect(screen.getAllByRole('link', { name: 'QQ' }).length).toBeGreaterThan(0);
+    for (const link of socialLinks) {
+      const contact = screen.getByRole('link', { name: new RegExp(link.label.replace(/[!]/g, '\\!')) });
+      expect(contact).toHaveAttribute('href', link.url);
+      fireEvent.click(contact);
+      expect(trackEvent).toHaveBeenCalledWith('Social_Media', 'Click', link.platform);
+      expect(window.open).toHaveBeenCalledWith(link.url, '_blank', 'noopener,noreferrer');
+    }
+    expect(screen.getAllByRole('link')).toHaveLength(socialLinks.length);
   });
 
-  test('race sign-on keeps the existing fields and submit control', () => {
-    render(<RaceSignon />);
-
-    expect(screen.getByText('游戏 ID')).toBeInTheDocument();
-    expect(screen.getByText('RATING')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '报名' })).toBeInTheDocument();
-  });
-
-  test('random image keeps reload and disabled download controls', () => {
-    vi.useFakeTimers();
-
-    render(<Randomssiba />);
-
-    expect(screen.getByRole('button', { name: '换一张' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '下载图片' })).toBeDisabled();
-
-    act(() => {
-      vi.runOnlyPendingTimers();
-    });
-    vi.useRealTimers();
-  });
 });

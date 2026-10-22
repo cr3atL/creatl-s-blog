@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import ResponsiveLayout from '../../../components/ResponsiveLayout';
 import games from '../config/games';
@@ -51,32 +51,33 @@ const useSheetCounts = () => {
 
 const formatCount = (value) => {
   if (value === null || value === undefined) return '— 张谱面';
-  return `${String(value).padStart(4, '0')} 张谱面 →`;
+  return `${value} 张谱面`;
 };
 
 const SongCatalogHome = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const gameButtons = useRef(new Map());
   const { counts, ready } = useSheetCounts();
+  useEffect(() => {
+    gameButtons.current.get(location.state?.catalogGameId)?.focus();
+  }, [location.state?.catalogGameId]);
 
   return (
     <ResponsiveLayout>
       <div className="page-container page-container--medium song-catalog-home">
-        <header className="song-catalog-home__header">
-          <span className="song-catalog-home__eyebrow">01 / 曲库</span>
-          <h1 className="song-catalog-home__title">曲库档案</h1>
-          <p className="song-catalog-home__intro">
-            收录 maimai DX、CHUNITHM 和 SOUND VOLTEX EXCEED GEAR 的曲目与谱面。
-            可以按游戏浏览、筛选、排序，也可以随机抽一张谱面练练手。
-          </p>
+        <header className="song-catalog-home__header" data-motion-section>
+          <h1 className="song-catalog-home__title">音游曲库</h1>
         </header>
 
-        <ul className="song-catalog-home__grid" aria-label="可用游戏">
-          {games.map((game, index) => {
+        <ul className="song-catalog-home__grid" aria-label="可用游戏" data-motion-section>
+          {games.map((game) => {
             const value = counts[game.id];
             return (
               <li key={game.id} className="song-catalog-home__item">
                 <button
                   type="button"
+                  ref={(button) => { if (button) gameButtons.current.set(game.id, button); else gameButtons.current.delete(game.id); }}
                   className="song-catalog-home__card"
                   onClick={() => navigate(game.path)}
                   aria-label={`打开 ${game.label} 曲库`}
@@ -90,15 +91,8 @@ const SongCatalogHome = () => {
                     />
                   </div>
                   <div className="song-catalog-home__meta">
-                    <span className="song-catalog-home__number">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="song-catalog-home__divider">/</span>
                     <span className="song-catalog-home__label">{game.label}</span>
                   </div>
-                  <p className="song-catalog-home__description">
-                    {game.shortDescription}
-                  </p>
                   <div className="song-catalog-home__footer">
                     <span className="song-catalog-home__count">
                       {ready ? formatCount(value) : '统计中...'}
@@ -111,14 +105,9 @@ const SongCatalogHome = () => {
           })}
         </ul>
 
-        <footer className="song-catalog-home__sources" aria-label="数据来源">
-          <span className="song-catalog-home__sources-label">来源</span>
-          <span className="song-catalog-home__sources-divider">/</span>
-          <span>
-            数据：cloudfront CDN (arcade-songs mirror) · 图标资源：src/icons
-          </span>
-          <span className="song-catalog-home__sources-divider">/</span>
-          <span>个人 · 非商业</span>
+        <footer className="song-catalog-home__sources" aria-label="数据来源" data-motion-section>
+          <span>数据：cloudfront CDN (arcade-songs mirror)</span>
+          {games.map((game) => <a key={game.id} href={game.iconUrl} target="_blank" rel="noreferrer">{game.label} 图标</a>)}
         </footer>
       </div>
     </ResponsiveLayout>

@@ -8,8 +8,8 @@
 @import './styles/pages/article.css';
 @import './styles/pages/about.css';
 @import './styles/pages/random-image.css';
-@import './styles/pages/race-signon.css';
 @import './styles/pages/not-found.css';
+@import './styles/motion.css';
 
 @keyframes pulse {
   0% {
@@ -46,6 +46,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+[data-ui-theme="creatl-brand"] body {
+  background: var(--brand-background);
+  color: var(--brand-text);
+  font-family: var(--font-ui);
+}
+
+[data-ui-theme="creatl-brand"] *,
+[data-ui-theme="creatl-brand"] *::before,
+[data-ui-theme="creatl-brand"] *::after { box-sizing: border-box; }
+
+[data-ui-theme="creatl-brand"] a { text-underline-offset: 4px; }
+[data-ui-theme="creatl-brand"] button { font-family: inherit; }
+[data-ui-theme="creatl-brand"] :focus-visible { outline: 3px solid var(--brand-text); outline-offset: 3px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.route-loading { min-height: 50vh; display: grid; place-items: center; color: var(--page-text); }
 
 [data-ui-theme="ascii-modern"] body,
 [data-ui-theme="archive-terminal"] body {

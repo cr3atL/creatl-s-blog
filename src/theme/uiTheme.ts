@@ -1,14 +1,37 @@
 import type { ThemeConfig } from 'antd';
 import { theme as antdTheme } from 'antd';
 
-const supportedThemes = ['legacy', 'ascii-modern', 'archive-terminal'];
+const supportedThemes = ['creatl-brand', 'legacy', 'ascii-modern', 'archive-terminal'];
 
-export const resolveUITheme = (queryTheme: string | null, configuredTheme = 'legacy') => {
+export const resolveUITheme = (queryTheme: string | null, configuredTheme = 'creatl-brand') => {
   if (queryTheme !== null && supportedThemes.includes(queryTheme)) {
     return queryTheme;
   }
 
-  return supportedThemes.includes(configuredTheme) ? configuredTheme : 'legacy';
+  return supportedThemes.includes(configuredTheme) ? configuredTheme : 'creatl-brand';
+};
+
+export const creatlBrandTheme: ThemeConfig = {
+  algorithm: antdTheme.defaultAlgorithm,
+  token: {
+    colorPrimary: '#995000', colorInfo: '#995000', colorLink: '#995000',
+    colorSuccess: '#596725', colorWarning: '#995000', colorError: '#ab3528',
+    colorBgBase: '#fff8eb', colorBgContainer: '#fffcf5', colorBgElevated: '#fffcf5',
+    colorText: '#44291b', colorTextSecondary: '#79604c', colorTextTertiary: '#79604c',
+    colorBorder: '#a48b70', colorBorderSecondary: '#ddcdb5',
+    borderRadius: 10, borderRadiusLG: 12, controlHeight: 40,
+    fontFamily: '"Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif',
+    boxShadow: '0 8px 28px rgba(68, 41, 27, 0.08)',
+    boxShadowSecondary: '0 12px 40px rgba(68, 41, 27, 0.12)',
+  },
+  components: {
+    Button: { primaryColor: '#44291b', colorPrimary: '#ff8a00', colorPrimaryHover: '#f79a29', colorPrimaryActive: '#ed7d00', primaryShadow: 'none', defaultShadow: 'none' },
+    Input: { activeBorderColor: '#995000', hoverBorderColor: '#995000' },
+    Select: { optionSelectedBg: '#ffe2b7', optionSelectedColor: '#44291b' },
+    Menu: { itemSelectedBg: '#ffe2b7', itemSelectedColor: '#44291b' },
+    Table: { headerBg: '#f5ecd9', rowHoverBg: '#fff1d8' },
+    Tag: { defaultBg: '#f5ecd9', defaultColor: '#44291b' },
+  },
 };
 
 export const archiveTerminalTheme: ThemeConfig = {

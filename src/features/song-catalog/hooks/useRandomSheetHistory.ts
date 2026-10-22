@@ -40,7 +40,7 @@ const safeRead = (gameId: string): HistoryEntry[] => {
     if (!isRecord(parsed) || parsed.__v !== STORAGE_VERSION || !Array.isArray(parsed.items)) {
       return [];
     }
-    return parsed.items.filter(isHistoryEntry);
+    return trimHistory(parsed.items.filter(isHistoryEntry), MAX_HISTORY);
   } catch (err) {
     return [];
   }
@@ -60,10 +60,11 @@ const safeWrite = (gameId: string, items: HistoryEntry[]) => {
 };
 
 const useRandomSheetHistory = (gameId: string) => {
-  const [history, setHistory] = useState(() => safeRead(gameId));
+  const [state, setState] = useState(() => ({ gameId, items: safeRead(gameId) }));
+  const history = state.gameId === gameId ? state.items : safeRead(gameId);
 
   useEffect(() => {
-    setHistory(safeRead(gameId));
+    setState({ gameId, items: safeRead(gameId) });
   }, [gameId]);
 
   // Cross-tab sync: when another tab updates the same key, pull the new
@@ -72,7 +73,7 @@ const useRandomSheetHistory = (gameId: string) => {
     if (typeof window === 'undefined') return undefined;
     const handleStorage = (event: StorageEvent) => {
       if (!event || event.key !== buildKey(gameId)) return;
-      setHistory(safeRead(gameId));
+      setState({ gameId, items: safeRead(gameId) });
     };
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
@@ -80,11 +81,12 @@ const useRandomSheetHistory = (gameId: string) => {
 
   const persist = useCallback(
     (updater: SetStateAction<HistoryEntry[]>) => {
-      setHistory((current) => {
-        const next = typeof updater === 'function' ? updater(current) : updater;
+      setState((current) => {
+        const items = current.gameId === gameId ? current.items : safeRead(gameId);
+        const next = typeof updater === 'function' ? updater(items) : updater;
         const trimmed = trimHistory(next, MAX_HISTORY);
         safeWrite(gameId, trimmed);
-        return trimmed;
+        return { gameId, items: trimmed };
       });
     },
     [gameId]

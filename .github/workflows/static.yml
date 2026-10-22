@@ -46,6 +46,8 @@ jobs:
         run: npm test
       - name: Build React app
         run: npm run build
+        env:
+          VITE_UI_THEME: creatl-brand
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

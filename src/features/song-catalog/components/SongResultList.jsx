@@ -1,4 +1,5 @@
 import React from 'react';
+import { getSheetKey } from '../utils/sheetIdentity';
 
 const levelLabel = (sheet) => {
   if (
@@ -20,11 +21,11 @@ const handleRowKey = (event, sheet, onSelect) => {
   }
 };
 
-const SongResultList = ({ sheets, onSelect }) => {
+const SongResultList = ({ sheets, onSelect, gameId = '' }) => {
   if (!sheets || sheets.length === 0) {
     return (
       <p className="song-catalog-empty">
-        ! 无结果 - 请调整或清空筛选条件。
+        无结果，请调整或清空筛选条件。
       </p>
     );
   }
@@ -33,7 +34,6 @@ const SongResultList = ({ sheets, onSelect }) => {
       <table className="song-catalog-table">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">曲名</th>
             <th scope="col">艺术家</th>
             <th scope="col">难度</th>
@@ -44,14 +44,8 @@ const SongResultList = ({ sheets, onSelect }) => {
           </tr>
         </thead>
         <tbody>
-          {sheets.map((sheet, index) => {
-            const key = [
-              sheet.songId,
-              sheet.id,
-              sheet.difficulty,
-              sheet.internalLevelValue ?? sheet.levelValue ?? sheet.level,
-              index,
-            ].join('-');
+          {sheets.map((sheet) => {
+            const key = getSheetKey(sheet, gameId);
             return (
               <tr
                 key={key}
@@ -62,9 +56,6 @@ const SongResultList = ({ sheets, onSelect }) => {
                 onKeyDown={(event) => handleRowKey(event, sheet, onSelect)}
                 aria-label={`打开谱面 ${sheet.songTitle} (${sheet.difficulty})`}
               >
-                <td className="song-catalog-table__index">
-                  {String(index + 1).padStart(4, '0')}
-                </td>
                 <td className="song-catalog-table__title">{sheet.songTitle}</td>
                 <td className="song-catalog-table__artist">{sheet.songArtist}</td>
                 <td className="song-catalog-table__diff">{sheet.difficulty}</td>

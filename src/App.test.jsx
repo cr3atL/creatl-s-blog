@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { trackPageView } from './utils/analytics';
+import { StrictMode } from 'react';
+
+vi.hoisted(() => { vi.stubEnv('VITE_GA_TRACK_ID', 'G-TEST'); });
 
 let mockRouterBasename;
+let mockLocation = { pathname: '/', search: '' };
 
 vi.mock(
   'react-router-dom',
@@ -32,7 +37,7 @@ vi.mock(
         return route?.props.element ?? null;
       },
       Route: () => null,
-      useLocation: () => ({ pathname: '/', search: '' }),
+      useLocation: () => mockLocation,
     };
   }
 );
@@ -47,7 +52,6 @@ vi.mock('./Page/About', () => ({ default: () => <div>about-page</div> }));
 vi.mock('./Page/Article', () => ({ default: () => <div>article-page</div> }));
 vi.mock('./Page/Tools', () => ({ default: () => <div>tools-page</div> }));
 vi.mock('./Page/Randomssiba', () => ({ default: () => <div>random-image-page</div> }));
-vi.mock('./Page/RaceSignon', () => ({ default: () => <div>race-signon-page</div> }));
 vi.mock('./Page/NotFound', () => ({ default: () => <div>not-found-page</div> }));
 
 const routeCases = [
@@ -57,17 +61,35 @@ const routeCases = [
   ['/article', 'article-page'],
   ['/tools', 'tools-page'],
   ['/randomssiba', 'random-image-page'],
-  ['/race-signon', 'race-signon-page'],
+  ['/race-signon', 'not-found-page'],
   ['/missing-route', 'not-found-page'],
 ];
 
 describe('application routes', () => {
-  test.each(routeCases)('renders %s', (path, expectedPage) => {
+  beforeEach(() => { mockLocation = { pathname: '/', search: '' }; vi.clearAllMocks(); });
+
+  test('tracks addresses once while selection-only history updates do not add page views', () => {
+    const { rerender } = render(<App />);
+    expect(trackPageView).toHaveBeenCalledTimes(1);
+    mockLocation = { pathname: '/', search: '', state: { selectedId: 'tools' }, key: 'new-key' };
+    rerender(<App />);
+    expect(trackPageView).toHaveBeenCalledTimes(1);
+    mockLocation = { pathname: '/', search: '?folder=tools' };
+    rerender(<App />);
+    expect(trackPageView).toHaveBeenCalledTimes(2);
+    expect(trackPageView).toHaveBeenLastCalledWith('/?folder=tools');
+  });
+
+  test('does not duplicate the initial page view under StrictMode', () => {
+    render(<StrictMode><App /></StrictMode>);
+    expect(trackPageView).toHaveBeenCalledTimes(1);
+  });
+  test.each(routeCases)('renders %s', async (path, expectedPage) => {
     window.history.pushState({}, '', `/creatl-s-blog${path}`);
 
     render(<App />);
 
-    expect(screen.getByText(expectedPage)).toBeInTheDocument();
+    expect(await screen.findByText(expectedPage)).toBeInTheDocument();
   });
 
   test('preserves the GitHub Pages basename', () => {

@@ -1,33 +1,22 @@
-import React from 'react';
-import { Layout as AntLayout } from 'antd';
+import { useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import AmbientCanvas from './ambient/AmbientCanvas';
-import useStationClock from '../hooks/useStationClock';
+import usePageMotion from '../motion/usePageMotion';
 import '../styles/shell.css';
 
-const { Content, Footer } = AntLayout;
-
-const AppShell = ({ children, header, variant = 'desktop' }) => {
-  const currentTime = useStationClock();
-  const uiTheme = document.documentElement.dataset.uiTheme;
-  const showAtmosphere =
-    uiTheme === 'archive-terminal' || uiTheme === 'ascii-modern';
-
-  return (
-    <div className="shell-root">
-      <div className="shell-background" />
-      {showAtmosphere && <AmbientCanvas />}
-
-      <AntLayout className="shell-layout">
-        {header(currentTime)}
-        <Content className={`shell-content shell-content-${variant}`}>
-          {children}
-        </Content>
-        <Footer className={`shell-footer shell-footer-${variant}`}>
-          <div>© 2026 creatL / ARCHIVE STATUS: ONLINE / BUILT WITH REACT</div>
-        </Footer>
-      </AntLayout>
+export default function AppShell({ children, header, variant = 'desktop' }) {
+  const contentRef = useRef(null);
+  const { pathname } = useLocation();
+  usePageMotion(contentRef, pathname);
+  const theme = document.documentElement.dataset.uiTheme;
+  const showAtmosphere = theme === 'archive-terminal' || theme === 'ascii-modern';
+  return <div className="shell-root">
+    {showAtmosphere && <AmbientCanvas />}
+    <a className="shell-skip-link" href="#main-content">跳到正文</a>
+    <div className="shell-layout">
+      {header?.()}
+      <main id="main-content" ref={contentRef} tabIndex={-1} className={`shell-content shell-content-${variant}`}>{children}</main>
+      <footer className="shell-footer">© {new Date().getFullYear()} creatL</footer>
     </div>
-  );
-};
-
-export default AppShell;
+  </div>;
+}

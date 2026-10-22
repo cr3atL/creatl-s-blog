@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { normalizeSongData } from '../utils/normalizeSongData';
 
-interface CatalogState { data: CatalogData | null; loading: boolean; error: string | null }
+interface CatalogState { data: CatalogData | null; loading: boolean; error: string | null; gameId?: string }
 const initialState: CatalogState = {
   data: null,
   loading: true,
@@ -19,33 +19,37 @@ const initialState: CatalogState = {
 const useSongCatalog = (game: Game | undefined) => {
   const [state, setState] = useState(initialState);
   const tokenRef = useRef(0);
+  const requestRef = useRef<AbortController | null>(null);
 
   const load = useCallback(
     (gameRef: Game | undefined) => {
+      requestRef.current?.abort();
+      const token = ++tokenRef.current;
       if (!gameRef) {
-        setState({ data: null, loading: false, error: 'Unknown game.' });
+        setState({ data: null, loading: false, error: '未知游戏。' });
         return;
       }
-      const token = tokenRef.current + 1;
-      tokenRef.current = token;
-      setState({ data: null, loading: true, error: null });
+      const controller = new AbortController();
+      requestRef.current = controller;
+      setState({ data: null, loading: true, error: null, gameId: gameRef.id });
 
       (async () => {
         try {
-          const response = await fetch(`${gameRef.dataSource}/data.json`);
+          const response = await fetch(`${gameRef.dataSource}/data.json`, { signal: controller.signal });
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
           }
           const raw = await response.json();
           const normalized = normalizeSongData(raw, gameRef.dataSource);
           if (tokenRef.current !== token) return;
-          setState({ data: normalized, loading: false, error: null });
+          setState({ data: normalized, loading: false, error: null, gameId: gameRef.id });
         } catch (err) {
           if (tokenRef.current !== token) return;
           setState({
             data: null,
             loading: false,
-            error: `Failed to load ${gameRef.label} (${err instanceof Error ? err.message : String(err)}).`,
+            gameId: gameRef.id,
+            error: `无法加载 ${gameRef.label}（${err instanceof Error ? err.message : String(err)}）。`,
           });
         }
       })();
@@ -55,13 +59,14 @@ const useSongCatalog = (game: Game | undefined) => {
 
   useEffect(() => {
     load(game);
+    return () => { ++tokenRef.current; requestRef.current?.abort(); };
   }, [game, load]);
 
   const refetch = useCallback(() => {
     load(game);
   }, [game, load]);
 
-  return { ...state, refetch };
+  return { ...(state.gameId === game?.id ? state : initialState), refetch };
 };
 
 export default useSongCatalog;

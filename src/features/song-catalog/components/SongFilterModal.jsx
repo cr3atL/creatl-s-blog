@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
-import useFocusTrap from '../../../hooks/useFocusTrap';
+import CatalogDialog from './CatalogDialog';
 import '../styles/song-catalog.css';
 
 const SECTIONS = [
@@ -16,7 +16,7 @@ const SECTIONS = [
 const ChipGroup = ({ values, options, onToggle, isSelected }) => {
   if (!options || options.length === 0) {
     return (
-      <p className="song-catalog-filter__empty">— 暂无可选值 —</p>
+      <p className="song-catalog-filter__empty">暂无可选值</p>
     );
   }
   return (
@@ -38,7 +38,7 @@ const ChipGroup = ({ values, options, onToggle, isSelected }) => {
             aria-pressed={active}
           >
             <span className="song-catalog-filter__chip-marker">
-              {active ? '[x]' : '[ ]'}
+              {active ? '✓' : '+'}
             </span>
             {label}
           </button>
@@ -93,16 +93,12 @@ const SongFilterModal = ({
   config,
   activeCount,
 }) => {
-  const panelRef = useRef(null);
   const [openSections, setOpenSections] = useState([
     'title',
     'difficulty',
     'level',
   ]);
 
-  useFocusTrap(open, onClose, panelRef);
-
-  if (!open) return null;
 
   const expandAll = () => {
     setOpenSections(SECTIONS.map((section) => section.key));
@@ -130,24 +126,9 @@ const SongFilterModal = ({
   const levelBounds = config.levelRange;
 
   return (
-    <div
-      className="song-catalog-filter__backdrop"
-      role="dialog"
-      aria-modal="true"
-      aria-label="筛选模式"
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <div
-        className="song-catalog-filter__panel"
-        role="document"
-        ref={panelRef}
-        tabIndex={-1}
-      >
+    <CatalogDialog open={open} onClose={onClose} label="筛选条件" className="song-catalog-filter">
         <header className="song-catalog-filter__header">
           <div>
-            <span className="song-catalog-filter__eyebrow">筛选模式</span>
             <h2 className="song-catalog-filter__title">筛选条件</h2>
           </div>
           <div className="song-catalog-filter__status">
@@ -158,7 +139,7 @@ const SongFilterModal = ({
               onClick={onClose}
               aria-label="关闭筛选"
             >
-              [ × ]
+              ×
             </button>
           </div>
         </header>
@@ -283,10 +264,6 @@ const SongFilterModal = ({
                 />
               </label>
             </div>
-            <p className="song-catalog-filter__hint">
-              范围 {tempFilters.levelRange[0]} - {tempFilters.levelRange[1]} /
-              默认 {levelBounds.default[0]} - {levelBounds.default[1]}
-            </p>
           </AccordionSection>
 
           <AccordionSection
@@ -372,7 +349,7 @@ const SongFilterModal = ({
               </label>
             </div>
             <p className="song-catalog-filter__hint">
-              默认不限；小于 0 的值会按 0 处理。
+              留空不限。
             </p>
           </AccordionSection>
         </div>
@@ -403,8 +380,7 @@ const SongFilterModal = ({
             应用筛选
           </button>
         </footer>
-      </div>
-    </div>
+    </CatalogDialog>
   );
 };
 

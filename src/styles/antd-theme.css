@@ -91,3 +91,13 @@
 [data-ui-theme="archive-terminal"] .ant-select-item-option-selected .ant-select-item-option-content {
   color: var(--theme-bg);
 }
+[data-ui-theme="creatl-brand"] .ant-btn-primary:not(:disabled) { color: var(--brand-accent-text); }
+[data-ui-theme="creatl-brand"] .ant-btn-primary:not(:disabled):hover { color: var(--brand-accent-text); }
+[data-ui-theme="creatl-brand"] .ant-checkbox-checked .ant-checkbox-inner,
+[data-ui-theme="creatl-brand"] .ant-radio-checked .ant-radio-inner { background-color: #995000; border-color: #995000; }
+@media (max-width: 767px) {
+  [data-ui-theme="creatl-brand"] .ant-btn { min-height: 44px; }
+  [data-ui-theme="creatl-brand"] .ant-input,
+  [data-ui-theme="creatl-brand"] .ant-input-affix-wrapper,
+  [data-ui-theme="creatl-brand"] .ant-select-single { min-height: 44px; }
+}

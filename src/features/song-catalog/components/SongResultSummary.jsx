@@ -1,6 +1,6 @@
 import React from 'react';
 
-const formatCount = (n) => (n > 0 ? String(n).padStart(2, '0') : '00');
+const formatCount = (n) => String(n);
 
 const DIFFICULTY_ORDER = [
   're:master',
@@ -85,7 +85,7 @@ const SongResultSummary = ({ sheets, versionOrder }) => {
   if (!sheets || sheets.length === 0) {
     return (
       <p className="song-catalog-empty">
-        ! 无结果 - 请调整或清空筛选条件。
+        无结果，请调整或清空筛选条件。
       </p>
     );
   }
@@ -123,7 +123,7 @@ const SongResultSummary = ({ sheets, versionOrder }) => {
           {versions.slice(0, 12).map((bucket) => (
             <li key={bucket.version} className="song-catalog-summary__row">
               <span className="song-catalog-summary__row-label">
-                {bucket.version}
+                {bucket.version === 'UNKNOWN' ? '未知版本' : bucket.version}
               </span>
               <span className="song-catalog-summary__row-bar">
                 <span

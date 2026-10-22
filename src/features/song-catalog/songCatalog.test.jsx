@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 
 import SongCatalogHome from './components/SongCatalogHome';
 import SongCatalogPage from './components/SongCatalogPage';
@@ -385,13 +385,14 @@ describe('SongCatalogPage', () => {
     });
 
     fireEvent.click(screen.getByRole('button', { name: /^筛选/ }));
-    expect(screen.getByText('筛选模式')).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: '筛选条件' })).toBeInTheDocument();
 
     // The difficulty section is open by default; toggle the MASTER chip.
-    const masterChip = await screen.findByRole('button', { name: /\[ \] MASTER/ });
+    const modal = screen.getByRole('dialog', { name: '筛选条件' });
+    const masterChip = within(modal).getByRole('button', { name: '+ MASTER', pressed: false });
     fireEvent.click(masterChip);
     expect(
-      await screen.findByRole('button', { name: /\[x\] MASTER/ })
+      within(modal).getByRole('button', { name: '✓ MASTER', pressed: true })
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /应用筛选/ }));
@@ -430,7 +431,7 @@ describe('SongCatalogPage', () => {
     render(<SongCatalogPage game={game} />);
 
     await waitFor(() => {
-      expect(screen.getByText(/! 错误/)).toBeInTheDocument();
+      expect(screen.getByRole('alert')).toHaveTextContent('无法加载 MAIMAI DX');
     });
     expect(
       screen.getByRole('button', { name: /重试/ })
@@ -460,11 +461,11 @@ describe('SongCatalogPage', () => {
     });
 
     fireEvent.click(screen.getByRole('button', { name: /^筛选/ }));
-    expect(screen.getByText('筛选模式')).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: '筛选条件' })).toBeInTheDocument();
 
     fireEvent.keyDown(document, { key: 'Escape' });
     await waitFor(() => {
-      expect(screen.queryByText('筛选模式')).not.toBeInTheDocument();
+      expect(screen.queryByRole('dialog', { name: '筛选条件' })).not.toBeInTheDocument();
     });
   });
 });

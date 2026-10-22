@@ -1,4 +1,6 @@
 import React from 'react';
+import SongCover from './SongCover';
+import { getSheetKey } from '../utils/sheetIdentity';
 
 const levelLabel = (sheet) => {
   if (
@@ -13,44 +15,27 @@ const levelLabel = (sheet) => {
   return sheet.level || '—';
 };
 
-const SongResultGrid = ({ sheets, onSelect }) => {
+const SongResultGrid = ({ sheets, onSelect, gameId = '' }) => {
   if (!sheets || sheets.length === 0) {
     return (
       <p className="song-catalog-empty">
-        ! 无结果 - 请调整或清空筛选条件。
+        无结果，请调整或清空筛选条件。
       </p>
     );
   }
   return (
-    <ul className="song-catalog-grid" aria-label="sheet grid">
-      {sheets.map((sheet, index) => {
-        const key = [
-          sheet.songId,
-          sheet.id,
-          sheet.difficulty,
-          sheet.internalLevelValue ?? sheet.levelValue ?? sheet.level,
-          index,
-        ].join('-');
+    <ul className="song-catalog-grid" aria-label="谱面网格">
+      {sheets.map((sheet) => {
+        const key = getSheetKey(sheet, gameId);
         return (
           <li key={key} className="song-catalog-grid__item">
             <button
               type="button"
               className="song-catalog-grid__card"
               onClick={() => onSelect(sheet)}
-              aria-label={`Open sheet ${sheet.songTitle} (${sheet.difficulty})`}
+              aria-label={`打开谱面 ${sheet.songTitle} (${sheet.difficulty})`}
             >
-              <div className="song-catalog-grid__cover">
-                {sheet.songImageUrl ? (
-                  <img
-                    src={sheet.songImageUrl}
-                    alt=""
-                    loading="lazy"
-                    className="song-catalog-grid__cover-img"
-                  />
-                ) : (
-                  <span className="song-catalog-grid__cover-fallback">无封面</span>
-                )}
-              </div>
+              <SongCover src={sheet.imageUrl || sheet.songImageUrl} />
               <div className="song-catalog-grid__meta">
                 <span className="song-catalog-grid__diff">
                   {sheet.difficulty}

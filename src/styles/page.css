@@ -1,8 +1,22 @@
 .page-container {
+  width: 100%;
   max-width: var(--page-content-max-width);
   margin: 0 auto;
   padding: 0 var(--page-inline-padding);
   color: var(--page-text);
+}
+
+[data-ui-theme="creatl-brand"] .archive-section-header { margin-bottom: 18px; }
+[data-ui-theme="creatl-brand"] .archive-section-header__title { margin: 0; font-size: 20px; color: var(--brand-text); font-weight: 700; }
+[data-ui-theme="creatl-brand"] .process-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--brand-line); }
+[data-ui-theme="creatl-brand"] .process-row__body { min-width: 0; }
+[data-ui-theme="creatl-brand"] .process-row__title { font-size: 18px; margin: 0 0 8px; color: var(--brand-text); }
+[data-ui-theme="creatl-brand"] .process-row__description { font-size: 14px; margin: 0; color: var(--brand-muted); line-height: 1.8; }
+[data-ui-theme="creatl-brand"] .process-row__action { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+[data-ui-theme="creatl-brand"] .archive-status { color: var(--brand-muted); background: #f5ecd9; padding: 4px 9px; border-radius: 6px; font-size: 12px; }
+@media (max-width: 575px) {
+  [data-ui-theme="creatl-brand"] .process-row { align-items: flex-start; flex-direction: column; gap: 14px; }
+  [data-ui-theme="creatl-brand"] .process-row__button { min-height: 44px; }
 }
 
 .page-container--narrow {
@@ -175,7 +189,7 @@
   cursor: pointer;
   font-size: var(--page-icon-size);
   height: var(--page-icon-size);
-  transition: color 0.16s ease;
+  transition: color var(--motion-fast) var(--motion-ease-enter);
   width: var(--page-icon-size);
 }
 
@@ -202,7 +216,7 @@
   border: 2px solid var(--page-glass-border);
   box-shadow: var(--page-avatar-shadow);
   cursor: pointer;
-  transition: border-color 0.16s ease, transform 0.16s ease;
+  transition: border-color var(--motion-fast) var(--motion-ease-enter), transform var(--motion-fast) var(--motion-ease-enter);
 }
 
 .about-avatar--hovered {
@@ -289,7 +303,7 @@
   max-height: 250px;
   max-width: 250px;
   object-fit: contain;
-  transition: opacity 0.18s ease;
+  transition: opacity var(--motion-fast) var(--motion-ease-enter);
 }
 
 .random-image-empty {
@@ -394,7 +408,7 @@
 
 :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card {
   position: relative;
-  transition: border-color 0.16s ease, background-color 0.16s ease;
+  transition: border-color var(--motion-fast) var(--motion-ease-enter), background-color var(--motion-fast) var(--motion-ease-enter);
 }
 
 @media (hover: hover) {
@@ -522,154 +536,6 @@
   align-items: center;
 }
 
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather {
-  color: var(--theme-text);
-  display: flex;
-  flex-direction: column;
-  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.28));
-  font-family: var(--theme-mono);
-  font-size: 13px;
-  gap: 12px;
-  line-height: 1.55;
-  min-width: 0;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command,
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
-  color: var(--theme-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command::before,
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output::before {
-  color: var(--theme-accent);
-  content: "> ";
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__display {
-  width: min(100%, 440px);
-  margin-left: auto;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__rule {
-  height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--theme-text) 0 7px,
-    transparent 7px 9px
-  );
-  opacity: 0.74;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head,
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
-  border-left: 2px solid var(--theme-rule);
-  border-right: 2px solid var(--theme-rule);
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head {
-  color: var(--theme-accent-strong);
-  display: flex;
-  font-weight: 700;
-  gap: 18px;
-  justify-content: space-between;
-  padding: 7px 12px 6px;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: minmax(72px, 0.8fr) minmax(150px, 1.2fr);
-  min-height: 116px;
-  padding: 14px 12px 12px;
-  position: relative;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__primary {
-  align-content: start;
-  display: grid;
-  gap: 10px;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__temperature {
-  color: var(--theme-data);
-  font-size: 18px;
-  font-weight: 700;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__ascii {
-  animation: stationWeatherAsciiTone 22s ease-in-out infinite;
-  color: var(--theme-muted);
-  font: inherit;
-  line-height: 1.05;
-  margin: 0;
-  white-space: pre;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details {
-  align-content: start;
-  color: var(--theme-data);
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  text-align: right;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details div {
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details dt {
-  color: var(--theme-data);
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details dd {
-  color: var(--theme-data);
-  font-weight: 700;
-  margin: 0;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
-  border-top: 1px dashed var(--theme-rule-soft);
-  margin: 2px 0 0;
-  padding-top: 8px;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__note,
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__origin,
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__time {
-  color: var(--theme-muted);
-  font-size: 12px;
-  margin: 0;
-}
-
-:is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__origin {
-  font-size: 10px;
-  text-align: right;
-}
-
-@keyframes stationWeatherAsciiTone {
-  0% {
-    color: var(--theme-subtle);
-  }
-  45% {
-    color: var(--theme-muted);
-  }
-  100% {
-    color: var(--theme-subtle);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__ascii {
-    animation: none;
-  }
-}
-
 @media (max-width: 768px) {
   :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .home-hero {
     grid-template-columns: 1fr;
@@ -677,39 +543,5 @@
 
   :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .tool-card--process {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 576px) {
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__display {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__command,
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__output {
-    overflow: visible;
-    text-overflow: clip;
-    white-space: normal;
-  }
-
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__head {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__body {
-    gap: 10px;
-    grid-template-columns: 1fr;
-    min-height: 0;
-  }
-
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details {
-    text-align: left;
-  }
-
-  :is([data-ui-theme="ascii-modern"], [data-ui-theme="archive-terminal"]) .station-weather__details div {
-    justify-content: space-between;
   }
 }

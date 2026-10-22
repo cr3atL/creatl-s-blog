@@ -182,7 +182,7 @@ export const applySongFilters = (songs: Song[], filters: SongFilters, config: Fi
 
   return songs
     .filter((song) => {
-      if (!songMatchesText(song, sFields, filters.searchText)) return false;
+      if (!songMatchesText(song, sFields, normalizeText(filters.searchText))) return false;
       if (!songMatchesVersion(song, sFields, filters.versionFilter)) return false;
       if (!songMatchesType(song, sFields, filters.typeFilter)) return false;
       if (!songMatchesArtist(song, sFields, filters.artistFilter)) return false;
