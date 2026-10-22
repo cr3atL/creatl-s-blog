@@ -18,7 +18,7 @@ export default function About() {
       </dl>
       <section aria-labelledby="about-site-title" data-motion-section>
         <h2 id="about-site-title">这个站点</h2>
-        <p>个人主页、音游曲库和一些小工具。首页采用文件夹式内容选择，曲库支持筛选、排序、谱面详情与随机抽谱面，图片工具支持随机查看和下载兔子图片。</p>
+        <p>个人主页、音游曲库、小游戏和一些小工具。首页采用文件夹式内容选择，曲库支持筛选、排序、谱面详情与随机抽谱面；小工具目录提供「再来一脚」和「赤隼 · Roadster」的试玩入口，以及随机兔子图片。</p>
       </section>
       <section className="about-contact" aria-labelledby="about-contact-title" data-motion-section>
         <h2 id="about-contact-title">找到我</h2>

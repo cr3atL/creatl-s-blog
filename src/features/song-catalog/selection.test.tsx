@@ -79,6 +79,38 @@ test('native scrolling updates preview and active option without rendering the f
   expect(screen.getAllByRole('option').length).toBeLessThanOrEqual(19);
 });
 
+test.each([true, false])('scrollbar jumps render the viewport even while controlled selection lags (from bottom: %s)', (fromBottom) => {
+  const first = getSheetKey(sheets[0], 'maimai');
+  const last = getSheetKey(sheets.at(-1)!, 'maimai');
+  const onSelect = vi.fn();
+  const { rerender } = render(<SongSelectionView sheets={sheets} gameId="maimai"
+    selectedKey={fromBottom ? last : first} onSelect={onSelect} onOpen={vi.fn()} />);
+  const list = screen.getByRole('listbox');
+  const index = fromBottom ? 0 : sheets.length - 1;
+  const top = index * 48;
+  fireEvent.scroll(list, { target: { scrollTop: top } });
+  expect(list.querySelector(`[aria-posinset="${index + 1}"]`)).toBeInTheDocument();
+  expect(document.getElementById(list.getAttribute('aria-activedescendant')!)).toBeInTheDocument();
+  expect(list.querySelectorAll('[role="option"]').length).toBeLessThanOrEqual(20);
+  expect(onSelect).toHaveBeenLastCalledWith(fromBottom ? first : last);
+  rerender(<SongSelectionView sheets={sheets} gameId="maimai" selectedKey={fromBottom ? first : last}
+    onSelect={onSelect} onOpen={vi.fn()} />);
+  expect(list.scrollTop).toBe(top);
+  expect(within(list).getByRole('option', { selected: true })).toHaveAttribute('aria-posinset', String(index + 1));
+});
+
+test('repeated scrollbar jumps between both ends keep selection, preview and visible rows synchronized', () => {
+  render(<Selection />);
+  const list = screen.getByRole('listbox');
+  for (const index of [sheets.length - 1, 0, sheets.length - 1, 0, 1, 0]) {
+    fireEvent.scroll(list, { target: { scrollTop: index * 48 } });
+    expect(within(list).getByRole('option', { selected: true })).toHaveAttribute('aria-posinset', String(index + 1));
+    expect(within(screen.getByRole('article', { name: '当前谱面' })).getByRole('heading'))
+      .toHaveTextContent(sheets[index].songTitle);
+    expect(screen.getAllByRole('option').length).toBeLessThanOrEqual(19);
+  }
+});
+
 test('short wheel notches select one chart at a time, wrap and keep preview and virtual focus in sync', () => {
   render(<Selection />);
   const list = screen.getByRole('listbox');

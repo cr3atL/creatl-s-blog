@@ -108,8 +108,9 @@ describe('content selector', () => {
   test('restores tool selection when returning and re-entering', async () => {
     setup();
     userEvent.click(screen.getByRole('button', { name: '小工具' }));
-    expect(within(list()).getAllByRole('listitem')).toHaveLength(1);
-    fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowDown' });
+    expect(within(list()).getAllByRole('listitem')).toHaveLength(3);
+    fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowUp' });
+    fireEvent.keyDown(screen.getByRole('link', { name: '赤隼 · Roadster' }), { key: 'ArrowDown' });
     expect(screen.getByRole('link', { name: '随机兔子图片' })).toHaveFocus();
     fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowLeft' });
     await waitFor(() => expect(screen.getByRole('button', { name: '小工具' })).toHaveFocus());

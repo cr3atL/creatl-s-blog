@@ -121,7 +121,9 @@ export default function ContentSelector() {
           const content = <><Icon className="content-selector__icon" aria-hidden="true" /><span className="content-selector__title">{entry.title}</span><ArrowRightOutlined className="content-selector__arrow" aria-hidden="true" /></>;
           return <li key={entry.id}>{entry.kind === 'folder'
             ? <button type="button" {...props} onClick={() => enter(entry)}>{content}</button>
-            : <Link {...props} to={entry.path} onClick={() => { saveSelection(entry.id); trackEvent('Navigation', 'Click', entry.analyticsLabel ?? entry.id); }}>{content}</Link>}</li>;
+            : <Link {...props} to={entry.path} target={entry.external ? '_blank' : undefined}
+              rel={entry.external ? 'noopener noreferrer' : undefined}
+              onClick={() => { saveSelection(entry.id); trackEvent('Navigation', 'Click', entry.analyticsLabel ?? entry.id); }}>{content}</Link>}</li>;
         })}
       </ul>
       </div>

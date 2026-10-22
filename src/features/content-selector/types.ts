@@ -5,7 +5,7 @@ export type ContentEntry = {
   title: string;
   icon: 'catalog' | 'article' | 'tools' | 'about' | 'game' | 'image' | 'form';
   analyticsLabel?: string;
-} & ({ kind: 'folder'; folder: Exclude<FolderId, 'root'> } | { kind: 'route'; path: string });
+} & ({ kind: 'folder'; folder: Exclude<FolderId, 'root'> } | { kind: 'route'; path: string; external?: boolean });
 
 export interface FolderSelection {
   selectedId: string;

@@ -1,6 +1,6 @@
 .tools-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--brand-line, #ddcdb5); }
-.tool-entry { display: flex; width: 100%; text-align: left; align-items: center; justify-content: space-between; gap: 24px; border: 0; border-bottom: 1px solid var(--brand-line, #ddcdb5); border-radius: 0; background: transparent; color: var(--brand-text, #44291b); padding: 24px 16px; cursor: pointer; font: inherit; }
-.tool-entry:hover { background: var(--brand-surface, #fffdf7); }
+.tool-entry { display: flex; width: 100%; text-align: left; text-decoration: none; align-items: center; justify-content: space-between; gap: 24px; border: 0; border-bottom: 1px solid var(--brand-line, #ddcdb5); border-radius: 0; background: transparent; color: var(--brand-text, #44291b); padding: 24px 16px; cursor: pointer; font: inherit; }
+.tool-entry:hover { color: var(--brand-text, #44291b); background: var(--brand-surface, #fffdf7); }
 .tool-entry__body { display: grid; gap: 8px; min-width: 0; }
 .tool-entry__title { font-size: 21px; font-weight: 650; }
 .tool-entry__description { color: var(--brand-muted, #775b49); line-height: 1.65; font-size: 15px; }

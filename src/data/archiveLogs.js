@@ -1,6 +1,12 @@
 // 当前版本的项目进展，按最新到最旧排列。
 const archiveLogs = [
   {
+    id: 'games-and-catalog-scroll',
+    date: '2026.10.23',
+    title: '小游戏试玩与曲库滚动修复',
+    summary: '小工具目录加入「再来一脚」与「赤隼 · Roadster」，直接打开独立试玩页面。修复选曲列表从底端拖回顶端时可能出现的空白，预览和选中项同步更新。',
+  },
+  {
     id: 'brand-home-refresh',
     date: '2026.10.22',
     title: '个人主页改版',

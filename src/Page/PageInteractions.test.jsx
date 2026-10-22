@@ -45,7 +45,7 @@ describe('critical page interactions', () => {
     fireEvent.click(screen.getByRole('button', { name: /小工具/ }));
     const list = screen.getByRole('list', { name: '小工具' });
     expect(within(list).getByRole('link', { name: /随机兔子图片/ })).toHaveAttribute('href', '/randomssiba');
-    expect(within(list).getAllByRole('link')).toHaveLength(1);
+    expect(within(list).getAllByRole('link')).toHaveLength(3);
     fireEvent.click(within(list).getByRole('link', { name: /随机兔子图片/ }));
     expect(screen.getByTestId('location')).toHaveTextContent('/randomssiba');
     expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Random_Image');
@@ -91,9 +91,32 @@ describe('critical page interactions', () => {
     ['音游曲库', '/songs'],
   ])('tools preserve %s destination and analytics', (name, path) => {
     show(<Tools />);
-    fireEvent.click(screen.getByRole('button', { name: new RegExp(name) }));
+    fireEvent.click(screen.getByRole('link', { name: new RegExp(name) }));
     expect(screen.getByTestId('location')).toHaveTextContent(path);
     expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Tools_Page');
+  });
+
+  test.each([
+    ['再来一脚', 'https://cr3atl.github.io/engine-start-random/', 'Engine_Start_Random'],
+    ['赤隼 · Roadster', 'https://cr3atl.github.io/car-flycontral/roadster.html', 'Car_Flycontral'],
+  ])('homepage and tools expose %s as a playable external game without navigating away', (name, url, label) => {
+    const home = show(<Home />);
+    fireEvent.click(screen.getByRole('button', { name: '小工具', exact: true }));
+    const game = screen.getByRole('link', { name, exact: true });
+    expect(game).toHaveAttribute('href', url);
+    expect(game).toHaveAttribute('target', '_blank');
+    expect(game).toHaveAttribute('rel', 'noopener noreferrer');
+    fireEvent.click(game);
+    expect(screen.getByTestId('location')).toHaveTextContent('/?folder=tools');
+    expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', label);
+    home.unmount();
+    show(<Tools />, '/tools');
+    const tool = screen.getByRole('link', { name: new RegExp(name) });
+    expect(tool).toHaveAttribute('href', url);
+    expect(tool).toHaveAttribute('target', '_blank');
+    expect(tool).toHaveAttribute('rel', 'noopener noreferrer');
+    fireEvent.click(tool);
+    expect(screen.getByTestId('location')).toHaveTextContent('/tools');
   });
 
   test('not found returns home and keeps its error code decorative', () => {

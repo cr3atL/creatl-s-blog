@@ -22,8 +22,8 @@ export const directory: Record<FolderId, { title: string; entries: ContentEntry[
   tools: {
     title: '小工具',
     entries: tools.filter((tool) => tool.key !== 'song-catalog').map((tool) => ({
-      id: tool.key, kind: 'route', path: tool.path, title: tool.title,
-      icon: tool.key === 'random-image' ? 'image' : 'form', analyticsLabel: tool.analyticsLabel,
+      id: tool.key, kind: 'route', path: tool.path, title: tool.title, external: tool.external,
+      icon: tool.key === 'random-image' ? 'image' : 'game', analyticsLabel: tool.analyticsLabel,
     })),
   },
 };

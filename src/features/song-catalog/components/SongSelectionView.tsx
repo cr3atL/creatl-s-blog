@@ -23,7 +23,6 @@ export default function SongSelectionView({ sheets, gameId, selectedKey, onSelec
   const windowRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const movement = useRef<Animation | null>(null);
-  const programmaticTop = useRef<number | null>(null);
   const reducedMotion = useReducedMotion();
   const lastScrolledKey = useRef<string | null>(null);
   const previousSheets = useRef(sheets);
@@ -44,11 +43,13 @@ export default function SongSelectionView({ sheets, gameId, selectedKey, onSelec
   const selectedIndex = indices.get(selectedKey || '') ?? 0;
   const selected = sheets[selectedIndex];
   const padding = Math.max(0, (viewport.height - SELECTION_ROW_HEIGHT) / 2);
-  const center = Math.round(viewport.top / SELECTION_ROW_HEIGHT);
+  const center = Math.max(0, Math.min(sheets.length - 1, Math.round(viewport.top / SELECTION_ROW_HEIGHT)));
   const radius = Math.ceil(viewport.height / SELECTION_ROW_HEIGHT / 2) + OVERSCAN;
-  const windowCenter = Math.abs(selectedIndex - center) > radius ? selectedIndex : center;
-  const start = Math.max(0, windowCenter - radius);
-  const end = Math.min(sheets.length, windowCenter + radius + 1);
+  const start = Math.max(0, center - radius);
+  const end = Math.min(sheets.length, center + radius + 1);
+  const visibleIndices = Array.from({ length: end - start }, (_, offset) => start + offset);
+  // Keep aria-activedescendant mounted while a controlled selection catches up to scrolling.
+  if (selected && (selectedIndex < start || selectedIndex >= end)) visibleIndices.push(selectedIndex);
   useCatalogFade(previewRef, keys[selectedIndex], lastScrolledKey.current !== selectedKey);
 
   useLayoutEffect(() => {
@@ -76,7 +77,6 @@ export default function SongSelectionView({ sheets, gameId, selectedKey, onSelec
     if (lastScrolledKey.current === selectedKey) return;
     const top = selectedIndex * SELECTION_ROW_HEIGHT;
     const distance = Math.max(-SELECTION_ROW_HEIGHT, Math.min(SELECTION_ROW_HEIGHT, top - list.scrollTop + translation));
-    if (list.scrollTop !== top) programmaticTop.current = top;
     list.scrollTop = top;
     setViewport((current) => current.top === top ? current : { ...current, top });
     if (!reducedMotion && distance !== 0) {
@@ -128,8 +128,8 @@ export default function SongSelectionView({ sheets, gameId, selectedKey, onSelec
           onScroll={(event) => {
             const top = event.currentTarget.scrollTop;
             setViewport((current) => ({ ...current, top }));
-            if (programmaticTop.current === top) { programmaticTop.current = null; return; }
-            programmaticTop.current = null;
+            // Ignore only the position of the current selection, never a stale scroll target.
+            if (top === selectedIndex * SELECTION_ROW_HEIGHT) return;
             movement.current?.cancel();
             movement.current = null;
             const index = Math.min(sheets.length - 1, Math.max(0, Math.round(top / SELECTION_ROW_HEIGHT)));
@@ -138,8 +138,8 @@ export default function SongSelectionView({ sheets, gameId, selectedKey, onSelec
           }}>
           <div ref={windowRef} className="song-selection__window" role="presentation"
             style={{ height: sheets.length * SELECTION_ROW_HEIGHT + padding * 2 } as CSSProperties}>
-            {sheets.slice(start, end).map((sheet, offset) => {
-              const index = start + offset;
+            {visibleIndices.map((index) => {
+              const sheet = sheets[index];
               return (
                 <div key={keys[index]} id={`${listId}-${index}`} role="option"
                   aria-selected={index === selectedIndex} aria-setsize={sheets.length} aria-posinset={index + 1}
