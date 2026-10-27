@@ -23,11 +23,30 @@ beforeEach(() => {
   }) });
 });
 afterEach(() => { vi.unstubAllGlobals(); delete HTMLElement.prototype.animate; });
-const show = () => render(<MemoryRouter><Layout><input aria-label="正文输入" /></Layout></MemoryRouter>);
+const show = (entry = '/') => render(<MemoryRouter initialEntries={[entry]}><Layout><input aria-label="正文输入" /></Layout></MemoryRouter>);
+
+test.each(['/', '/home?folder=games', '/?folder=games', '/tools', '/songs/maimai', '/games'])('navigation highlights only the current section at %s', (entry) => {
+  show(entry);
+  const nav = screen.getByRole('navigation', { name: '主导航' });
+  const games = within(nav).getByRole('link', { name: '游戏', exact: true });
+  expect(games).toHaveAttribute('href', '/games');
+  expect(nav.querySelectorAll('[aria-current="page"]')).toHaveLength(1);
+  if (entry === '/games') {
+    expect(games).toHaveAttribute('aria-current', 'page');
+    expect(within(nav).getByRole('link', { name: '首页', exact: true })).not.toHaveClass('is-active');
+  } else {
+    if (entry.includes('folder=games')) {
+      expect(within(nav).getByRole('link', { name: '首页', exact: true })).toHaveAttribute('aria-current', 'page');
+    }
+    fireEvent.click(games);
+    expect(games).toHaveAttribute('aria-current', 'page');
+    expect(nav.querySelectorAll('.is-active')).toHaveLength(1);
+  }
+});
 
 test('closing the mobile navigation immediately removes live links, releases focus, and leaves inert visuals only', () => {
   show(); fireEvent.click(screen.getByRole('button', { name: '打开导航菜单' }));
-  expect(within(screen.getByRole('navigation', { name: '移动导航' })).getAllByRole('link')).toHaveLength(5);
+  expect(within(screen.getByRole('navigation', { name: '移动导航' })).getAllByRole('link')).toHaveLength(6);
   fireEvent.click(screen.getByRole('button', { name: '关闭导航' }));
   expect(screen.queryByRole('navigation', { name: '移动导航' })).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: '打开导航菜单' })).toHaveFocus();

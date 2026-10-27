@@ -33,7 +33,7 @@ describe('content selector', () => {
     expect(input).toHaveFocus();
     expect(screen.getByTestId('address')).toHaveTextContent(/^\/$/);
     expect(list().style.getPropertyValue('--selector-index')).toBe('2');
-    expect(within(list()).getAllByRole('listitem').map((item) => item.textContent)).toEqual(['音游曲库', '文章与记录', '小工具', '关于我']);
+    expect(within(list()).getAllByRole('listitem').map((item) => item.textContent)).toEqual(['音游曲库', '文章与记录', '小工具', '游戏', '关于我']);
     expect(within(list()).getAllByRole('listitem').every((item) => !item.hasAttribute('style'))).toBe(true);
     userEvent.unhover(tools);
     expect(tools).toHaveClass('is-selected');
@@ -93,9 +93,9 @@ describe('content selector', () => {
     expect(screen.getByRole('button', { name: '音游曲库' })).toHaveFocus();
   });
 
-  test('shows four root entries and replaces the whole list when entering a folder', async () => {
+  test('shows five root entries and replaces the whole list when entering a folder', async () => {
     setup();
-    expect(within(list()).getAllByRole('listitem')).toHaveLength(4);
+    expect(within(list()).getAllByRole('listitem')).toHaveLength(5);
     userEvent.click(screen.getByRole('button', { name: '音游曲库' }));
     expect(within(list()).getAllByRole('listitem')).toHaveLength(3);
     expect(screen.queryByRole('button', { name: '音游曲库' })).not.toBeInTheDocument();
@@ -108,9 +108,9 @@ describe('content selector', () => {
   test('restores tool selection when returning and re-entering', async () => {
     setup();
     userEvent.click(screen.getByRole('button', { name: '小工具' }));
-    expect(within(list()).getAllByRole('listitem')).toHaveLength(3);
+    expect(within(list()).getAllByRole('listitem')).toHaveLength(1);
     fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowUp' });
-    fireEvent.keyDown(screen.getByRole('link', { name: '赤隼 · Roadster' }), { key: 'ArrowDown' });
+    fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowDown' });
     expect(screen.getByRole('link', { name: '随机兔子图片' })).toHaveFocus();
     fireEvent.keyDown(screen.getByRole('link', { name: '随机兔子图片' }), { key: 'ArrowLeft' });
     await waitFor(() => expect(screen.getByRole('button', { name: '小工具' })).toHaveFocus());
@@ -168,15 +168,17 @@ describe('content selector', () => {
 
   test('invalid folders and invalid saved selections fall back to valid root entries', () => {
     setup({ pathname: '/', search: '?folder=invalid', state: { contentSelector: { selections: { root: { selectedId: 'missing', scrollTop: -10 } } } } });
-    expect(within(list()).getAllByRole('listitem')).toHaveLength(4);
+    expect(within(list()).getAllByRole('listitem')).toHaveLength(5);
     expect(screen.getByRole('button', { name: '音游曲库' })).toHaveAttribute('tabindex', '0');
   });
 
   test('validates restored state and keeps scroll positions per folder', () => {
-    const snapshot = readSnapshot({ contentSelector: { selections: { root: { selectedId: 'tools', scrollTop: 50 }, tools: { selectedId: 'removed-tool', scrollTop: 80 }, catalog: { selectedId: 'missing', scrollTop: Infinity } } } });
+    const snapshot = readSnapshot({ contentSelector: { selections: { root: { selectedId: 'tools', scrollTop: 50 }, tools: { selectedId: 'removed-tool', scrollTop: 80 }, catalog: { selectedId: 'missing', scrollTop: Infinity }, games: { selectedId: 'car-flycontral', scrollTop: 10 } } } });
     expect(selectionFor(snapshot, 'root')).toEqual({ selectedId: 'tools', scrollTop: 50 });
     expect(selectionFor(snapshot, 'tools')).toEqual({ selectedId: 'random-image', scrollTop: 80 });
     expect(selectionFor(snapshot, 'catalog')).toEqual({ selectedId: 'maimai', scrollTop: 0 });
+    expect(selectionFor(snapshot, 'games')).toEqual({ selectedId: 'car-flycontral', scrollTop: 10 });
+    expect(parseFolder('?folder=games')).toBe('games');
     expect(parseFolder('?folder=__proto__')).toBe('root');
     expect(folderSearch('?folder=tools&ui=creatl-brand', 'root')).toBe('?ui=creatl-brand');
   });
@@ -186,5 +188,18 @@ describe('content selector', () => {
     expect(screen.getByRole('link', { name: 'maimai DX' })).toHaveAttribute('href', '/creatl-s-blog/songs/maimai');
     expect(screen.getByRole('link', { name: 'CHUNITHM' })).toHaveAttribute('href', '/creatl-s-blog/songs/chunithm');
     expect(screen.getByRole('link', { name: 'SOUND VOLTEX' })).toHaveAttribute('href', '/creatl-s-blog/songs/sdvx');
+  });
+
+  test('game folder restores the selected game after leaving and supports direct URLs', async () => {
+    setup('/?folder=games&other=keep');
+    expect(within(list()).getAllByRole('link')).toHaveLength(3);
+    const roadster = screen.getByRole('link', { name: '赤隼 · Roadster（停更）' });
+    userEvent.hover(roadster);
+    fireEvent.keyDown(roadster, { key: 'ArrowLeft' });
+    await waitFor(() => expect(screen.getByRole('button', { name: '游戏', exact: true })).toHaveFocus());
+    expect(screen.getByTestId('address')).toHaveTextContent('/?other=keep');
+    userEvent.click(screen.getByRole('button', { name: '游戏', exact: true }));
+    expect(screen.getByRole('link', { name: '赤隼 · Roadster（停更）' })).toHaveFocus();
+    expect(screen.getByTestId('address')).toHaveTextContent('/?other=keep&folder=games');
   });
 });

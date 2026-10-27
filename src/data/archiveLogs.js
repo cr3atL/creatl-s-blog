@@ -1,6 +1,12 @@
 // 当前版本的项目进展，按最新到最旧排列。
 const archiveLogs = [
   {
+    id: 'games-page-and-touhou-party',
+    date: '2026.10.28',
+    title: '游戏独立分类与东方派对',
+    summary: '游戏从小工具中独立分类，新增「幻想乡巡游 · 东方派对」，顶部导航进入独立游戏页。「再来一脚」和「赤隼 · Roadster」标注停更，保留试玩入口。',
+  },
+  {
     id: 'games-and-catalog-scroll',
     date: '2026.10.23',
     title: '小游戏试玩与曲库滚动修复',

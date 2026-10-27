@@ -1,4 +1,4 @@
-export type FolderId = 'root' | 'catalog' | 'tools';
+export type FolderId = 'root' | 'catalog' | 'tools' | 'games';
 
 export type ContentEntry = {
   id: string;

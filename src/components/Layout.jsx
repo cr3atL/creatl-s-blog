@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import AppShell from './AppShell';
@@ -17,11 +17,13 @@ export default function Layout({ children }) {
     menuButtonRef.current?.focus({ preventScroll: true });
   };
   const location = useLocation();
-  const links = (close) => navItems.map((item) => (
-    <NavLink key={item.key} to={item.key} end={item.key === '/'}
-      className={({ isActive }) => `shell-nav__link${isActive || (item.key === '/' && location.pathname === '/home') ? ' is-active' : ''}`}
-      onClick={close}>{item.label}</NavLink>
-  ));
+  const links = (close) => navItems.map((item) => {
+    const active = item.key === '/' ? location.pathname === '/' || location.pathname === '/home'
+      : location.pathname === item.key || location.pathname.startsWith(`${item.key}/`);
+    return <Link key={item.key} to={item.key}
+      className={`shell-nav__link${active ? ' is-active' : ''}`} aria-current={active ? 'page' : undefined}
+      onClick={close}>{item.label}</Link>;
+  });
 
   return <AppShell header={() => <>
     <header className="shell-header">

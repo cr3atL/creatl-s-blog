@@ -3,7 +3,7 @@ import type { FolderId, FolderSelection, SelectorSnapshot } from './types';
 
 export const parseFolder = (search: string): FolderId => {
   const folder = new URLSearchParams(search).get('folder');
-  return folder === 'catalog' || folder === 'tools' ? folder : 'root';
+  return folder === 'catalog' || folder === 'tools' || folder === 'games' ? folder : 'root';
 };
 
 export const folderSearch = (search: string, folder: FolderId) => {
@@ -17,7 +17,7 @@ export const folderSearch = (search: string, folder: FolderId) => {
 export const readSnapshot = (state: unknown): SelectorSnapshot => {
   const raw = (state as { contentSelector?: SelectorSnapshot } | null)?.contentSelector;
   const selections: SelectorSnapshot['selections'] = {};
-  for (const folder of ['root', 'catalog', 'tools'] as const) {
+  for (const folder of ['root', 'catalog', 'tools', 'games'] as const) {
     const item = raw?.selections?.[folder];
     if (item && typeof item.selectedId === 'string') {
       selections[folder] = {

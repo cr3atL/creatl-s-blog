@@ -13,12 +13,13 @@ export default function About() {
         <div><h1>关于我</h1><p>我是桔子酱 / creatL。喜欢音游和赛车，也在学习前端开发。</p></div>
       </div>
       <dl className="about-interests" data-motion-section>
-        <div><dt>正在使用</dt><dd>Codex辅助开发</dd></div>
+        <div><dt>正在使用</dt><dd>AI 辅助开发</dd></div>
         <div><dt>游戏兴趣</dt><dd>音游、赛车</dd></div>
       </dl>
       <section aria-labelledby="about-site-title" data-motion-section>
         <h2 id="about-site-title">这个站点</h2>
-        <p>个人主页、音游曲库、小游戏和一些小工具。首页采用文件夹式内容选择，曲库支持筛选、排序、谱面详情与随机抽谱面；小工具目录提供「再来一脚」和「赤隼 · Roadster」的试玩入口，以及随机兔子图片。</p>
+        <p>个人主页、音游曲库、小游戏和一些小工具。首页采用文件夹式内容选择，曲库支持筛选、排序、谱面详情与随机抽谱面，小工具提供随机兔子图片。</p>
+        <p>游戏已独立分类，可从首页「游戏」文件夹或顶部导航进入。独立游戏页收录「幻想乡巡游 · 东方派对」「再来一脚」和「赤隼 · Roadster」；后两款已停更，保留试玩入口。</p>
       </section>
       <section className="about-contact" aria-labelledby="about-contact-title" data-motion-section>
         <h2 id="about-contact-title">找到我</h2>

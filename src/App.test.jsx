@@ -51,6 +51,7 @@ vi.mock('./Page/Home', () => ({ default: () => <div>home-page</div> }));
 vi.mock('./Page/About', () => ({ default: () => <div>about-page</div> }));
 vi.mock('./Page/Article', () => ({ default: () => <div>article-page</div> }));
 vi.mock('./Page/Tools', () => ({ default: () => <div>tools-page</div> }));
+vi.mock('./Page/Games', () => ({ default: () => <div>games-page</div> }));
 vi.mock('./Page/Randomssiba', () => ({ default: () => <div>random-image-page</div> }));
 vi.mock('./Page/NotFound', () => ({ default: () => <div>not-found-page</div> }));
 
@@ -60,6 +61,7 @@ const routeCases = [
   ['/about', 'about-page'],
   ['/article', 'article-page'],
   ['/tools', 'tools-page'],
+  ['/games', 'games-page'],
   ['/randomssiba', 'random-image-page'],
   ['/race-signon', 'not-found-page'],
   ['/missing-route', 'not-found-page'],

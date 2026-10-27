@@ -10,6 +10,7 @@ const About = lazy(() => import('./Page/About'));
 const Randomssiba = lazy(() => import('./Page/Randomssiba'));
 const NotFound = lazy(() => import('./Page/NotFound'));
 const Tools = lazy(() => import('./Page/Tools'));
+const Games = lazy(() => import('./Page/Games'));
 const SongCatalogHome = lazy(() => import('./features/song-catalog/components/SongCatalogHome'));
 const SongCatalogPage = lazy(() => import('./features/song-catalog/components/SongCatalogPage'));
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/article" element={<Article />} />
           <Route path="/tools" element={<Tools />} />
+          <Route path="/games" element={<Games />} />
           <Route path="/songs" element={<SongCatalogRoot />} />
           <Route path="/songs/maimai" element={<SongCatalogPage game={getGameById('maimai')} />} />
           <Route path="/songs/chunithm" element={<SongCatalogPage game={getGameById('chunithm')} />} />

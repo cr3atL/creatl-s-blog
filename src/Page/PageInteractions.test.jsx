@@ -5,6 +5,7 @@ import Article from './Article';
 import Home from './Home';
 import NotFound from './NotFound';
 import Tools from './Tools';
+import Games from './Games';
 import { trackEvent } from '../utils/analytics';
 import socialLinks from '../data/socialLinks';
 import archiveLogs from '../data/archiveLogs';
@@ -45,7 +46,7 @@ describe('critical page interactions', () => {
     fireEvent.click(screen.getByRole('button', { name: /小工具/ }));
     const list = screen.getByRole('list', { name: '小工具' });
     expect(within(list).getByRole('link', { name: /随机兔子图片/ })).toHaveAttribute('href', '/randomssiba');
-    expect(within(list).getAllByRole('link')).toHaveLength(3);
+    expect(within(list).getAllByRole('link')).toHaveLength(1);
     fireEvent.click(within(list).getByRole('link', { name: /随机兔子图片/ }));
     expect(screen.getByTestId('location')).toHaveTextContent('/randomssiba');
     expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Random_Image');
@@ -79,9 +80,9 @@ describe('critical page interactions', () => {
     expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', 'Writing_Preview');
   });
 
-  test('home directory has four real entries and no invented status', () => {
+  test('home directory has five real entries and no invented status', () => {
     show(<Home />);
-    expect(within(screen.getByRole('list', { name: '主目录' })).getAllByRole('listitem')).toHaveLength(4);
+    expect(within(screen.getByRole('list', { name: '主目录' })).getAllByRole('listitem')).toHaveLength(5);
     expect(screen.queryByText('READY')).not.toBeInTheDocument();
     expect(screen.queryByText('STANDBY')).not.toBeInTheDocument();
   });
@@ -97,26 +98,33 @@ describe('critical page interactions', () => {
   });
 
   test.each([
-    ['再来一脚', 'https://cr3atl.github.io/engine-start-random/', 'Engine_Start_Random'],
-    ['赤隼 · Roadster', 'https://cr3atl.github.io/car-flycontral/roadster.html', 'Car_Flycontral'],
-  ])('homepage and tools expose %s as a playable external game without navigating away', (name, url, label) => {
+    ['幻想乡巡游 · 东方派对', 'https://cr3atl.github.io/touhou-project-partygame/', 'Touhou_Project_Partygame'],
+    ['再来一脚（停更）', 'https://cr3atl.github.io/engine-start-random/', 'Engine_Start_Random'],
+    ['赤隼 · Roadster（停更）', 'https://cr3atl.github.io/car-flycontral/roadster.html', 'Car_Flycontral'],
+  ])('game folder exposes %s as a playable external game without navigating away', (name, url, label) => {
     const home = show(<Home />);
-    fireEvent.click(screen.getByRole('button', { name: '小工具', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: '游戏', exact: true }));
     const game = screen.getByRole('link', { name, exact: true });
     expect(game).toHaveAttribute('href', url);
     expect(game).toHaveAttribute('target', '_blank');
     expect(game).toHaveAttribute('rel', 'noopener noreferrer');
     fireEvent.click(game);
-    expect(screen.getByTestId('location')).toHaveTextContent('/?folder=tools');
+    expect(screen.getByTestId('location')).toHaveTextContent('/?folder=games');
     expect(trackEvent).toHaveBeenCalledWith('Navigation', 'Click', label);
     home.unmount();
-    show(<Tools />, '/tools');
-    const tool = screen.getByRole('link', { name: new RegExp(name) });
-    expect(tool).toHaveAttribute('href', url);
-    expect(tool).toHaveAttribute('target', '_blank');
-    expect(tool).toHaveAttribute('rel', 'noopener noreferrer');
-    fireEvent.click(tool);
-    expect(screen.getByTestId('location')).toHaveTextContent('/tools');
+    const tools = show(<Tools />, '/tools');
+    expect(screen.queryByRole('link', { name: new RegExp(name) })).not.toBeInTheDocument();
+    tools.unmount();
+    show(<Games />, '/games');
+    expect(screen.getByRole('heading', { name: '游戏', exact: true })).toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: '内容目录' })).not.toBeInTheDocument();
+    const pageGame = screen.getByRole('link', { name: new RegExp(name) });
+    expect(pageGame).toHaveAttribute('href', url);
+    expect(pageGame).toHaveAttribute('target', '_blank');
+    expect(pageGame).toHaveAttribute('rel', 'noopener noreferrer');
+    fireEvent.click(pageGame);
+    expect(screen.getByTestId('location')).toHaveTextContent('/games');
+    expect(trackEvent).toHaveBeenLastCalledWith('Navigation', 'Click', label);
   });
 
   test('not found returns home and keeps its error code decorative', () => {

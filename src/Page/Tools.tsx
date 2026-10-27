@@ -11,8 +11,7 @@ export default function Tools() {
       <h1 data-motion-section>小工具</h1>
       <ul className="tools-list" data-motion-section>
         {tools.map(tool => <li key={tool.key}>
-          <Link to={tool.path} className="tool-entry" target={tool.external ? '_blank' : undefined}
-            rel={tool.external ? 'noopener noreferrer' : undefined} onClick={() => {
+          <Link to={tool.path} className="tool-entry" onClick={() => {
             trackEvent('Navigation', 'Click', 'Tools_Page');
           }}>
             <span className="tool-entry__body">

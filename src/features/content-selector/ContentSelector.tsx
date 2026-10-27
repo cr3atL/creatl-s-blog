@@ -73,7 +73,7 @@ export default function ContentSelector() {
     // Replace the parent snapshot before pushing the child; Router retains its own history fields.
     navigate({ pathname: location.pathname, search: location.search, hash: location.hash }, { replace: true, state: stateWith(next), preventScrollReset: true });
     navigate({ pathname: location.pathname, search: folderSearch(location.search, entry.folder), hash: location.hash }, { state: stateWith(next), preventScrollReset: true });
-    trackEvent('Navigation', 'Click', entry.id === 'catalog' ? 'Song_Catalog_Home' : 'Tools_Directory');
+    trackEvent('Navigation', 'Click', entry.id === 'catalog' ? 'Song_Catalog_Home' : entry.id === 'games' ? 'Games_Directory' : 'Tools_Directory');
   };
 
   const back = () => {
